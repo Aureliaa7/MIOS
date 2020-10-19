@@ -1,9 +1,9 @@
-﻿namespace MusicalInstrumentsShop.BusinessLogic.DataModel
+﻿namespace MusicalInstrumentsShop.Domain.Entities
 {
     public class Stock
     {
         public long Id { get; set; }
         public int NumberOfProducts { get; set; }
-        public Provider Provider { get; set; }
+        public Supplier Provider { get; set; }
     }
 }

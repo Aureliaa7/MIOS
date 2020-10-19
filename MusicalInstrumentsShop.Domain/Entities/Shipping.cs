@@ -1,9 +1,9 @@
 ﻿using System;
 
-namespace MusicalInstrumentsShop.BusinessLogic.DataModel
+namespace MusicalInstrumentsShop.Domain.Entities
 {
-    public class Category
-    { 
+    public class Shipping
+    {
         public Guid Id { get; set; }
         public string Name { get; set; }
     }

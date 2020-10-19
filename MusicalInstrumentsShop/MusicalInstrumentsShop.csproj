@@ -5,6 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Identity" Version="2.2.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="3.1.9">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
@@ -19,7 +20,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\MusicalInstrumentsShop.BusinessLogic\MusicalInstrumentsShop.BusinessLogic.csproj" />
     <ProjectReference Include="..\MusicalInstrumentsShop.DataAccess\MusicalInstrumentsShop.DataAccess.csproj" />
+    <ProjectReference Include="..\MusicalInstrumentsShop.Domain\MusicalInstrumentsShop.Domain.csproj" />
   </ItemGroup>
 
 </Project>

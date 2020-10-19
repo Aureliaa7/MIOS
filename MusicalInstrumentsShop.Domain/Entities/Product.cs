@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace MusicalInstrumentsShop.BusinessLogic.DataModel
+namespace MusicalInstrumentsShop.Domain.Entities
 {
     public class Product
     {

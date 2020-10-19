@@ -1,11 +1,16 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Services\" />
+    <PackageReference Include="Microsoft.AspNetCore.Identity" Version="2.2.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\MusicalInstrumentsShop.DataAccess\MusicalInstrumentsShop.DataAccess.csproj" />
+    <ProjectReference Include="..\MusicalInstrumentsShop.Domain\MusicalInstrumentsShop.Domain.csproj" />
   </ItemGroup>
 
 </Project>

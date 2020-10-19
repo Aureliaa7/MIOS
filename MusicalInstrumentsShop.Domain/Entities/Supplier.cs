@@ -1,8 +1,8 @@
 ﻿using System;
 
-namespace MusicalInstrumentsShop.BusinessLogic.DataModel
+namespace MusicalInstrumentsShop.Domain.Entities
 {
-    public class Provider
+    public class Supplier
     {
         public Guid Id { get; set; }
         public string Name { get; set; }

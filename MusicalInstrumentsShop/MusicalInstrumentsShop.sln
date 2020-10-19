@@ -3,11 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30517.126
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MusicalInstrumentsShop", "MusicalInstrumentsShop.csproj", "{EB280B43-8DA0-4515-A7D3-50AE58BD3391}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MusicalInstrumentsShop", "MusicalInstrumentsShop.csproj", "{EB280B43-8DA0-4515-A7D3-50AE58BD3391}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MusicalInstrumentsShop.DataAccess", "..\MusicalInstrumentsShop.DataAccess\MusicalInstrumentsShop.DataAccess.csproj", "{870A5539-E652-419D-997D-E8509EEBC6AB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MusicalInstrumentsShop.DataAccess", "..\MusicalInstrumentsShop.DataAccess\MusicalInstrumentsShop.DataAccess.csproj", "{870A5539-E652-419D-997D-E8509EEBC6AB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MusicalInstrumentsShop.BusinessLogic", "..\MusicalInstrumentsShop.BusinessLogic\MusicalInstrumentsShop.BusinessLogic.csproj", "{38B6B0AB-FF0A-4D01-B0E3-9BA0536ECBCE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MusicalInstrumentsShop.BusinessLogic", "..\MusicalInstrumentsShop.BusinessLogic\MusicalInstrumentsShop.BusinessLogic.csproj", "{38B6B0AB-FF0A-4D01-B0E3-9BA0536ECBCE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MusicalInstrumentsShop.Domain", "..\MusicalInstrumentsShop.Domain\MusicalInstrumentsShop.Domain.csproj", "{6E60C90E-6363-46D1-8F38-E919B2B882A4}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -27,6 +29,10 @@ Global
 		{38B6B0AB-FF0A-4D01-B0E3-9BA0536ECBCE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{38B6B0AB-FF0A-4D01-B0E3-9BA0536ECBCE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{38B6B0AB-FF0A-4D01-B0E3-9BA0536ECBCE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6E60C90E-6363-46D1-8F38-E919B2B882A4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6E60C90E-6363-46D1-8F38-E919B2B882A4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6E60C90E-6363-46D1-8F38-E919B2B882A4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6E60C90E-6363-46D1-8F38-E919B2B882A4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

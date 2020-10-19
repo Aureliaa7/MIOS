@@ -7,48 +7,45 @@
     <link rel="stylesheet" href="~/css/site.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" />
 </head>
-<body>
-    <div>
-        <input type="checkbox" id="check" />
-        <header>
-            <label for="check">
-                <i class="fas fa-bars" id="sidebar_btn"></i>
-            </label>
-            <div class="left_area">
-                <h2>Musical Instruments</h2>
-            </div>
-            <div class="right_area">
-                <a href="#" class="logout_btn">Logout</a>
-            </div>
-        </header>
-        <div class="sidebar">
-            <center>
-                <img src="~/images/mios-logo.png" class="profile_image" />
-            </center>
-            <a href="#"><i class="fas fa-desktop"></i><span>Dashboard</span></a>
-            <a href="#"><i class="fas fa-plus-circle"></i><span>Add category</span></a>
-            <a href="#"><i class="fas fa-plus-circle"></i><span>Add provider</span></a>
-            <a href="#"><i class="fas fa-plus-circle"></i><span>Add product</span></a>
-            <a href="#"><i class="fas fa-table"></i><span>View categories</span></a>
+<body class="bg">
+    <input type="checkbox" id="check" />
+    <header>
+        <label for="check">
+            <i class="fas fa-bars" id="sidebar_btn"></i>
+        </label>
+        <div class="left_area">
+            <h2>Musical Instruments</h2>
         </div>
-
-
-        <div class="content">
-            <div class="container">
-                <main role="main" class="pb-3">
-                    @RenderBody()
-                </main>
-            </div>
+        <div class="right_area">
+            <a href="#" class="logout_btn">Logout</a>
         </div>
+    </header>
 
-
-        <footer class="border-top footer  text-dark" style="text-align:center; opacity:1; position: relative;">
-            <div class="container">
-                &copy; 2020 - Musical Instruments Shop
-            </div>
-            <br />
-        </footer>
+    <div class="sidebar">
+        <center>
+            <img src="~/images/mios-logo.png" class="profile_image" />
+        </center>
+        <a href="#"><i class="fas fa-desktop"></i><span>Dashboard</span></a>
+        <a href="#"><i class="fas fa-plus-circle"></i><span>Add category</span></a>
+        <a href="#"><i class="fas fa-plus-circle"></i><span>Add provider</span></a>
+        <a href="#"><i class="fas fa-plus-circle"></i><span>Add product</span></a>
+        <a href="#"><i class="fas fa-table"></i><span>View categories</span></a>
     </div>
+
+
+
+    <div class="container">
+        <main role="main" class="pb-3">
+            @RenderBody()
+        </main>
+    </div>
+
+    <footer class="border-top footer  text-dark" style="text-align:center; opacity:1; position: relative;">
+        <div class="container">
+            &copy; 2020 - Musical Instruments Shop
+        </div>
+        <br />
+    </footer>
 
     <script src="https://code.jquery.com/jquery-3.5.1.min.js" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>

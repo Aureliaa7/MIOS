@@ -1,57 +1,48 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
-using MusicalInstrumentsShop.BusinessLogic.DataModel;
-using MusicalInstrumentsShop.DataAccess.Data;
+using MusicalInstrumentsShop.Domain.Entities;
+using MusicalInstrumentsShop.BusinessLogic.Exceptions;
+using MusicalInstrumentsShop.BusinessLogic.Services;
 
 namespace MusicalInstrumentsShop.Controllers
 {
     public class CategoriesController : Controller
     {
-        private readonly ApplicationDbContext _context;
+        private readonly ICategoryService categoryService;
 
-        public CategoriesController(ApplicationDbContext context)
+        public CategoriesController(ICategoryService categoryService)
         {
-            _context = context;
+            this.categoryService = categoryService;
         }
 
-        // GET: Categories
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Categories.ToListAsync());
+            return View(await categoryService.GetAll());
         }
 
-        // GET: Categories/Details/5
         public async Task<IActionResult> Details(Guid? id)
         {
             if (id == null)
             {
-                return NotFound();
+                return RedirectToAction("NotFound", "Errors");
             }
 
-            var category = await _context.Categories
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (category == null)
+            try
             {
-                return NotFound();
+                return View(await categoryService.GetById((Guid)id));
             }
-
-            return View(category);
+            catch(ItemNotFoundException)
+            {
+                return RedirectToAction("NotFound", "Errors");
+            }
         }
 
-        // GET: Categories/Create
         public IActionResult Create()
         {
             return View();
         }
 
-        // POST: Categories/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
-        // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,Name")] Category category)
@@ -59,14 +50,12 @@ namespace MusicalInstrumentsShop.Controllers
             if (ModelState.IsValid)
             {
                 category.Id = Guid.NewGuid();
-                _context.Add(category);
-                await _context.SaveChangesAsync();
+                await categoryService.Add(category);
                 return RedirectToAction(nameof(Index));
             }
             return View(category);
         }
 
-        // GET: Categories/Edit/5
         public async Task<IActionResult> Edit(Guid? id)
         {
             if (id == null)
@@ -74,17 +63,16 @@ namespace MusicalInstrumentsShop.Controllers
                 return NotFound();
             }
 
-            var category = await _context.Categories.FindAsync(id);
-            if (category == null)
+            try
             {
-                return NotFound();
+                return View(await categoryService.GetById((Guid)id));
             }
-            return View(category);
+            catch (ItemNotFoundException)
+            {
+                return RedirectToAction("NotFound", "Errors");
+            }
         }
 
-        // POST: Categories/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
-        // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(Guid id, [Bind("Id,Name")] Category category)
@@ -98,26 +86,16 @@ namespace MusicalInstrumentsShop.Controllers
             {
                 try
                 {
-                    _context.Update(category);
-                    await _context.SaveChangesAsync();
+                    await categoryService.Update(category);
                 }
-                catch (DbUpdateConcurrencyException)
+                catch (ItemNotFoundException)
                 {
-                    if (!CategoryExists(category.Id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
+                    return RedirectToAction("NotFound", "Errors");
                 }
-                return RedirectToAction(nameof(Index));
             }
             return View(category);
         }
 
-        // GET: Categories/Delete/5
         public async Task<IActionResult> Delete(Guid? id)
         {
             if (id == null)
@@ -125,30 +103,35 @@ namespace MusicalInstrumentsShop.Controllers
                 return NotFound();
             }
 
-            var category = await _context.Categories
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (category == null)
+            try
             {
-                return NotFound();
+                return View(await categoryService.GetById((Guid)id));
             }
-
-            return View(category);
+            catch (ItemNotFoundException)
+            {
+                return RedirectToAction("NotFound", "Errors");
+            }
         }
 
-        // POST: Categories/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(Guid id)
         {
-            var category = await _context.Categories.FindAsync(id);
-            _context.Categories.Remove(category);
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
-        }
 
-        private bool CategoryExists(Guid id)
-        {
-            return _context.Categories.Any(e => e.Id == id);
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            try
+            {
+                await categoryService.Delete((Guid)id);
+                return RedirectToAction(nameof(Index));
+            }
+            catch (ItemNotFoundException)
+            {
+                return RedirectToAction("NotFound", "Errors");
+            }
         }
     }
 }
