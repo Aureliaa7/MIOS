@@ -17,6 +17,7 @@ namespace MusicalInstrumentsShop.BusinessLogic.Services
         {
             this.userManager = userManager;
             this.signInManager = signInManager;
+            loginResult = new LoginResult();
         }
 
         public async Task<LoginResult> Login(LoginModel loginInfo)
@@ -45,7 +46,11 @@ namespace MusicalInstrumentsShop.BusinessLogic.Services
                 FirstName = registrationInfo.FirstName,
                 LastName = registrationInfo.LastName,
                 Email = registrationInfo.Email,
-                UserName = registrationInfo.Email
+                UserName = registrationInfo.Email,
+                Country = registrationInfo.Country,
+                City = registrationInfo.City,
+                Street = registrationInfo.Street,
+                ZipCode = registrationInfo.ZipCode
             };
 
             var result = await userManager.CreateAsync(newApplicationUser, registrationInfo.Password);

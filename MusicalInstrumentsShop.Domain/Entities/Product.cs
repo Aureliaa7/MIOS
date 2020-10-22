@@ -8,11 +8,8 @@ namespace MusicalInstrumentsShop.Domain.Entities
         public string Name { get; set; }
         public double Price { get; set; }
         public string Description { get; set; }
-        public string Specifications { get; set; }
-        public Stock Stock { get; set; }
         public Category Category { get; set; }
-        // add the photo
-
-
+        public Brand Brand { get; set; }
+        public string Photo { get; set; }
     }
 }

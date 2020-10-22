@@ -1,0 +1,72 @@
+﻿@model MusicalInstrumentsShop.BusinessLogic.HelperEntities.RegistrationModel
+
+@{
+    ViewData["Title"] = "Register";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="jumbotron register-jumbotron">
+    <h5>Create account</h5>
+    <form asp-action="Register" class="register-form">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+        <div class="row my-row">
+            <div class="col-md-3">
+                <label asp-for="FirstName">First name</label><br />
+                <input asp-for="FirstName" class="form-control">
+                <span asp-validation-for="FirstName"></span>
+            </div>
+            <div class="col-md-3 add-left-margins">
+                <label asp-for="LastName">Last name</label><br />
+                <input asp-for="LastName" class="form-control">
+                <span asp-validation-for="LastName"></span>
+            </div>
+        </div>
+
+        <div class="row my-row">
+            <div class="col-md-3">
+                <label asp-for="Country">Country</label><br />
+                <input asp-for="Country" class="form-control">
+                <span asp-validation-for="Country"></span>
+            </div>
+            <div class="col-md-3 add-left-margins">
+                <label asp-for="City">City</label><br />
+                <input asp-for="City" class="form-control">
+                <span asp-validation-for="City"></span>
+            </div>
+        </div>
+
+        <div class="row my-row">
+            <div class="col-md-3">
+                <label asp-for="Street">Street</label><br />
+                <input asp-for="Street" class="form-control">
+                <span asp-validation-for="Street"></span>
+            </div>
+            <div class="col-md-3 add-left-margins">
+                <label asp-for="ZipCode">Zip Code</label><br />
+                <input asp-for="ZipCode" class="form-control">
+                <span asp-validation-for="ZipCode"></span>
+            </div>
+        </div>
+
+        <div class="row my-row">
+            <div class="col-md-3">
+                <label asp-for="Email" class="control-label"></label>
+                <input asp-for="Email" class="form-control" />
+                <span asp-validation-for="Email" class="text-danger"></span>
+            </div>
+            <div class="col-md-3 add-left-margins">
+                <label asp-for="Password" class="control-label"></label>
+                <input asp-for="Password" class="form-control" />
+                <span asp-validation-for="Password" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <input type="submit" value="Register" class="btn btn-primary register-btn" />
+        </div>
+    </form>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

@@ -1,9 +1,12 @@
-﻿namespace MusicalInstrumentsShop.Domain.Entities
+﻿using System;
+
+namespace MusicalInstrumentsShop.Domain.Entities
 {
     public class Stock
     {
-        public long Id { get; set; }
+        public Guid Id { get; set; }
+        public Product Product { get; set; }
         public int NumberOfProducts { get; set; }
-        public Supplier Provider { get; set; }
+        public Supplier Supplier { get; set; }
     }
 }

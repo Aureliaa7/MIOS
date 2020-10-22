@@ -1,0 +1,45 @@
+﻿.login-image {
+    background-image: url("../images/guitars.jpg");
+    background-repeat: repeat;
+    background-size: cover;
+}
+
+.login-jumbotron {
+    width: 360px;
+    height: 330px;
+    margin-top: 200px;
+    margin-left: 220px;
+}
+
+.login-form {
+    width: 280px;
+    height: 250px;
+}
+
+.register-btn {
+    width: 100%;
+    margin-left: 330px;
+    margin-top: 40px;
+}
+
+.register-jumbotron {
+    width: 660px;
+    height: 660px;
+}
+
+.register-form {
+    width: 880px;
+    height: 640px;
+    margin-left: -140px;
+}
+
+.my-row {
+    margin-top: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.login-btn {
+    width: 100%;
+}

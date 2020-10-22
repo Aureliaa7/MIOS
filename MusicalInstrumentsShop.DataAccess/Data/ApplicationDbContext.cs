@@ -17,6 +17,9 @@ namespace MusicalInstrumentsShop.DataAccess.Data
         public DbSet<Shipping> Shippings { get; set; }
         public DbSet<Payment> Payments { get; set; }
         public DbSet<Wishlist> Wishlists { get; set; }
+        public DbSet<CreditCard> CreditCards { get; set; }
+        public DbSet<Brand> Brands { get; set; }
+        public DbSet<OrderProduct> OrderProducts { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
