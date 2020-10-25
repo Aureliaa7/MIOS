@@ -118,14 +118,7 @@ label #sidebar_btn:hover{
     width: 80px;
 }
 
-.bg {
-    margin-left: 250px;
-    background: url(../images/bg.jpg) no-repeat;
-    background-position: center;
-    background-size: cover;
-    height: 100vh;
-    transition: 0.5s;
-}
+
 
 #check:checked ~ .content {
     margin-left: 60px;

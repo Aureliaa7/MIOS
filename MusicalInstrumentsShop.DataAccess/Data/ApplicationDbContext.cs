@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using MusicalInstrumentsShop.Domain.Entities;
+using MusicalInstrumentsShop.DataAccess.Entities;
 using System;
 
 namespace MusicalInstrumentsShop.DataAccess.Data
@@ -18,8 +18,10 @@ namespace MusicalInstrumentsShop.DataAccess.Data
         public DbSet<Payment> Payments { get; set; }
         public DbSet<Wishlist> Wishlists { get; set; }
         public DbSet<CreditCard> CreditCards { get; set; }
-        public DbSet<Brand> Brands { get; set; }
         public DbSet<OrderProduct> OrderProducts { get; set; }
+        public DbSet<WishlistProduct> WishlistProducts { get; set; }
+        public DbSet<Photo> Photos { get; set; }
+        public DbSet<PhotoProduct> PhotoProducts { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

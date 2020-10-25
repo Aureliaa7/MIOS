@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using MusicalInstrumentsShop.Domain.Entities;
+using MusicalInstrumentsShop.DataAccess.Entities;
 using MusicalInstrumentsShop.BusinessLogic.Exceptions;
 using MusicalInstrumentsShop.BusinessLogic.Services;
 
@@ -92,6 +92,7 @@ namespace MusicalInstrumentsShop.Controllers
                 {
                     return RedirectToAction("NotFound", "Errors");
                 }
+                return RedirectToAction("Index", "Categories");
             }
             return View(category);
         }
@@ -117,7 +118,6 @@ namespace MusicalInstrumentsShop.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(Guid id)
         {
-
             if (id == null)
             {
                 return NotFound();
@@ -125,7 +125,7 @@ namespace MusicalInstrumentsShop.Controllers
 
             try
             {
-                await categoryService.Delete((Guid)id);
+                await categoryService.Delete(id);
                 return RedirectToAction(nameof(Index));
             }
             catch (ItemNotFoundException)

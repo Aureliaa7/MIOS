@@ -2,9 +2,10 @@
 
 namespace MusicalInstrumentsShop.Domain.Entities
 {
-    public class Brand
+    public class PhotoProduct
     {
         public Guid Id { get; set; }
-        public string Name { get; set; }
+        public Photo Photo { get; set; }
+        public Product Product { get; set; }
     }
 }

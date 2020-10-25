@@ -10,7 +10,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\MusicalInstrumentsShop.DataAccess\MusicalInstrumentsShop.DataAccess.csproj" />
-    <ProjectReference Include="..\MusicalInstrumentsShop.Domain\MusicalInstrumentsShop.Domain.csproj" />
   </ItemGroup>
 
 </Project>

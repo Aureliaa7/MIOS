@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using MusicalInstrumentsShop.DataAccess.Repositories;
 using MusicalInstrumentsShop.BusinessLogic.Exceptions;
-using MusicalInstrumentsShop.Domain.Entities;
+using MusicalInstrumentsShop.DataAccess.Entities;
 
 namespace MusicalInstrumentsShop.BusinessLogic.Services
 {

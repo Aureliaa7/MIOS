@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using MusicalInstrumentsShop.BusinessLogic.HelperEntities;
 using MusicalInstrumentsShop.BusinessLogic.Services;
-using MusicalInstrumentsShop.Domain.Entities;
+using MusicalInstrumentsShop.DataAccess.Entities;
 using System.Threading.Tasks;
 
 namespace MusicalInstrumentsShop.Controllers

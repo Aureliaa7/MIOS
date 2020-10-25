@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Identity;
-using MusicalInstrumentsShop.Domain.Entities;
+using MusicalInstrumentsShop.DataAccess.Entities;
 
 namespace MusicalInstrumentsShop.DataAccess.Data
 {

@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using MusicalInstrumentsShop.BusinessLogic.HelperEntities;
-using MusicalInstrumentsShop.Domain.Entities;
+using MusicalInstrumentsShop.DataAccess.Entities;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;

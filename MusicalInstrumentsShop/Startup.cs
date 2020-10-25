@@ -8,7 +8,7 @@ using Microsoft.Extensions.Hosting;
 using MusicalInstrumentsShop.BusinessLogic.Services;
 using MusicalInstrumentsShop.DataAccess.Data;
 using MusicalInstrumentsShop.DataAccess.Repositories;
-using MusicalInstrumentsShop.Domain.Entities;
+using MusicalInstrumentsShop.DataAccess.Entities;
 using System;
 
 namespace MusicalInstrumentsShop
@@ -51,10 +51,12 @@ namespace MusicalInstrumentsShop
                 options.User.RequireUniqueEmail = true;
             });
 
-
             services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
+            services.AddScoped<IProductRepository, ProductRepository>();
             services.AddScoped<ICategoryService, CategoryService>();
             services.AddScoped<IAccountService, AccountService>();
+            services.AddScoped<ISupplierService, SupplierService>();
+            services.AddScoped<IProductService, ProductService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

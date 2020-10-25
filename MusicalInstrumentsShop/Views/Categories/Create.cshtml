@@ -1,17 +1,15 @@
-﻿@model MusicalInstrumentsShop.Domain.Entities.Category
+﻿@model MusicalInstrumentsShop.DataAccess.Entities.Category
 
 @{
     ViewData["Title"] = "Create";
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
 
-<h1>Create</h1>
-
-<h4>Category</h4>
 <hr />
-<div class="row"  style="display: flex; margin:auto;">
+<div class="jumbotron add-category-jumbotron">
+    <h4>Add Category</h4>
     <div class="col-md-4">
-        <form asp-action="Create">
+        <form asp-action="Create" class="add-category-form">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
                 <label asp-for="Name" class="control-label"></label>
@@ -19,14 +17,10 @@
                 <span asp-validation-for="Name" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
+                <input type="submit" value="Add" class="btn btn-primary" id="form-btn" />
             </div>
         </form>
     </div>
-</div>
-
-<div>
-    <a asp-action="Index">Back to List</a>
 </div>
 
 @section Scripts {
