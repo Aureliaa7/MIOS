@@ -178,7 +178,6 @@ body {
     margin-top: 70px;
     margin-left: 250px;
     padding: 15px;
-    background: url(background.jpg)no-repeat;
     background-size: cover;
     height: 100vh;
     transition: 0.3s;
@@ -223,4 +222,8 @@ body {
     height: 50px;
     background-color: #2F323A;
     text-align: center;
+}
+
+.fa-user {
+    margin-left: -6px;
 }
