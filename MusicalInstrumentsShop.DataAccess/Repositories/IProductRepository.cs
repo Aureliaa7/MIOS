@@ -7,7 +7,7 @@ namespace MusicalInstrumentsShop.DataAccess.Repositories
     public interface IProductRepository : IRepository<Product>
     {
         Task<Product> GetWithRelatedData(string id);
-        Task Delete(string id);
+        Task<IEnumerable<string>> Delete(string id);
         Task<IEnumerable<Product>> GetAllWithRelatedData();
     }
 }

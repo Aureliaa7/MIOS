@@ -52,9 +52,7 @@
 .bg {
     margin-left: 0px;
     background: url(../images/bg.jpg) no-repeat;
-    background-position: center;
     background-size: cover;
-    height: 100vh;
     transition: 0.5s;
 }
 
@@ -75,4 +73,28 @@
 .supplier-form {
     width: 270px;
     height: 300px;
+}
+
+.product-jumbotron{
+    width: 620px;
+    height: 750px;
+    margin-left: 250px;
+}
+
+.product-form {
+    width: 1160px;
+    height: 640px;
+    margin-left: -320px;
+}
+
+#add-product-btn {
+    width: 100%;
+    margin-left: 450px;
+    margin-top: 40px;
+}
+
+.update-product-jumbotron {
+    width: 620px;
+    height: 440px;
+    margin-left: 250px;
 }

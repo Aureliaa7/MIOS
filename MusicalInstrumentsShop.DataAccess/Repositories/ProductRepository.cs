@@ -11,11 +11,19 @@ namespace MusicalInstrumentsShop.DataAccess.Repositories
     {
         public ProductRepository(ApplicationDbContext context) : base(context) { }
 
-        public async Task Delete(string id)
+        public async Task<IEnumerable<string>> Delete(string id)
         {
+            var photoNames = await Context.Set<PhotoProduct>()
+                .Where(x => x.Product.Id == id)
+                .Select(x => x.Photo.Name)
+                .AsNoTracking()
+                .ToListAsync();
+
             var productToBeDeleted = await Context.Set<Product>().Where(x => x.Id == id).FirstAsync();
             Context.Set<Product>().Remove(productToBeDeleted);
             await Context.SaveChangesAsync();
+
+            return photoNames;
         }
 
         public async Task<Product> GetWithRelatedData(string id)

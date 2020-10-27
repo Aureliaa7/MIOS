@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using MusicalInstrumentsShop.BusinessLogic.HelperEntities;
+using MusicalInstrumentsShop.BusinessLogic.DTOs;
 using MusicalInstrumentsShop.BusinessLogic.Services;
 using MusicalInstrumentsShop.DataAccess.Entities;
 using System.Threading.Tasks;
@@ -25,7 +25,7 @@ namespace MusicalInstrumentsShop.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Login(LoginModel loginInfo)
+        public async Task<IActionResult> Login(LoginDto loginInfo)
         {
             if (ModelState.IsValid)
             {
@@ -52,7 +52,7 @@ namespace MusicalInstrumentsShop.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Register(RegistrationModel registrationInfo)
+        public async Task<IActionResult> Register(RegistrationDto registrationInfo)
         {
             if(ModelState.IsValid)
             {

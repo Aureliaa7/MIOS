@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace MusicalInstrumentsShop.BusinessLogic.HelperEntities
+namespace MusicalInstrumentsShop.BusinessLogic.DTOs
 {
     public class LoginResult
     {

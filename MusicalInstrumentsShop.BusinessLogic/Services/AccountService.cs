@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Identity;
-using MusicalInstrumentsShop.BusinessLogic.HelperEntities;
+using MusicalInstrumentsShop.BusinessLogic.DTOs;
 using MusicalInstrumentsShop.DataAccess.Entities;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,7 +20,7 @@ namespace MusicalInstrumentsShop.BusinessLogic.Services
             loginResult = new LoginResult();
         }
 
-        public async Task<LoginResult> Login(LoginModel loginInfo)
+        public async Task<LoginResult> Login(LoginDto loginInfo)
         {
             var result = await signInManager.PasswordSignInAsync(loginInfo.Email, loginInfo.Password, false, lockoutOnFailure: false);
 
@@ -38,7 +38,7 @@ namespace MusicalInstrumentsShop.BusinessLogic.Services
             return loginResult;
         }
 
-        public async Task<List<string>> Register(RegistrationModel registrationInfo)
+        public async Task<List<string>> Register(RegistrationDto registrationInfo)
         {
             List<string> errorMessages = new List<string>();
             ApplicationUser newApplicationUser = new ApplicationUser

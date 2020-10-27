@@ -1,5 +1,3 @@
-using System;
-
 namespace MusicalInstrumentsShop.Models
 {
     public class ErrorViewModel

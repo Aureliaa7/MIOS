@@ -1,4 +1,4 @@
-﻿@model IEnumerable<MusicalInstrumentsShop.DataAccess.Entities.Product>
+﻿@model IEnumerable<MusicalInstrumentsShop.BusinessLogic.DTOs.ProductDto>
 
 @{
     ViewData["Title"] = "Index";
@@ -14,6 +14,9 @@
     <thead>
         <tr>
             <th>
+                @Html.DisplayNameFor(model => model.Id)
+            </th>
+            <th>
                 @Html.DisplayNameFor(model => model.Name)
             </th>
             <th>
@@ -22,12 +25,27 @@
             <th>
                 @Html.DisplayNameFor(model => model.Description)
             </th>
+            <th>
+                @Html.DisplayNameFor(model => model.NumberOfProducts)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.SupplierName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CategoryName)
+            </th>
+            <th>
+               
+            </th>
             <th></th>
         </tr>
     </thead>
     <tbody>
 @foreach (var item in Model) {
         <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Id)
+            </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Name)
             </td>
@@ -37,6 +55,20 @@
             <td>
                 @Html.DisplayFor(modelItem => item.Description)
             </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.NumberOfProducts)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.SupplierName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CategoryName)
+            </td>
+            <td>
+                @{var firstPhoto = item.Photos.ElementAt(0).Name;}
+                <img src="~/images/@firstPhoto" width="60" ; height="60" ; />
+            </td>
+
             <td>
                 <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
                 <a asp-action="Details" asp-route-id="@item.Id">Details</a> |

@@ -1,8 +1,8 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace MusicalInstrumentsShop.BusinessLogic.HelperEntities
+namespace MusicalInstrumentsShop.BusinessLogic.DTOs
 {
-    public class RegistrationModel
+    public class RegistrationDto
     {
         [Required]
         [Display(Name ="First Name")]

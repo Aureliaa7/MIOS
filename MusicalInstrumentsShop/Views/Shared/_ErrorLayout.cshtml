@@ -1,0 +1,32 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/jpg" href="~/images/mios-logo.png" />
+    <title>@ViewData["Title"] - MIOS</title>
+    <link href="https://fonts.googleapis.com/css?family=Nunito:400,700" rel="stylesheet">
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link href="~/css/error.css" rel="stylesheet" />
+</head>
+<body>
+    <div class="container">
+        <main role="main" class="pb-3">
+            @RenderBody()
+        </main>
+    </div>
+
+    <footer class="border-top footer fixed-bottom text-muted text-white">
+        <br />
+        <div class="container">
+            &copy; 2020 - Musical Instruments Online Shop
+        </div>
+        <br />
+    </footer>
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+
+    @RenderSection("Scripts", required: false)
+</body>
+</html>

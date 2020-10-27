@@ -1,13 +1,11 @@
 ﻿using Microsoft.AspNetCore.Http;
-using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace MusicalInstrumentsShop.BusinessLogic.DTOs
 {
-    public class AddProductModel
+    public class UpdateProductDto
     {
-        [Required]
         public string Id { get; set; }
         [Required]
         public string Name { get; set; }
@@ -16,9 +14,6 @@ namespace MusicalInstrumentsShop.BusinessLogic.DTOs
         [Required]
         public string Description { get; set; }
         [Required]
-        public Guid CategoryId { get; set; }
-        public int NumberOfProducts { get; set; }
-        public Guid SupplierId { get; set; }
-        public List<IFormFile> Photos { get; set; }
+        public IEnumerable<IFormFile> Photos { get; set; }
     }
 }

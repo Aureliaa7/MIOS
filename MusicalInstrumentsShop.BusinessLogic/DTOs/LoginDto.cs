@@ -1,8 +1,8 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace MusicalInstrumentsShop.BusinessLogic.HelperEntities
+namespace MusicalInstrumentsShop.BusinessLogic.DTOs
 {
-    public class LoginModel
+    public class LoginDto
     {
         [Required]
         [EmailAddress]

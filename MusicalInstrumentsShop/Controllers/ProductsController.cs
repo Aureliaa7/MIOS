@@ -1,150 +1,147 @@
-﻿using System.Linq;
+﻿using System;
+using System.Collections.Generic;
+using System.IO;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using MusicalInstrumentsShop.DataAccess.Data;
+using MusicalInstrumentsShop.BusinessLogic.DTOs;
+using MusicalInstrumentsShop.BusinessLogic.Exceptions;
+using MusicalInstrumentsShop.BusinessLogic.Services;
 using MusicalInstrumentsShop.DataAccess.Entities;
 
 namespace MusicalInstrumentsShop.Controllers
 {
     public class ProductsController : Controller
     {
-        private readonly ApplicationDbContext _context;
+        private readonly IProductService productService;
+        private readonly IWebHostEnvironment hostEnvironment;
+        private readonly IImageService imageService;
 
-        public ProductsController(ApplicationDbContext context)
+        public ProductsController(IProductService productService, IWebHostEnvironment hostEnvironment, IImageService imageService)
         {
-            _context = context;
+            this.productService = productService;
+            this.hostEnvironment = hostEnvironment;
+            this.imageService = imageService;
         }
 
-        // GET: Products
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Products.ToListAsync());
+            return View(await productService.GetAll());
         }
 
-        // GET: Products/Details/5
         public async Task<IActionResult> Details(string id)
         {
             if (id == null)
             {
-                return NotFound();
+                Response.StatusCode = 404;
+                return View("NotFound");
             }
-
-            var product = await _context.Products
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (product == null)
+            try
             {
-                return NotFound();
+                var product = await productService.GetById(id);
+                return View(product);
             }
-
-            return View(product);
+            catch(ItemNotFoundException)
+            {
+                Response.StatusCode = 404;
+                return View("NotFound");
+            }
         }
 
-        // GET: Products/Create
         public IActionResult Create()
         {
             return View();
         }
 
-        // POST: Products/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
-        // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name,Price,Description")] Product product)
+        public async Task<IActionResult> Create(AddProductDto addProductModel)
         {
             if (ModelState.IsValid)
-            {
-                _context.Add(product);
-                await _context.SaveChangesAsync();
+            {  
+                IEnumerable<Photo> photos = new List<Photo>();
+                if (addProductModel.Photos != null && addProductModel.Photos.Count > 0)
+                {
+                    photos = imageService.SaveFiles(addProductModel.Photos);
+                    await productService.AddNew(addProductModel, photos);
+                }
                 return RedirectToAction(nameof(Index));
             }
-            return View(product);
+            return View(addProductModel);
         }
 
-        // GET: Products/Edit/5
         public async Task<IActionResult> Edit(string id)
         {
             if (id == null)
             {
-                return NotFound();
+                Response.StatusCode = 404;
+                return View("NotFound");
             }
-
-            var product = await _context.Products.FindAsync(id);
-            if (product == null)
+            try
             {
-                return NotFound();
+                return View(await productService.GetForUpdate(id));
             }
-            return View(product);
+            catch(ItemNotFoundException)
+            {
+                Response.StatusCode = 404;
+                return View("NotFound");
+            }
         }
 
-        // POST: Products/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
-        // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(string id, [Bind("Id,Name,Price,Description")] Product product)
+        public async Task<IActionResult> Edit(string id, UpdateProductDto product)
         {
-            if (id != product.Id)
+            if (id == null)
             {
-                return NotFound();
+                Response.StatusCode = 404;
+                return View("NotFound");
             }
 
             if (ModelState.IsValid)
             {
-                try
-                {
-                    _context.Update(product);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!ProductExists(product.Id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
+                IEnumerable<Photo> photos = new List<Photo>();
+                photos = imageService.SaveFiles(product.Photos);
+                await productService.Update(product, photos);
                 return RedirectToAction(nameof(Index));
             }
             return View(product);
         }
 
-        // GET: Products/Delete/5
         public async Task<IActionResult> Delete(string id)
         {
             if (id == null)
             {
-                return NotFound();
+                Response.StatusCode = 404;
+                return View("NotFound");
             }
-
-            var product = await _context.Products
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (product == null)
+            try {
+                return View(await productService.GetById(id));
+            }
+            catch (ItemNotFoundException)
             {
-                return NotFound();
+                Response.StatusCode = 404;
+                return View("/Error/NotFound");
             }
-
-            return View(product);
         }
 
-        // POST: Products/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(string id)
         {
-            var product = await _context.Products.FindAsync(id);
-            _context.Products.Remove(product);
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
-        }
+            try
+            {
+                var fileNames = await productService.Delete(id);
+                imageService.DeleteFiles(fileNames);
 
-        private bool ProductExists(string id)
-        {
-            return _context.Products.Any(e => e.Id == id);
+                return RedirectToAction(nameof(Index));
+            }
+            catch (ItemNotFoundException)
+            {
+                Response.StatusCode = 404;
+                return View("/Error/NotFound");
+            }
         }
     }
 }

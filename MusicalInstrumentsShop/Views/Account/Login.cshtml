@@ -1,4 +1,4 @@
-﻿@model MusicalInstrumentsShop.BusinessLogic.HelperEntities.LoginModel
+﻿@model MusicalInstrumentsShop.BusinessLogic.DTOs.LoginDto
 
 @{
     ViewData["Title"] = "Login";
@@ -26,7 +26,6 @@
         </form>
     </div>
 </div>
-
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}

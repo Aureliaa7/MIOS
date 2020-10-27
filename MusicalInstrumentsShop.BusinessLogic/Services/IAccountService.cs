@@ -1,4 +1,4 @@
-﻿using MusicalInstrumentsShop.BusinessLogic.HelperEntities;
+﻿using MusicalInstrumentsShop.BusinessLogic.DTOs;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -6,7 +6,7 @@ namespace MusicalInstrumentsShop.BusinessLogic.Services
 {
     public interface IAccountService
     {
-        Task<List<string>> Register(RegistrationModel registrationInfo);
-        Task<LoginResult> Login(LoginModel loginInfo);
+        Task<List<string>> Register(RegistrationDto registrationInfo);
+        Task<LoginResult> Login(LoginDto loginInfo);
     }
 }

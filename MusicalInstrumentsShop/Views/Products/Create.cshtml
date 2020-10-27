@@ -1,73 +1,83 @@
-﻿@model MusicalInstrumentsShop.BusinessLogic.DTOs.AddProductModel
+﻿@model MusicalInstrumentsShop.BusinessLogic.DTOs.AddProductDto
 
 @{
     ViewData["Title"] = "Create";
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
 
-<h1>Create</h1>
-
-<h4>Product</h4>
 <hr />
-<div class="jumbotron-fluid">
+<div class="jumbotron product-jumbotron">
+    <h4>Add Product</h4>
     <div class="col-md-4">
-        <form asp-action="Create">
+        <form asp-action="Create" class="product-form" method="post" enctype="multipart/form-data">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="Id" class="control-label"></label>
-                <input asp-for="Id" class="form-control" />
-                <span asp-validation-for="Id" class="text-danger"></span>
+
+            <div class="row my-row">
+                <div class="col-md-3">
+                    <label asp-for="Id" class="control-label"></label>
+                    <input asp-for="Id" class="form-control" />
+                    <span asp-validation-for="Id" class="text-danger"></span>
+                </div>
+                <div class="col-md-3 add-left-margins">
+                    <label asp-for="Name" class="control-label"></label>
+                    <input asp-for="Name" class="form-control" />
+                    <span asp-validation-for="Name" class="text-danger"></span>
+                </div>
             </div>
-            <div class="form-group">
-                <label asp-for="Name" class="control-label"></label>
-                <input asp-for="Name" class="form-control" />
-                <span asp-validation-for="Name" class="text-danger"></span>
+
+            <div class="row my-row">
+                <div class="col-md-3">
+                    <label asp-for="Price" class="control-label"></label>
+                    <input asp-for="Price" class="form-control" />
+                    <span asp-validation-for="Price" class="text-danger"></span>
+                </div>
+                <div class="col-md-3">
+                    <label asp-for="Description" class="control-label"></label>
+                    <input asp-for="Description" class="form-control" onclick="get_categories()"/>
+                    <span asp-validation-for="Description" class="text-danger"></span>
+                </div>
             </div>
-            <div class="form-group">
-                <label asp-for="Price" class="control-label"></label>
-                <input asp-for="Price" class="form-control" />
-                <span asp-validation-for="Price" class="text-danger"></span>
+
+            <div class="row my-row">
+                <div class="col-md-3">
+                    <label asp-for="CategoryId" class="control-label">Category</label>
+                    <select id="category-field" asp-for="CategoryId" class="form-control set-width-dropdown" onclick="get_suppliers()">
+                        <option>Select category</option>
+                    </select>
+                    <span asp-validation-for="CategoryId" class="text-danger"></span>
+                </div>
+                <div class="col-md-3">
+                    <label asp-for="SupplierId" class="control-label">Supplier</label>
+                    <select id="supplier-field" asp-for="SupplierId" class="form-control set-width-dropdown">
+                        <option>Select supplier</option>
+                    </select>
+                    <span asp-validation-for="SupplierId" class="text-danger"></span>
+                </div>
             </div>
-            <div class="form-group">
-                <label asp-for="Description" class="control-label"></label>
-                <input asp-for="Description" class="form-control" />
-                <span asp-validation-for="Description" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="CategoryId" class="control-label">Category</label>
-                <input asp-for="CategoryId" class="form-control" />
-                <span asp-validation-for="CategoryId" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="SupplierId" class="control-label">Supplier</label>
-                <input asp-for="SupplierId" class="form-control" />
-                <span asp-validation-for="SupplierId" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="NumberOfProducts" class="control-label">Number of products</label>
-                <input asp-for="NumberOfProducts" class="form-control" />
-                <span asp-validation-for="NumberOfProducts" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Photos" class="control-label"></label>
-                <div class="col-sm-10">
-                    <div class="custom-file">
-                        <input multiple asp-for="Photos" class="form-control custom-file-input" />
-                        <label class="custom-file-label">Choose photo</label>
-                        <span asp-validation-for="Photos" class="text-danger"></span>
+
+            <div class="row my-row">
+                <div class="col-md-3">
+                    <label asp-for="NumberOfProducts" class="control-label">Number of products</label>
+                    <input asp-for="NumberOfProducts" class="form-control" />
+                    <span asp-validation-for="NumberOfProducts" class="text-danger"></span>
+                </div>
+                <div class="col-md-3">
+                    <label asp-for="@Model.Photos" class="control-label"></label>
+                    <div class="col-sm-10">
+                        <div class="custom-file">
+                            <input asp-for="@Model.Photos" multiple class="form-control custom-file-input" />
+                            <label class="custom-file-label">Choose photo</label>
+                            <span asp-validation-for="@Model.Photos" class="text-danger"></span>
+                        </div>
                     </div>
                 </div>
             </div>
 
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
+            <div class="col-md-3">
+                <input type="submit" value="Add" class="btn btn-primary" id="add-product-btn"/>
             </div>
         </form>
     </div>
-</div>
-
-<div>
-    <a asp-action="Index">Back to List</a>
 </div>
 
 @section Scripts {

@@ -26,7 +26,8 @@ namespace MusicalInstrumentsShop.Controllers
 
             if (id == null)
             {
-                return RedirectToAction("NotFound", "Errors");
+                Response.StatusCode = 404;
+                return View("NotFound");
             }
 
             try
@@ -35,7 +36,8 @@ namespace MusicalInstrumentsShop.Controllers
             }
             catch (ItemNotFoundException)
             {
-                return RedirectToAction("NotFound", "Errors");
+                Response.StatusCode = 404;
+                return View("NotFound");
             }
         }
 
@@ -60,7 +62,8 @@ namespace MusicalInstrumentsShop.Controllers
         {
             if (id == null)
             {
-                return RedirectToAction("NotFound", "Errors");
+                Response.StatusCode = 404;
+                return View("NotFound");
             }
 
             try
@@ -69,10 +72,10 @@ namespace MusicalInstrumentsShop.Controllers
             }
             catch (ItemNotFoundException)
             {
-                return RedirectToAction("NotFound", "Errors");
+                Response.StatusCode = 404;
+                return View("NotFound");
             }
         }
-
 
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -80,7 +83,8 @@ namespace MusicalInstrumentsShop.Controllers
         {
             if (id != supplier.Id)
             {
-                return NotFound();
+                Response.StatusCode = 404;
+                return View("NotFound");
             }
 
             if (ModelState.IsValid)
@@ -91,7 +95,8 @@ namespace MusicalInstrumentsShop.Controllers
                 }
                 catch (ItemNotFoundException)
                 {
-                    return RedirectToAction("NotFound", "Errors");
+                    Response.StatusCode = 404;
+                    return View("NotFound");
                 }
                 return RedirectToAction("Index", "Suppliers");
             }
@@ -102,7 +107,8 @@ namespace MusicalInstrumentsShop.Controllers
         {
             if (id == null)
             {
-                return NotFound();
+                Response.StatusCode = 404;
+                return View("NotFound");
             }
 
             try
@@ -111,7 +117,8 @@ namespace MusicalInstrumentsShop.Controllers
             }
             catch (ItemNotFoundException)
             {
-                return RedirectToAction("NotFound", "Errors");
+                Response.StatusCode = 404;
+                return View("NotFound");
             }
         }
 
@@ -121,7 +128,8 @@ namespace MusicalInstrumentsShop.Controllers
         {
             if (id == null)
             {
-                return NotFound();
+                Response.StatusCode = 404;
+                return View("NotFound");
             }
 
             try
@@ -131,8 +139,15 @@ namespace MusicalInstrumentsShop.Controllers
             }
             catch (ItemNotFoundException)
             {
-                return RedirectToAction("NotFound", "Errors");
+                Response.StatusCode = 404;
+                return View("NotFound");
             }
+        }
+
+        public JsonResult GetExistingSuppliers()
+        {
+            var suppliers = supplierService.GetAll().Result;
+            return new JsonResult(suppliers);
         }
     }
 }

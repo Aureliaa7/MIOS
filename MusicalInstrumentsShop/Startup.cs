@@ -10,6 +10,8 @@ using MusicalInstrumentsShop.DataAccess.Data;
 using MusicalInstrumentsShop.DataAccess.Repositories;
 using MusicalInstrumentsShop.DataAccess.Entities;
 using System;
+using Microsoft.Extensions.DependencyInjection.Extensions;
+using Microsoft.AspNetCore.Http;
 
 namespace MusicalInstrumentsShop
 {
@@ -51,12 +53,21 @@ namespace MusicalInstrumentsShop
                 options.User.RequireUniqueEmail = true;
             });
 
+            services.ConfigureApplicationCookie(options =>
+            {
+                options.AccessDeniedPath = new PathString("/Error/AccessDenied");
+            });
+
             services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
             services.AddScoped<IProductRepository, ProductRepository>();
+            services.AddScoped<IStockRepository, StockRepository>();
+            services.AddScoped<IPhotoProductRepository, PhotoProductRepository>();
+
             services.AddScoped<ICategoryService, CategoryService>();
             services.AddScoped<IAccountService, AccountService>();
             services.AddScoped<ISupplierService, SupplierService>();
             services.AddScoped<IProductService, ProductService>();
+            services.AddScoped<IImageService, ImageService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -69,10 +80,11 @@ namespace MusicalInstrumentsShop
             }
             else
             {
-                app.UseExceptionHandler("/Home/Error");
+                app.UseStatusCodePagesWithReExecute("/Error/{0}");
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
+        
             app.UseHttpsRedirection();
             app.UseStaticFiles();
 
