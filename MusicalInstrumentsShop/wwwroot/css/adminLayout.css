@@ -30,28 +30,6 @@ body {
     padding: 0 20px;
 }
 
-.wrapper .header .header-menu .title {
-    color: #fff;
-    font-size: 25px;
-    text-transform: uppercase;
-    font-weight: 900;
-}
-
-.wrapper .header .header-menu .title span {
-    color: #4CCEE8;
-}
-
-.wrapper .header .header-menu .sidebar-btn {
-    color: #fff;
-    position: absolute;
-    margin-left: 240px;
-    font-size: 22px;
-    font-weight: 900;
-    cursor: pointer;
-    transition: 0.3s;
-    transition-property: color;
-}
-
 .wrapper .header .header-menu .sidebar-btn:hover {
     color: #4CCEE8;
 }
@@ -60,7 +38,7 @@ body {
     display: flex;
 }
 
-.wrapper .header .header-menu ul li a {
+.account-btn {
     background: #fff;
     color: #000;
     display: block;
@@ -96,86 +74,83 @@ body {
     overflow: hidden;
 }
 
-    .wrapper .header .header-menu .title .profile img {
-        margin: 20px 0;
-        width: 70px;
-        height: 70px;
-        border-radius: 50%;
-    }
+.wrapper .header .header-menu .title .profile img {
+    margin: 20px 0;
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+}
 
+.wrapper .sidebar .sidebar-menu .profile p {
+    color: #bbb;
+    font-weight: 700;
+    margin-bottom: 10px;
+}
 
+.wrapper .sidebar .sidebar-menu .item {
+    width: 190px;
+    overflow: hidden;
+}
 
+.wrapper .sidebar .sidebar-menu .item .menu-btn {
+    display: block;
+    color: #fff;
+    position: relative;
+    padding: 20px 15px;
+    transition: 0.3s;
+    transition-property: color;
+    height: 40px;
+}
 
-        .wrapper .sidebar .sidebar-menu .profile p {
-            color: #bbb;
-            font-weight: 700;
-            margin-bottom: 10px;
-        }
+.wrapper .sidebar .sidebar-menu .item .menu-btn:hover {
+    color: #4CCEE8;
+}
 
-        .wrapper .sidebar .sidebar-menu .item {
-            width: 190px;
-            overflow: hidden;
-        }
+.wrapper .sidebar .sidebar-menu .item .menu-btn i {
+    margin-right: 20px;
+}
 
-            .wrapper .sidebar .sidebar-menu .item .menu-btn {
-                display: block;
-                color: #fff;
-                position: relative;
-                padding: 20px 15px;
-                transition: 0.3s;
-                transition-property: color;
-                height: 40px;
-            }
+.wrapper .sidebar .sidebar-menu .item .menu-btn .drop-down {
+    float: right;
+    font-size: 12px;
+    margin-top: 3px;
+}
 
-                .wrapper .sidebar .sidebar-menu .item .menu-btn:hover {
-                    color: #4CCEE8;
-                }
+.wrapper .sidebar .sidebar-menu .item .sub-menu {
+    background: #3498DB;
+    overflow: hidden;
+    max-height: 0;
+    transition: 0.3s;
+    transition-property: background, max-height;
+}
 
-                .wrapper .sidebar .sidebar-menu .item .menu-btn i {
-                    margin-right: 20px;
-                }
+.wrapper .sidebar .sidebar-menu .item .sub-menu a {
+    display: block;
+    position: relative;
+    color: #fff;
+    white-space: nowrap;
+    font-size: 10px;
+    padding: 15px;
+    transition: 0.3s;
+    transition-property: background;
+}
 
-                .wrapper .sidebar .sidebar-menu .item .menu-btn .drop-down {
-                    float: right;
-                    font-size: 12px;
-                    margin-top: 3px;
-                }
+.wrapper .sidebar .sidebar-menu .item .sub-menu a:hover {
+    background: #55B1F0;
+}
 
-            .wrapper .sidebar .sidebar-menu .item .sub-menu {
-                background: #3498DB;
-                overflow: hidden;
-                max-height: 0;
-                transition: 0.3s;
-                transition-property: background, max-height;
-            }
+.wrapper .sidebar .sidebar-menu .item .sub-menu a:not(last-child) {
+    border-bottom: 1px solid #8FC5E9;
+}
 
-                .wrapper .sidebar .sidebar-menu .item .sub-menu a {
-                    display: block;
-                    position: relative;
-                    color: #fff;
-                    white-space: nowrap;
-                    font-size: 10px;
-                    padding: 15px;
-                    transition: 0.3s;
-                    transition-property: background;
-                }
+.wrapper .sidebar .sidebar-menu .item .sub-menu i {
+    padding-right: 20px;
+    font-size: 10px;
+}
 
-                    .wrapper .sidebar .sidebar-menu .item .sub-menu a:hover {
-                        background: #55B1F0;
-                    }
-
-                    .wrapper .sidebar .sidebar-menu .item .sub-menu a:not(last-child) {
-                        border-bottom: 1px solid #8FC5E9;
-                    }
-
-                .wrapper .sidebar .sidebar-menu .item .sub-menu i {
-                    padding-right: 20px;
-                    font-size: 10px;
-                }
-
-            .wrapper .sidebar .sidebar-menu .item:target .sub-menu {
-                max-height: 400px;
-            }
+.wrapper .sidebar .sidebar-menu .item:target .sub-menu {
+    max-height: 400px;
+}
 
 .wrapper .main-container {
     width: (100% - 250px);
@@ -187,37 +162,12 @@ body {
     transition: 0.3s;
 }
 
-.wrapper.collapse .sidebar {
-    width: 70px;
-}
-
-    .wrapper.collapse .sidebar .profile img,
-    .wrapper.collapse .sidebar .profile p,
-    .wrapper.collapse .sidebar a span {
-        display: none;
-    }
-
-    .wrapper.collapse .sidebar .sidebar-menu .item .menu-btn {
-        font-size: 15px;
-    }
-
-    .wrapper.collapse .sidebar .sidebar-menu .item .sub-menu i {
-        font-size: 18px;
-        padding-left: 3px;
-    }
-
-.wrapper.collapse .main-container {
-    width: calc(100% - 70px);
-    margin-left: 70px;
-}
-
 .wrapper .main-container .card {
     background: #fff;
     padding: 15px;
     margin-bottom: 10px;
     font-size: 14px;
 }
-
 
 .footer {
     left: 0;
