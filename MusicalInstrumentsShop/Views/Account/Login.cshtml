@@ -7,6 +7,9 @@
 
 <hr />
 <div class="jumbotron login-jumbotron">
+    <div class="col-md-12 go-to-register">
+        <a asp-area="" asp-controller="Account" asp-action="Register">You don't have an account?</a>
+    </div>
     <div class="col-md-4">
         <form asp-action="Login" class="login-form">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
@@ -21,7 +24,7 @@
                 <span asp-validation-for="Password" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <input type="submit" value="Login" class="btn btn-primary" id="form-btn" />
+                <input type="submit" value="Log in" class="btn btn-primary" id="form-btn" />
             </div>
         </form>
     </div>

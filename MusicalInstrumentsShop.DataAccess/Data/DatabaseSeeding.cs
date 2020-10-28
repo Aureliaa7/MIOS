@@ -40,11 +40,7 @@ namespace MusicalInstrumentsShop.DataAccess.Data
                     UserName = "admin@gmail.com",
                     NormalizedUserName = "DAVIDPOP@GMAIL.COM",
                     NormalizedEmail = "ADMIN@GMAIL.COM",
-                    EmailConfirmed = true,
-                    Country = "Romania",
-                    City = "Cluj-Napoca",
-                    Street = "Mihai Viteazul, nr.15",
-                    ZipCode = "400002"
+                    EmailConfirmed = true
                 };
                 IdentityResult resultAdministrator = userManager.CreateAsync(administrator, "Admin_miosce11@").Result;
                 if (resultAdministrator.Succeeded)

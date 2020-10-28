@@ -16,13 +16,5 @@ namespace MusicalInstrumentsShop.BusinessLogic.DTOs
         [Required]
         [DataType(DataType.Password)]
         public string Password { get; set; }
-        [Required]
-        public string Street { get; set; }
-        [Required]
-        public string City { get; set; }
-        [Required]
-        public string Country { get; set; }
-        [Required]
-        public string ZipCode { get; set; }
     }
 }

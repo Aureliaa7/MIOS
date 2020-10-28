@@ -46,11 +46,7 @@ namespace MusicalInstrumentsShop.BusinessLogic.Services
                 FirstName = registrationInfo.FirstName,
                 LastName = registrationInfo.LastName,
                 Email = registrationInfo.Email,
-                UserName = registrationInfo.Email,
-                Country = registrationInfo.Country,
-                City = registrationInfo.City,
-                Street = registrationInfo.Street,
-                ZipCode = registrationInfo.ZipCode
+                UserName = registrationInfo.Email
             };
 
             var result = await userManager.CreateAsync(newApplicationUser, registrationInfo.Password);
