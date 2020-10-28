@@ -65,10 +65,10 @@ body {
     color: #000;
     display: block;
     margin: 0 10px;
-    font-size: 18px;
-    width: 34px;
-    height: 34px;
-    line-height: 35px;
+    font-size: 15px;
+    width: 30px;
+    height: 30px;
+    line-height: 0px;
     text-align: center;
     border-radius: 50%;
     transition: 0.3s;
@@ -85,7 +85,7 @@ body {
     background: #2F323A;
     position: fixed;
     top: 70px;
-    width: 250px;
+    width: 190px;
     height: calc(100% - 9%);
     transition: 0.3s;
     transition-property: width;
@@ -96,12 +96,15 @@ body {
     overflow: hidden;
 }
 
-.wrapper .sidebar .sidebar-menu .profile img {
-    margin: 20px 0;
-    width: 100px;
-    height: 100px;
-    border-radius: 50%;
-}
+    .wrapper .header .header-menu .title .profile img {
+        margin: 20px 0;
+        width: 70px;
+        height: 70px;
+        border-radius: 50%;
+    }
+
+
+
 
         .wrapper .sidebar .sidebar-menu .profile p {
             color: #bbb;
@@ -110,7 +113,7 @@ body {
         }
 
         .wrapper .sidebar .sidebar-menu .item {
-            width: 250px;
+            width: 190px;
             overflow: hidden;
         }
 
@@ -118,9 +121,10 @@ body {
                 display: block;
                 color: #fff;
                 position: relative;
-                padding: 25px 20px;
+                padding: 20px 15px;
                 transition: 0.3s;
                 transition-property: color;
+                height: 40px;
             }
 
                 .wrapper .sidebar .sidebar-menu .item .menu-btn:hover {
@@ -150,8 +154,8 @@ body {
                     position: relative;
                     color: #fff;
                     white-space: nowrap;
-                    font-size: 15px;
-                    padding: 20px;
+                    font-size: 10px;
+                    padding: 15px;
                     transition: 0.3s;
                     transition-property: background;
                 }
@@ -170,7 +174,7 @@ body {
                 }
 
             .wrapper .sidebar .sidebar-menu .item:target .sub-menu {
-                max-height: 500px;
+                max-height: 400px;
             }
 
 .wrapper .main-container {
@@ -194,7 +198,7 @@ body {
     }
 
     .wrapper.collapse .sidebar .sidebar-menu .item .menu-btn {
-        font-size: 23px;
+        font-size: 15px;
     }
 
     .wrapper.collapse .sidebar .sidebar-menu .item .sub-menu i {

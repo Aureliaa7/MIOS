@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="icon" type="image/jpg" href="~/images/mios-logo.png" />
+    <link rel="icon" type="image/jpg" href="~/images/mios-owl.png" />
     <title>@ViewData["Title"] - Musical Instruments</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link href="~/css/styles.css" rel="stylesheet" />
@@ -18,7 +18,11 @@
         <!--header menu start-->
         <div class="header">
             <div class="header-menu">
-                <div class="title"><span>MIOS</span></div>
+                <div class="title">
+                    <center class="profile">
+                        <img src="~/images/mios-owl.png" />
+                    </center>
+                </div>
                 <ul>
                     <li>
                         <a class="nav-link" asp-area="" asp-controller="" asp-action="" role="button"
@@ -39,10 +43,10 @@
         <!--sidebar start-->
         <div class="sidebar">
             <div class="sidebar-menu">
-                <center class="profile">
-                    <img src="~/images/mios-logo.png" />
-                    <p>MIOS</p>
-                </center>
+           
+
+
+
                 <ul>
                     <li class="item">
                         <a asp-area="" asp-controller="Dashboards" asp-action="Admin" class="menu-btn">
