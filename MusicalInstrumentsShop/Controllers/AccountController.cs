@@ -1,8 +1,11 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using MusicalInstrumentsShop.BusinessLogic.DTOs;
+using MusicalInstrumentsShop.BusinessLogic.Exceptions;
 using MusicalInstrumentsShop.BusinessLogic.Services;
 using MusicalInstrumentsShop.DataAccess.Entities;
+using System;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace MusicalInstrumentsShop.Controllers
@@ -41,6 +44,7 @@ namespace MusicalInstrumentsShop.Controllers
                         return RedirectToAction("Customer", "Dashboards");
                     }
                 }
+                return RedirectToAction("FailedLogin", "Account");
             }
             return View();
         }
@@ -66,6 +70,92 @@ namespace MusicalInstrumentsShop.Controllers
         {
             await signInManager.SignOutAsync();
             return RedirectToAction("Login", "Account");
+        }
+
+        public async Task<IActionResult> Profile()
+        {
+            try
+            {
+                Guid currentUserId = new Guid(User.FindFirstValue(ClaimTypes.NameIdentifier));
+                var accountInfo = await accountService.GetAccountInfo(currentUserId);
+                return View(accountInfo);
+            }
+            catch (ItemNotFoundException) {
+                return RedirectToAction("NotFound", "Error");
+            }
+            //TODO
+            // this error occurs when no user is logged
+            // I'LL REMOVE THIS ONE, as the user won't have access to those pages when I 'll add authorization
+            catch (ArgumentNullException)
+            {
+                return RedirectToAction("NotFound", "Error");
+            }
+        }
+
+        public async Task<IActionResult> Edit()
+        {
+            Guid currentUserId = new Guid(User.FindFirstValue(ClaimTypes.NameIdentifier));
+            try
+            {
+                var accountInfo = await accountService.GetAccountInfo(currentUserId);
+                return View(accountInfo);
+            }
+            catch (ItemNotFoundException)
+            {
+                return RedirectToAction("NotFound", "Error");
+            }
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Edit(AccountInfoDto accountInfo)
+        {
+            Guid currentUserId = new Guid(User.FindFirstValue(ClaimTypes.NameIdentifier));
+            try
+            {
+                await accountService.Edit(currentUserId, accountInfo);
+                return RedirectToAction("Profile", "Account");
+            }
+            catch(ItemNotFoundException)
+            {
+                return RedirectToAction("NotFound", "Error");
+            }
+        }
+
+        public IActionResult ChangePassword()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> ChangePassword(ChangePasswordDto passwordDto)
+        {
+            if (ModelState.IsValid)
+            {
+                Guid currentUserId = new Guid(User.FindFirstValue(ClaimTypes.NameIdentifier));
+                passwordDto.UserId = currentUserId;
+                try
+                {
+                    var result = await accountService.ChangePassword(passwordDto);
+                    TempData["Result"] = result;
+                    return RedirectToAction("ChangePasswordResult", "Account");
+                }
+                catch (ItemNotFoundException)
+                {
+                    return RedirectToAction("NotFound", "Error");
+                }
+            }
+            return View();
+        }
+
+        public IActionResult ChangePasswordResult()
+        {
+            ViewBag.Result = TempData["Result"];
+            return View();
+        }
+
+        public IActionResult FailedLogin()
+        {
+            return View();
         }
     }
 }

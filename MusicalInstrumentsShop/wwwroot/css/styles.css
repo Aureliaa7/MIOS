@@ -8,7 +8,7 @@
 .login-jumbotron {
     width: 360px;
     height: 350px;
-    margin-top: 60px;
+    margin-top: 120px;
     margin-left: 210px;
 }
 
@@ -25,7 +25,8 @@
 
 .register-jumbotron {
     width: 460px;
-    height: 490px;
+    height: 460px;
+    margin-top: 90px;
 }
 
 .register-form {
@@ -101,12 +102,10 @@
 }
 
 #footer-id {
-    left: 0;
+    position: absolute;
     bottom: 0;
     width: 100%;
-    height: 30px;
-    background-color: #2F323A;
-    text-align: center;
+    height: 40px;
 }
 
 .go-to-login {
@@ -122,8 +121,22 @@
 }
 
 .container .title .profile img {
-    margin-left: -30px;
+    margin-left: -160px;
     width: 50px;
     height: 50px;
     border-radius: 50%;
+}
+
+.login-register-navbar {
+    position: fixed;
+    top: 0;
+    width: 100%;
+}
+
+.navbar-brand {
+    margin-left: 10px;
+}
+
+.add-margin-top-190 {
+    margin-top: 190px;
 }

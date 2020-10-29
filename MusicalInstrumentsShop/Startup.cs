@@ -10,7 +10,6 @@ using MusicalInstrumentsShop.DataAccess.Data;
 using MusicalInstrumentsShop.DataAccess.Repositories;
 using MusicalInstrumentsShop.DataAccess.Entities;
 using System;
-using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.AspNetCore.Http;
 
 namespace MusicalInstrumentsShop

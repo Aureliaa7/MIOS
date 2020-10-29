@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using MusicalInstrumentsShop.BusinessLogic.DTOs;
+using MusicalInstrumentsShop.BusinessLogic.Exceptions;
 using MusicalInstrumentsShop.DataAccess.Entities;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -18,6 +20,58 @@ namespace MusicalInstrumentsShop.BusinessLogic.Services
             this.userManager = userManager;
             this.signInManager = signInManager;
             loginResult = new LoginResult();
+        }
+
+        public async Task<string> ChangePassword(ChangePasswordDto passwordDto)
+        {
+            var user = await userManager.FindByIdAsync(passwordDto.UserId.ToString());
+            if (user != null)
+            {
+                bool correctCurrentPassword = await userManager.CheckPasswordAsync(user, passwordDto.CurrentPassword);
+                if (correctCurrentPassword)
+                {
+                    var result = await userManager.ChangePasswordAsync(user, passwordDto.CurrentPassword, passwordDto.NewPassword);
+                    if (result.Succeeded)
+                    {
+                        return "Password changed successfully";
+                    }
+                }
+                return "Something went wrong...";
+            }
+            throw new ItemNotFoundException("The user was not found...");
+        }
+
+        public async Task Edit(Guid userId, AccountInfoDto accountInfo)
+        {
+            var user = await userManager.FindByIdAsync(userId.ToString());
+            if (user != null)
+            {
+                user.FirstName = accountInfo.FirstName;
+                user.LastName = accountInfo.LastName;
+                await userManager.UpdateAsync(user);
+            }
+            else
+            {
+                throw new ItemNotFoundException("The user was not found");
+            }
+        }
+
+        public async Task<AccountInfoDto> GetAccountInfo(Guid userId)
+        {
+            var user = await userManager.FindByIdAsync(userId.ToString());
+            if (user != null)
+            {
+                var roles = await userManager.GetRolesAsync(user);
+                var accountInfo = new AccountInfoDto
+                {
+                    FirstName = user.FirstName,
+                    LastName = user.LastName,
+                    Email = user.Email,
+                    Role = roles.First()
+                };
+                return accountInfo;
+            }
+            throw new ItemNotFoundException("The user was not found...");
         }
 
         public async Task<LoginResult> Login(LoginDto loginInfo)
