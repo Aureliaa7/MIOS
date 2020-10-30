@@ -9,7 +9,7 @@ namespace MusicalInstrumentsShop
 {
     public class ImageService : IImageService
     {
-        private readonly IWebHostEnvironment hostEnvironment;
+        private IWebHostEnvironment hostEnvironment;
 
         public ImageService(IWebHostEnvironment hostEnvironment)
         {

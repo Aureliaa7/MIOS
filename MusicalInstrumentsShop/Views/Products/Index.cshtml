@@ -5,11 +5,8 @@
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
 
-<h1>Index</h1>
+<h3>Products</h3>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
 <table class="table table-hover table-dark">
     <thead>
         <tr>
@@ -21,9 +18,6 @@
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Price)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Description)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.NumberOfProducts)
@@ -53,9 +47,6 @@
                 @Html.DisplayFor(modelItem => item.Price)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Description)
-            </td>
-            <td>
                 @Html.DisplayFor(modelItem => item.NumberOfProducts)
             </td>
             <td>
@@ -66,7 +57,7 @@
             </td>
             <td>
                 @{var firstPhoto = item.Photos.ElementAt(0).Name;}
-                <img src="~/images/@firstPhoto" width="60" ; height="60" ; />
+                <img src="~/images/@firstPhoto" width="60" height="60"/>
             </td>
 
             <td>

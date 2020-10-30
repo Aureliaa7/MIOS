@@ -4,6 +4,8 @@ using MusicalInstrumentsShop.DataAccess.Entities;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using MusicalInstrumentsShop.BusinessLogic.DTOs;
+using System;
+using System.Linq;
 
 namespace MusicalInstrumentsShop.BusinessLogic.Services
 {
@@ -105,6 +107,17 @@ namespace MusicalInstrumentsShop.BusinessLogic.Services
             return productDtos;
         }
 
+        public async Task<IEnumerable<Product>> GetByCategory(Guid categoryId)
+        {
+            bool categoryExists = await categoryRepository.Exists(x => x.Id == categoryId);
+            if(categoryExists)
+            {
+                var products = await productRepository.GetAllWithRelatedData();
+                return products.Where(x => x.Category.Id == categoryId).ToList();
+            }
+            throw new ItemNotFoundException("The category was not found...");
+        }
+
         public async Task<ProductDto> GetById(string id)
         {
             bool productExists = await productRepository.Exists(x => x.Id == id);
@@ -149,24 +162,35 @@ namespace MusicalInstrumentsShop.BusinessLogic.Services
             throw new ItemNotFoundException("The product was not found...");
         }
 
-        public async Task Update(UpdateProductDto productDto, IEnumerable<Photo> photos)
+        public async Task<IEnumerable<string>> Update(UpdateProductDto productDto, IEnumerable<Photo> photos)
         {
+            IEnumerable<string> fileNames = new List<string>();
             var product = await productRepository.GetWithRelatedData(productDto.Id);
             product.Name = productDto.Name;
             product.Price = productDto.Price;
             product.Description = product.Description;
             await productRepository.Update(product);
-            await photoProductRepository.DeleteByProductId(productDto.Id);
-
-            foreach (var photo in photos)
+            if (productDto.PhotoOption != PhotoOption.KeepCurrentPhotos)
             {
-                PhotoProduct photoProduct = new PhotoProduct
+                if (photos != null)
                 {
-                    Photo = photo,
-                    Product = product
-                };
-                await photoProductRepository.Add(photoProduct);
+                    if (productDto.PhotoOption == PhotoOption.DeleteCurrentPhotos)
+                    {
+                        fileNames = await productRepository.GetPhotoNames(productDto.Id);
+                        await photoProductRepository.DeleteByProductId(productDto.Id);
+                    }
+                    foreach (var photo in photos)
+                    {
+                        PhotoProduct photoProduct = new PhotoProduct
+                        {
+                            Photo = photo,
+                            Product = product
+                        };
+                        await photoProductRepository.Add(photoProduct);
+                    }
+                }
             }
+            return fileNames;
         }
     }
 }

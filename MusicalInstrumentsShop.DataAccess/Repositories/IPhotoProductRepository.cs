@@ -6,7 +6,7 @@ namespace MusicalInstrumentsShop.DataAccess.Repositories
 {
     public interface IPhotoProductRepository : IRepository<PhotoProduct>
     {
-        public Task<IEnumerable<Photo>> GetByProductId(string id);
-        public Task DeleteByProductId(string id);
+        Task<IEnumerable<Photo>> GetByProductId(string id);
+        Task DeleteByProductId(string id);
     }
 }

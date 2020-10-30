@@ -13,11 +13,7 @@ namespace MusicalInstrumentsShop.DataAccess.Repositories
 
         public async Task<IEnumerable<string>> Delete(string id)
         {
-            var photoNames = await Context.Set<PhotoProduct>()
-                .Where(x => x.Product.Id == id)
-                .Select(x => x.Photo.Name)
-                .AsNoTracking()
-                .ToListAsync();
+            var photoNames = await GetPhotoNames(id);
 
             var productToBeDeleted = await Context.Set<Product>().Where(x => x.Id == id).FirstAsync();
             Context.Set<Product>().Remove(productToBeDeleted);
@@ -39,6 +35,15 @@ namespace MusicalInstrumentsShop.DataAccess.Repositories
             return await Context.Set<Product>()
                 .Include(x => x.Category)
                 .ToListAsync();
+        }
+
+        public async Task<IEnumerable<string>> GetPhotoNames(string productId)
+        {
+            return await Context.Set<PhotoProduct>()
+               .Where(x => x.Product.Id == productId)
+               .Select(x => x.Photo.Name)
+               .AsNoTracking()
+               .ToListAsync();
         }
     }
 }

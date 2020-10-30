@@ -7,10 +7,11 @@ namespace MusicalInstrumentsShop.BusinessLogic.Services
 {
     public interface ISupplierService
     {
-        public Task Add(Supplier supplier);
-        public Task<IEnumerable<Supplier>> GetAll();
-        public Task<Supplier> GetById(Guid id);
-        public Task Delete(Guid id);
-        public Task Update(Supplier supplier);
+        Task Add(Supplier supplier);
+        Task<IEnumerable<Supplier>> GetAll();
+        Task<Supplier> GetById(Guid id);
+        Task Delete(Guid id);
+        Task Update(Supplier supplier);
+        Task<Supplier> GetByProduct(string productId);
     }
 }

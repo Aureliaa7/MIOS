@@ -149,5 +149,11 @@ namespace MusicalInstrumentsShop.Controllers
             var suppliers = supplierService.GetAll().Result;
             return new JsonResult(suppliers);
         }
+
+        public JsonResult GetSupplierByProduct(string productId)
+        {
+            var supplier = supplierService.GetByProduct(productId).Result;
+            return new JsonResult(supplier);
+        }
     }
 }

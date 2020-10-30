@@ -10,10 +10,15 @@ namespace MusicalInstrumentsShop.BusinessLogic.Services
     public class SupplierService : ISupplierService
     {
         private readonly IRepository<Supplier> supplierRepository;
+        private readonly IRepository<Product> productRepository;
+        private readonly IStockRepository stockRepository;
 
-        public SupplierService(IRepository<Supplier> supplierRepository)
+        public SupplierService(IRepository<Supplier> supplierRepository, IRepository<Product> productRepository,
+            IStockRepository stockRepository)
         {
             this.supplierRepository = supplierRepository;
+            this.productRepository = productRepository;
+            this.stockRepository = stockRepository;
         }
 
         public async Task Add(Supplier supplier)
@@ -47,6 +52,20 @@ namespace MusicalInstrumentsShop.BusinessLogic.Services
                 return await supplierRepository.Get(id);
             }
             throw new ItemNotFoundException("The supplier was not found...");
+        }
+
+        public async Task<Supplier> GetByProduct(string productId)
+        {
+            bool productExists = await productRepository.Exists(x => x.Id == productId);
+            if (productExists)
+            {
+                var stock = await stockRepository.GetByProductId(productId);
+                if(stock != null)
+                {
+                    return stock.Supplier;
+                }
+            }
+            throw new ItemNotFoundException("The product was not found");
         }
 
         public async Task Update(Supplier supplier)

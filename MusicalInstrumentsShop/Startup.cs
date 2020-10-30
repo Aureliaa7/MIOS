@@ -23,7 +23,6 @@ namespace MusicalInstrumentsShop
 
         public IConfiguration Configuration { get; }
 
-        // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews();
@@ -67,9 +66,9 @@ namespace MusicalInstrumentsShop
             services.AddScoped<ISupplierService, SupplierService>();
             services.AddScoped<IProductService, ProductService>();
             services.AddScoped<IImageService, ImageService>();
+            services.AddScoped<IStockService, StockService>();
         }
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env, UserManager<ApplicationUser> userManager,
             RoleManager<ApplicationRole> roleManager)
         {
@@ -80,7 +79,6 @@ namespace MusicalInstrumentsShop
             else
             {
                 app.UseStatusCodePagesWithReExecute("/Error/{0}");
-                // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
         

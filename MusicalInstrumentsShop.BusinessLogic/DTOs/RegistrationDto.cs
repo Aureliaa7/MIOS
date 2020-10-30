@@ -6,9 +6,11 @@ namespace MusicalInstrumentsShop.BusinessLogic.DTOs
     {
         [Required]
         [Display(Name ="First Name")]
+        [RegularExpression(pattern: "[a-zA-Z\\s]+", ErrorMessage = "Invalid text")]
         public string FirstName { get; set; }
         [Required]
         [Display(Name = "Last Name")]
+        [RegularExpression(pattern: "[a-zA-Z\\s]+", ErrorMessage = "Invalid text")]
         public string LastName { get; set; }
         [Required]
         [EmailAddress]

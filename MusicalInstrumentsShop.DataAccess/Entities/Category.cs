@@ -7,6 +7,7 @@ namespace MusicalInstrumentsShop.DataAccess.Entities
     { 
         public Guid Id { get; set; }
         [Required]
+        [RegularExpression(pattern: "[a-zA-Z\\s]+", ErrorMessage = "Invalid text")]
         public string Name { get; set; }
     }
 }

@@ -103,7 +103,10 @@ namespace MusicalInstrumentsShop.Controllers
             {
                 IEnumerable<Photo> photos = new List<Photo>();
                 photos = imageService.SaveFiles(product.Photos);
-                await productService.Update(product, photos);
+                var fileNames = await productService.Update(product, photos);
+                if (fileNames != null) {
+                    imageService.DeleteFiles(fileNames);
+                }
                 return RedirectToAction(nameof(Index));
             }
             return View(product);
@@ -142,6 +145,12 @@ namespace MusicalInstrumentsShop.Controllers
                 Response.StatusCode = 404;
                 return View("/Error/NotFound");
             }
+        }
+
+        public JsonResult GetByCategory(string categoryId)
+        {
+            var products = productService.GetByCategory(new Guid(categoryId)).Result;
+            return new JsonResult(products);
         }
     }
 }

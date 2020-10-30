@@ -9,5 +9,6 @@ namespace MusicalInstrumentsShop.DataAccess.Repositories
         Task<Product> GetWithRelatedData(string id);
         Task<IEnumerable<string>> Delete(string id);
         Task<IEnumerable<Product>> GetAllWithRelatedData();
+        Task<IEnumerable<string>> GetPhotoNames(string productId);
     }
 }

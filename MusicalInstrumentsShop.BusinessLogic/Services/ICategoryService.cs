@@ -7,10 +7,10 @@ namespace MusicalInstrumentsShop.BusinessLogic.Services
 {
     public interface ICategoryService
     {
-        public Task Add(Category category);
-        public Task<IEnumerable<Category>> GetAll();
-        public Task<Category> GetById(Guid id);
-        public Task Delete(Guid id);
-        public Task Update(Category category);
+        Task Add(Category category);
+        Task<IEnumerable<Category>> GetAll();
+        Task<Category> GetById(Guid id);
+        Task Delete(Guid id);
+        Task Update(Category category);
     }
 }

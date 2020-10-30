@@ -44,6 +44,7 @@ namespace MusicalInstrumentsShop.Controllers
                         return RedirectToAction("Customer", "Dashboards");
                     }
                 }
+                TempData["ErrorMessages"] = loginResult.ErrorMessages;
                 return RedirectToAction("FailedLogin", "Account");
             }
             return View();
@@ -58,10 +59,15 @@ namespace MusicalInstrumentsShop.Controllers
         [HttpPost]
         public async Task<IActionResult> Register(RegistrationDto registrationInfo)
         {
-            if(ModelState.IsValid)
+            if (ModelState.IsValid)
             {
-                await accountService.Register(registrationInfo);
-                return RedirectToAction("Login", "Account");
+                var registerResult = await accountService.Register(registrationInfo);
+                if (registerResult == null)
+                {
+                    return RedirectToAction("Login", "Account");
+                }
+                TempData["RegisterResult"] = registerResult;
+                return RedirectToAction("RegisterResult", "Account");
             }
             return View();
         }
@@ -81,13 +87,6 @@ namespace MusicalInstrumentsShop.Controllers
                 return View(accountInfo);
             }
             catch (ItemNotFoundException) {
-                return RedirectToAction("NotFound", "Error");
-            }
-            //TODO
-            // this error occurs when no user is logged
-            // I'LL REMOVE THIS ONE, as the user won't have access to those pages when I 'll add authorization
-            catch (ArgumentNullException)
-            {
                 return RedirectToAction("NotFound", "Error");
             }
         }
@@ -155,6 +154,13 @@ namespace MusicalInstrumentsShop.Controllers
 
         public IActionResult FailedLogin()
         {
+            ViewBag.ErrorMessages = TempData["ErrorMessages"];
+            return View();
+        }
+
+        public IActionResult RegisterResult()
+        {
+            ViewBag.RegisterResult = TempData["RegisterResult"];
             return View();
         }
     }

@@ -91,13 +91,12 @@
 
 #add-product-btn {
     width: 100%;
-    margin-left: 450px;
-    margin-top: 40px;
+    margin-top: 34px;
 }
 
 .update-product-jumbotron {
     width: 620px;
-    height: 440px;
+    height: 640px;
     margin-left: 250px;
 }
 
@@ -139,4 +138,17 @@
 
 .add-margin-top-190 {
     margin-top: 190px;
+}
+
+.width-66 {
+    width: 66%;
+}
+
+.margin-left-296 {
+    margin-left: 296px;
+}
+
+.photo-input {
+    width: 138%;
+    margin-left: -15px;
 }
