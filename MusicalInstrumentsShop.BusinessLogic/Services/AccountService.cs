@@ -22,7 +22,7 @@ namespace MusicalInstrumentsShop.BusinessLogic.Services
             loginResult = new LoginResult();
         }
 
-        public async Task<string> ChangePassword(ChangePasswordDto passwordDto)
+        public async Task<string> ChangePassword(PasswordChangeDto passwordDto)
         {
             var user = await userManager.FindByIdAsync(passwordDto.UserId.ToString());
             if (user != null)

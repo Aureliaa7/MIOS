@@ -8,12 +8,12 @@ namespace MusicalInstrumentsShop.BusinessLogic.Services
 {
     public interface IProductService
     {
-        Task AddNew(AddProductDto product, IEnumerable<Photo> photos);
+        Task AddNew(ProductCreationDto product, IEnumerable<Photo> photos);
         Task<IEnumerable<ProductDto>> GetAll();
         Task<ProductDto> GetById(string id);
         Task<IEnumerable<string>> Delete(string id);
-        Task<IEnumerable<string>> Update(UpdateProductDto productDto, IEnumerable<Photo> photos);
-        Task<UpdateProductDto> GetForUpdate(string id);
-        Task<IEnumerable<Product>> GetByCategory(Guid categoryId);
+        Task<IEnumerable<string>> Update(ProductEditingDto productDto, IEnumerable<Photo> photos);
+        Task<ProductEditingDto> GetForUpdate(string id);
+        Task<IEnumerable<ProductDto>> GetByCategory(Guid categoryId);
     }
 }

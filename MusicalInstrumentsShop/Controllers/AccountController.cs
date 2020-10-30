@@ -126,7 +126,7 @@ namespace MusicalInstrumentsShop.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> ChangePassword(ChangePasswordDto passwordDto)
+        public async Task<IActionResult> ChangePassword(PasswordChangeDto passwordDto)
         {
             if (ModelState.IsValid)
             {

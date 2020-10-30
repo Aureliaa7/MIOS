@@ -4,6 +4,8 @@ using MusicalInstrumentsShop.DataAccess.Entities;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using MusicalInstrumentsShop.BusinessLogic.DTOs;
+using AutoMapper;
 
 namespace MusicalInstrumentsShop.BusinessLogic.Services
 {
@@ -12,17 +14,20 @@ namespace MusicalInstrumentsShop.BusinessLogic.Services
         private readonly IRepository<Supplier> supplierRepository;
         private readonly IRepository<Product> productRepository;
         private readonly IStockRepository stockRepository;
+        private readonly IMapper mapper;
 
         public SupplierService(IRepository<Supplier> supplierRepository, IRepository<Product> productRepository,
-            IStockRepository stockRepository)
+            IStockRepository stockRepository, IMapper mapper)
         {
             this.supplierRepository = supplierRepository;
             this.productRepository = productRepository;
             this.stockRepository = stockRepository;
+            this.mapper = mapper;
         }
 
-        public async Task Add(Supplier supplier)
+        public async Task Add(SupplierDto supplierDto)
         {
+            var supplier = mapper.Map<Supplier>(supplierDto);
             await supplierRepository.Add(supplier);
         }
 
@@ -39,22 +44,30 @@ namespace MusicalInstrumentsShop.BusinessLogic.Services
             }
         }
 
-        public async Task<IEnumerable<Supplier>> GetAll()
+        public async Task<IEnumerable<SupplierDto>> GetAll()
         {
-            return await supplierRepository.GetAll();
+            var suppliers = await supplierRepository.GetAll();
+            var supplierDtos = new List<SupplierDto>();
+            foreach(var supplier in suppliers)
+            {
+                var supplierDto = mapper.Map<SupplierDto>(supplier);
+                supplierDtos.Add(supplierDto);
+            }
+            return supplierDtos;
         }
 
-        public async Task<Supplier> GetById(Guid id)
+        public async Task<SupplierDto> GetById(Guid id)
         {
             bool supplierExists = await supplierRepository.Exists(x => x.Id == id);
             if (supplierExists)
             {
-                return await supplierRepository.Get(id);
+                var supplier = await supplierRepository.Get(id);
+                return mapper.Map<SupplierDto>(supplier);
             }
             throw new ItemNotFoundException("The supplier was not found...");
         }
 
-        public async Task<Supplier> GetByProduct(string productId)
+        public async Task<SupplierDto> GetByProduct(string productId)
         {
             bool productExists = await productRepository.Exists(x => x.Id == productId);
             if (productExists)
@@ -62,14 +75,15 @@ namespace MusicalInstrumentsShop.BusinessLogic.Services
                 var stock = await stockRepository.GetByProductId(productId);
                 if(stock != null)
                 {
-                    return stock.Supplier;
+                    return mapper.Map<SupplierDto>(stock.Supplier);
                 }
             }
             throw new ItemNotFoundException("The product was not found");
         }
 
-        public async Task Update(Supplier supplier)
+        public async Task Update(SupplierDto supplierDto)
         {
+            var supplier = mapper.Map<Supplier>(supplierDto);
             await supplierRepository.Update(supplier);
         }
     }

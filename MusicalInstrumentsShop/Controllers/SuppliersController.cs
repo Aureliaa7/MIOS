@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using MusicalInstrumentsShop.BusinessLogic.DTOs;
 using MusicalInstrumentsShop.BusinessLogic.Exceptions;
 using MusicalInstrumentsShop.BusinessLogic.Services;
-using MusicalInstrumentsShop.DataAccess.Entities;
 
 namespace MusicalInstrumentsShop.Controllers
 {
@@ -27,7 +27,7 @@ namespace MusicalInstrumentsShop.Controllers
             if (id == null)
             {
                 Response.StatusCode = 404;
-                return View("NotFound");
+                return RedirectToAction("NotFound", "Error");
             }
 
             try
@@ -37,7 +37,7 @@ namespace MusicalInstrumentsShop.Controllers
             catch (ItemNotFoundException)
             {
                 Response.StatusCode = 404;
-                return View("NotFound");
+                return RedirectToAction("NotFound", "Error");
             }
         }
 
@@ -48,7 +48,7 @@ namespace MusicalInstrumentsShop.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name,Address,Telephone")] Supplier supplier)
+        public async Task<IActionResult> Create(SupplierDto supplier)
         {
             if (ModelState.IsValid)
             {
@@ -63,7 +63,7 @@ namespace MusicalInstrumentsShop.Controllers
             if (id == null)
             {
                 Response.StatusCode = 404;
-                return View("NotFound");
+                return RedirectToAction("NotFound", "Error");
             }
 
             try
@@ -73,18 +73,18 @@ namespace MusicalInstrumentsShop.Controllers
             catch (ItemNotFoundException)
             {
                 Response.StatusCode = 404;
-                return View("NotFound");
+                return RedirectToAction("NotFound", "Error");
             }
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(Guid id, [Bind("Id,Name,Address,Telephone")] Supplier supplier)
+        public async Task<IActionResult> Edit(Guid id, SupplierDto supplier)
         {
             if (id != supplier.Id)
             {
                 Response.StatusCode = 404;
-                return View("NotFound");
+                return RedirectToAction("NotFound", "Error");
             }
 
             if (ModelState.IsValid)
@@ -96,7 +96,7 @@ namespace MusicalInstrumentsShop.Controllers
                 catch (ItemNotFoundException)
                 {
                     Response.StatusCode = 404;
-                    return View("NotFound");
+                    return RedirectToAction("NotFound", "Error");
                 }
                 return RedirectToAction("Index", "Suppliers");
             }
@@ -108,7 +108,7 @@ namespace MusicalInstrumentsShop.Controllers
             if (id == null)
             {
                 Response.StatusCode = 404;
-                return View("NotFound");
+                return RedirectToAction("NotFound", "Error");
             }
 
             try
@@ -118,7 +118,7 @@ namespace MusicalInstrumentsShop.Controllers
             catch (ItemNotFoundException)
             {
                 Response.StatusCode = 404;
-                return View("NotFound");
+                return RedirectToAction("NotFound", "Error");
             }
         }
 
@@ -129,7 +129,7 @@ namespace MusicalInstrumentsShop.Controllers
             if (id == null)
             {
                 Response.StatusCode = 404;
-                return View("NotFound");
+                return RedirectToAction("NotFound", "Error");
             }
 
             try
@@ -140,7 +140,7 @@ namespace MusicalInstrumentsShop.Controllers
             catch (ItemNotFoundException)
             {
                 Response.StatusCode = 404;
-                return View("NotFound");
+                return RedirectToAction("NotFound", "Error");
             }
         }
 

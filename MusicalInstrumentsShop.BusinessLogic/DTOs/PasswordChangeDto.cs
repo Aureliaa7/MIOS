@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace MusicalInstrumentsShop.BusinessLogic.DTOs
 {
-    public class ChangePasswordDto
+    public class PasswordChangeDto
     {
         public Guid UserId { get; set; }
         [Required]

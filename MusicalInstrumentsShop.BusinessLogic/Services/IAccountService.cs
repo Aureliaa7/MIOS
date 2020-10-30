@@ -11,6 +11,6 @@ namespace MusicalInstrumentsShop.BusinessLogic.Services
         Task<LoginResult> Login(LoginDto loginInfo);
         Task<AccountInfoDto> GetAccountInfo(Guid userId);
         Task Edit(Guid userId, AccountInfoDto accountInfo);
-        Task<string> ChangePassword(ChangePasswordDto passwordDto);
+        Task<string> ChangePassword(PasswordChangeDto passwordDto);
     }
 }

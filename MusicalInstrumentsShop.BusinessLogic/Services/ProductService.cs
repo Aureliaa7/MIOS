@@ -27,12 +27,12 @@ namespace MusicalInstrumentsShop.BusinessLogic.Services
             this.photoProductRepository = photoProductRepository;
         }
 
-        public async Task AddNew(AddProductDto productModel, IEnumerable<Photo> photos)
+        public async Task AddNew(ProductCreationDto productModel, IEnumerable<Photo> photos)
         {
             bool categoryExists = await categoryRepository.Exists(x => x.Id == productModel.CategoryId);
             bool supplierExists = await supplierRepository.Exists(x => x.Id == productModel.SupplierId);
 
-            if(categoryExists && supplierExists)
+            if (categoryExists && supplierExists)
             {
                 Category category = await categoryRepository.Get(productModel.CategoryId);
                 Supplier supplier = await supplierRepository.Get(productModel.SupplierId);
@@ -54,7 +54,7 @@ namespace MusicalInstrumentsShop.BusinessLogic.Services
                 };
                 await stockRepository.Add(stock);
 
-                foreach(var photo in photos)
+                foreach (var photo in photos)
                 {
                     PhotoProduct photoProduct = new PhotoProduct
                     {
@@ -82,38 +82,19 @@ namespace MusicalInstrumentsShop.BusinessLogic.Services
 
         public async Task<IEnumerable<ProductDto>> GetAll()
         {
-            var productDtos = new List<ProductDto>();
             var products = await productRepository.GetAllWithRelatedData();
-            foreach(var product in products)
-            {
-                Stock stock = await stockRepository.GetByProductId(product.Id);
-                if(stock != null)
-                {
-                    var photos = await photoProductRepository.GetByProductId(product.Id);
-                    var productDto = new ProductDto
-                    {
-                        CategoryName = product.Category.Name,
-                        Description = product.Description,
-                        Id = product.Id,
-                        Name = product.Name,
-                        SupplierName = stock.Supplier.Name,
-                        Photos = photos,
-                        Price = product.Price,
-                        NumberOfProducts = stock.NumberOfProducts
-                    };
-                    productDtos.Add(productDto);       
-                }
-            }
-            return productDtos;
+            return await MapProducts(products);
         }
 
-        public async Task<IEnumerable<Product>> GetByCategory(Guid categoryId)
+        public async Task<IEnumerable<ProductDto>> GetByCategory(Guid categoryId)
         {
             bool categoryExists = await categoryRepository.Exists(x => x.Id == categoryId);
-            if(categoryExists)
+            if (categoryExists)
             {
-                var products = await productRepository.GetAllWithRelatedData();
-                return products.Where(x => x.Category.Id == categoryId).ToList();
+                var allProducts = await productRepository.GetAllWithRelatedData();
+                var searchedProducts = allProducts.Where(x => x.Category.Id == categoryId).ToList();
+
+                return await MapProducts(searchedProducts);
             }
             throw new ItemNotFoundException("The category was not found...");
         }
@@ -124,33 +105,18 @@ namespace MusicalInstrumentsShop.BusinessLogic.Services
             if (productExists)
             {
                 var product = await productRepository.GetWithRelatedData(id);
-                var stock = await stockRepository.GetByProductId(product.Id);
-                if(stock != null)
-                {
-                    var photos = await photoProductRepository.GetByProductId(product.Id);
-                    return new ProductDto
-                    {
-                        CategoryName = product.Category.Name,
-                        Description = product.Description,
-                        Id = product.Id,
-                        Name = product.Name,
-                        Price = product.Price,
-                        Photos = photos,
-                        NumberOfProducts = stock.NumberOfProducts,
-                        SupplierName = stock.Supplier.Name
-                    };
-                }
+                return await MapProductToProductDto(product);
             }
             throw new ItemNotFoundException("The product was not found...");
         }
 
-        public async Task<UpdateProductDto> GetForUpdate(string id)
+        public async Task<ProductEditingDto> GetForUpdate(string id)
         {
             bool productExists = await productRepository.Exists(x => x.Id == id);
-            if(productExists)
+            if (productExists)
             {
                 var product = await productRepository.GetWithRelatedData(id);
-                var updateProductDto = new UpdateProductDto
+                var updateProductDto = new ProductEditingDto
                 {
                     Id = product.Id,
                     Description = product.Description,
@@ -162,7 +128,7 @@ namespace MusicalInstrumentsShop.BusinessLogic.Services
             throw new ItemNotFoundException("The product was not found...");
         }
 
-        public async Task<IEnumerable<string>> Update(UpdateProductDto productDto, IEnumerable<Photo> photos)
+        public async Task<IEnumerable<string>> Update(ProductEditingDto productDto, IEnumerable<Photo> photos)
         {
             IEnumerable<string> fileNames = new List<string>();
             var product = await productRepository.GetWithRelatedData(productDto.Id);
@@ -191,6 +157,39 @@ namespace MusicalInstrumentsShop.BusinessLogic.Services
                 }
             }
             return fileNames;
+        }
+
+        private async Task<IEnumerable<ProductDto>> MapProducts(IEnumerable<Product> products)
+        {
+            var productDtos = new List<ProductDto>();
+            foreach (var product in products)
+            {
+                var productDto = await MapProductToProductDto(product);
+                productDtos.Add(productDto);
+            }
+            return productDtos;
+        }
+
+        private async Task<ProductDto> MapProductToProductDto(Product product)
+        {
+            Stock stock = await stockRepository.GetByProductId(product.Id);
+            ProductDto productDto = null;
+            if (stock != null)
+            {
+                var photos = await photoProductRepository.GetByProductId(product.Id);
+                productDto = new ProductDto
+                {
+                    CategoryName = product.Category.Name,
+                    Description = product.Description,
+                    Id = product.Id,
+                    Name = product.Name,
+                    SupplierName = stock.Supplier.Name,
+                    Photos = photos,
+                    Price = product.Price,
+                    NumberOfProducts = stock.NumberOfProducts
+                };
+            }
+            return productDto;
         }
     }
 }

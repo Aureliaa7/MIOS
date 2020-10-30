@@ -11,6 +11,8 @@ using MusicalInstrumentsShop.DataAccess.Repositories;
 using MusicalInstrumentsShop.DataAccess.Entities;
 using System;
 using Microsoft.AspNetCore.Http;
+using MusicalInstrumentsShop.BusinessLogic.Mappings;
+using AutoMapper;
 
 namespace MusicalInstrumentsShop
 {
@@ -67,6 +69,9 @@ namespace MusicalInstrumentsShop
             services.AddScoped<IProductService, ProductService>();
             services.AddScoped<IImageService, ImageService>();
             services.AddScoped<IStockService, StockService>();
+
+            services.AddAutoMapper(typeof(CategoryProfile));
+            services.AddAutoMapper(typeof(SupplierProfile));
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env, UserManager<ApplicationUser> userManager,

@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using MusicalInstrumentsShop.DataAccess.Entities;
 using MusicalInstrumentsShop.BusinessLogic.Exceptions;
 using MusicalInstrumentsShop.BusinessLogic.Services;
+using MusicalInstrumentsShop.BusinessLogic.DTOs;
 
 namespace MusicalInstrumentsShop.Controllers
 {
@@ -26,7 +27,7 @@ namespace MusicalInstrumentsShop.Controllers
             if (id == null)
             {
                 Response.StatusCode = 404;
-                return View("NotFound");
+                return RedirectToAction("NotFound", "Error");
             }
 
             try
@@ -36,7 +37,7 @@ namespace MusicalInstrumentsShop.Controllers
             catch(ItemNotFoundException)
             {
                 Response.StatusCode = 404;
-                return View("NotFound");
+                return RedirectToAction("NotFound", "Error");
             }
         }
 
@@ -47,7 +48,7 @@ namespace MusicalInstrumentsShop.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name")] Category category)
+        public async Task<IActionResult> Create(CategoryDto category)
         {
             if (ModelState.IsValid)
             {
@@ -63,7 +64,7 @@ namespace MusicalInstrumentsShop.Controllers
             if (id == null)
             {
                 Response.StatusCode = 404;
-                return View("NotFound");
+                return RedirectToAction("NotFound", "Error");
             }
 
             try
@@ -73,18 +74,18 @@ namespace MusicalInstrumentsShop.Controllers
             catch (ItemNotFoundException)
             {
                 Response.StatusCode = 404;
-                return View("NotFound");
+                return RedirectToAction("NotFound", "Error");
             }
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(Guid id, [Bind("Id,Name")] Category category)
+        public async Task<IActionResult> Edit(Guid id, CategoryDto category)
         {
             if (id != category.Id)
             {
                 Response.StatusCode = 404;
-                return View("NotFound");
+                return RedirectToAction("NotFound", "Error");
             }
 
             if (ModelState.IsValid)
@@ -96,7 +97,7 @@ namespace MusicalInstrumentsShop.Controllers
                 catch (ItemNotFoundException)
                 {
                     Response.StatusCode = 404;
-                    return View("NotFound");
+                    return RedirectToAction("NotFound", "Error");
                 }
                 return RedirectToAction("Index", "Categories");
             }
@@ -108,7 +109,7 @@ namespace MusicalInstrumentsShop.Controllers
             if (id == null)
             {
                 Response.StatusCode = 404;
-                return View("NotFound");
+                return RedirectToAction("NotFound", "Error");
             }
 
             try
@@ -118,7 +119,7 @@ namespace MusicalInstrumentsShop.Controllers
             catch (ItemNotFoundException)
             {
                 Response.StatusCode = 404;
-                return View("NotFound");
+                return RedirectToAction("NotFound", "Error");
             }
         }
 
@@ -129,7 +130,7 @@ namespace MusicalInstrumentsShop.Controllers
             if (id == null)
             {
                 Response.StatusCode = 404;
-                return View("NotFound");
+                return RedirectToAction("NotFound", "Error");
             }
 
             try
@@ -140,7 +141,7 @@ namespace MusicalInstrumentsShop.Controllers
             catch (ItemNotFoundException)
             {
                 Response.StatusCode = 404;
-                return View("NotFound");
+                return RedirectToAction("NotFound", "Error");
             }
         }
 

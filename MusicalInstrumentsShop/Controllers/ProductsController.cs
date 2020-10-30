@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using MusicalInstrumentsShop.BusinessLogic.DTOs;
 using MusicalInstrumentsShop.BusinessLogic.Exceptions;
@@ -35,7 +33,7 @@ namespace MusicalInstrumentsShop.Controllers
             if (id == null)
             {
                 Response.StatusCode = 404;
-                return View("NotFound");
+                return RedirectToAction("NotFound", "Error");
             }
             try
             {
@@ -45,7 +43,7 @@ namespace MusicalInstrumentsShop.Controllers
             catch(ItemNotFoundException)
             {
                 Response.StatusCode = 404;
-                return View("NotFound");
+                return RedirectToAction("NotFound", "Error");
             }
         }
 
@@ -56,7 +54,7 @@ namespace MusicalInstrumentsShop.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(AddProductDto addProductModel)
+        public async Task<IActionResult> Create(ProductCreationDto addProductModel)
         {
             if (ModelState.IsValid)
             {  
@@ -76,7 +74,7 @@ namespace MusicalInstrumentsShop.Controllers
             if (id == null)
             {
                 Response.StatusCode = 404;
-                return View("NotFound");
+                return RedirectToAction("NotFound", "Error");
             }
             try
             {
@@ -85,27 +83,31 @@ namespace MusicalInstrumentsShop.Controllers
             catch(ItemNotFoundException)
             {
                 Response.StatusCode = 404;
-                return View("NotFound");
+                return RedirectToAction("NotFound", "Error");
             }
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(string id, UpdateProductDto product)
+        public async Task<IActionResult> Edit(string id, ProductEditingDto product)
         {
             if (id == null)
             {
                 Response.StatusCode = 404;
-                return View("NotFound");
+                return RedirectToAction("NotFound", "Error");
             }
 
             if (ModelState.IsValid)
             {
                 IEnumerable<Photo> photos = new List<Photo>();
-                photos = imageService.SaveFiles(product.Photos);
-                var fileNames = await productService.Update(product, photos);
-                if (fileNames != null) {
-                    imageService.DeleteFiles(fileNames);
+                if (product.Photos != null)
+                {
+                    photos = imageService.SaveFiles(product.Photos);
+                    var fileNames = await productService.Update(product, photos);
+                    if (fileNames != null)
+                    {
+                        imageService.DeleteFiles(fileNames);
+                    }
                 }
                 return RedirectToAction(nameof(Index));
             }
@@ -117,7 +119,7 @@ namespace MusicalInstrumentsShop.Controllers
             if (id == null)
             {
                 Response.StatusCode = 404;
-                return View("NotFound");
+                return RedirectToAction("NotFound", "Error");
             }
             try {
                 return View(await productService.GetById(id));
@@ -125,7 +127,7 @@ namespace MusicalInstrumentsShop.Controllers
             catch (ItemNotFoundException)
             {
                 Response.StatusCode = 404;
-                return View("/Error/NotFound");
+                return RedirectToAction("NotFound", "Error");
             }
         }
 
@@ -143,7 +145,7 @@ namespace MusicalInstrumentsShop.Controllers
             catch (ItemNotFoundException)
             {
                 Response.StatusCode = 404;
-                return View("/Error/NotFound");
+                return RedirectToAction("NotFound", "Error");
             }
         }
 

@@ -1,6 +1,7 @@
 ﻿using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using MusicalInstrumentsShop.BusinessLogic.DTOs;
+using MusicalInstrumentsShop.BusinessLogic.Exceptions;
 using MusicalInstrumentsShop.BusinessLogic.Services;
 
 namespace MusicalInstrumentsShop.Controllers
@@ -25,8 +26,15 @@ namespace MusicalInstrumentsShop.Controllers
         {
             if (ModelState.IsValid)
             {
-                await stockService.AddProductsInStock(stockDto);
-                return RedirectToAction("Index", "Products");
+                try
+                {
+                    await stockService.AddProductsInStock(stockDto);
+                    return RedirectToAction("Index", "Products");
+                }
+                catch (ItemNotFoundException)
+                {
+                    return RedirectToAction("NotFound", "Error");
+                }
             }
             return View(stockDto);
         }

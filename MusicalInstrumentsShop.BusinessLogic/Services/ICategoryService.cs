@@ -1,4 +1,4 @@
-﻿using MusicalInstrumentsShop.DataAccess.Entities;
+﻿using MusicalInstrumentsShop.BusinessLogic.DTOs;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -7,10 +7,10 @@ namespace MusicalInstrumentsShop.BusinessLogic.Services
 {
     public interface ICategoryService
     {
-        Task Add(Category category);
-        Task<IEnumerable<Category>> GetAll();
-        Task<Category> GetById(Guid id);
+        Task Add(CategoryDto category);
+        Task<IEnumerable<CategoryDto>> GetAll();
+        Task<CategoryDto> GetById(Guid id);
         Task Delete(Guid id);
-        Task Update(Category category);
+        Task Update(CategoryDto category);
     }
 }

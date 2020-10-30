@@ -1,4 +1,4 @@
-﻿@model MusicalInstrumentsShop.BusinessLogic.DTOs.UpdateProductDto
+﻿@model MusicalInstrumentsShop.BusinessLogic.DTOs.ProductEditingDto
 
 @{
     ViewData["Title"] = "Edit";
@@ -54,8 +54,8 @@
                 <span asp-validation-for="Description" class="text-danger"></span>
             </div>
 
-            <div class="col-md-3">
-                <input type="submit" value="Save" class="btn btn-primary" id="add-product-btn" />
+            <div class="col-md-3 edit-product-btn">
+                <input type="submit" value="Save" class="btn btn-primary" id="form-btn" />
             </div>
         </form>
     </div>
