@@ -11,9 +11,10 @@
     <script src="~/js/addProduct.js"></script>
 }
 
-<div class="row">
+<div class="jumbotron stock-jumbotron">
+    <h4>Update stock</h4>
     <div class="col-md-4">
-        <form asp-action="Edit">
+        <form asp-action="Edit" class="stock-form">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
                 <label asp-for="CategoryId" class="control-label"></label>
@@ -50,3 +51,4 @@
         </form>
     </div>
 </div>
+

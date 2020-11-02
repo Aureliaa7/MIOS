@@ -53,23 +53,24 @@
 
 .bg {
     margin-left: 0px;
-    background: url(../images/bg.jpg) no-repeat;
+    background: url(../images/guitars.jpg) no-repeat;
     background-size: cover;
     transition: 0.5s;
+    background-attachment: fixed;
 }
 
 .add-category-jumbotron {
     width: 360px;
     height: 330px;
-    margin-top: 10px;
-    margin-left: 220px;
+    margin-top: 100px;
+    margin-left: 20px;
 }
 
 .supplier-jumbotron {
     width: 360px;
     height: 470px;
-    margin-top: 10px;
-    margin-left: 220px;
+    margin-top: 70px;
+    margin-left: 90px;
 }
 
 .supplier-form {
@@ -136,6 +137,18 @@
     margin-left: 10px;
 }
 
+.stock-jumbotron {
+    width: 430px;
+    height: 550px;
+    margin-top: 70px;
+    margin-left: 90px;
+}
+
+.stock-form {
+    width: 350px;
+    height: 450px;
+}
+
 .add-margin-top-190 {
     margin-top: 190px;
 }
@@ -155,4 +168,24 @@
 
 .edit-product-btn {
     margin-left: 450px;
+}
+
+.categories-table {
+    margin-left: -20px;
+}
+
+.add-margin-left {
+    margin-left: -130px;
+}
+
+.specification-jumbotron {
+    width: 360px;
+    height: 350px;
+    margin-top: 120px;
+    margin-left: 210px;
+}
+
+.specification-form {
+    width: 280px;
+    height: 250px;
 }

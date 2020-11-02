@@ -5,9 +5,13 @@
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
 
-<h3>Products</h3>
+@section scripts{
+    <script src="~/js/tables.js"></script>
+}
 
-<table class="table table-hover table-dark">
+<h3 class="text-center text-white">Products</h3>
+
+<table id="six-columns-table" class="table table-hover table-dark">
     <thead>
         <tr>
             <th>
@@ -29,43 +33,45 @@
                 @Html.DisplayNameFor(model => model.CategoryName)
             </th>
             <th>
-               
+
             </th>
             <th></th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Id)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Price)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.NumberOfProducts)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.SupplierName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.CategoryName)
-            </td>
-            <td>
-                @{var firstPhoto = item.Photos.ElementAt(0).Name;}
-                <img src="~/images/@firstPhoto" width="60" height="60"/>
-            </td>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Id)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Price)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.NumberOfProducts)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.SupplierName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CategoryName)
+                </td>
+                <td>
+                    @{var firstPhoto = item.Photos.ElementAt(0).Name;}
+                    <img src="~/images/@firstPhoto" width="60" height="60" />
+                </td>
 
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-            </td>
-        </tr>
-}
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                    <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                    <a asp-action="Delete" asp-route-id="@item.Id">Delete</a> |
+                    @Html.ActionLink("Add specification", "Create", "Specifications", new { id = @item.Id })
+                </td>
+            </tr>
+        }
     </tbody>
 </table>

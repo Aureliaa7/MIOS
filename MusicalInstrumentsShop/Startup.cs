@@ -69,6 +69,8 @@ namespace MusicalInstrumentsShop
             services.AddScoped<IProductService, ProductService>();
             services.AddScoped<IImageService, ImageService>();
             services.AddScoped<IStockService, StockService>();
+            services.AddScoped<ISpecificationService, SpecificationService>();
+            services.AddScoped<ISpecificationRepository, SpecificationRepository>();
 
             services.AddAutoMapper(typeof(CategoryProfile));
             services.AddAutoMapper(typeof(SupplierProfile));

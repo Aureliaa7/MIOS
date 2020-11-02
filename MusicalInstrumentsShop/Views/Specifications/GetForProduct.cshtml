@@ -1,0 +1,22 @@
+﻿@model IEnumerable<MusicalInstrumentsShop.BusinessLogic.DTOs.SpecificationDto>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="row">
+    <div class="col-sm-6">
+        <div class="card">
+            <div class="card-body">
+                <h4>Specifications</h4>
+                @foreach (var item in Model)
+                {
+                    <b> @Html.DisplayFor(model => item.Key): </b>
+                    @Html.DisplayFor(model => item.Value)
+                    <a style="margin-left: 60px;" asp-action="Delete" asp-route-id="@item.Id">Delete</a><br />
+                }
+            </div>
+        </div>
+    </div>
+</div>

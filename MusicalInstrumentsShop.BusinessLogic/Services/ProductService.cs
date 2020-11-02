@@ -31,7 +31,12 @@ namespace MusicalInstrumentsShop.BusinessLogic.Services
         {
             bool categoryExists = await categoryRepository.Exists(x => x.Id == productModel.CategoryId);
             bool supplierExists = await supplierRepository.Exists(x => x.Id == productModel.SupplierId);
+            bool productAlreadyExists = await productRepository.Exists(x => x.Id == productModel.Id);
 
+            if (productAlreadyExists)
+            {
+                throw new ProductAlreadyExistsException("A product with the given code already exists!");
+            }
             if (categoryExists && supplierExists)
             {
                 Category category = await categoryRepository.Get(productModel.CategoryId);

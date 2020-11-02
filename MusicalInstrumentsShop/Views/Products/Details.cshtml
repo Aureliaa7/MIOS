@@ -59,6 +59,7 @@
 
             <div>
                 <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
+                @Html.ActionLink("Specifications", "GetForProduct", "Specifications", new { id = @Model.Id }) |
                 <a asp-action="Index">Back to List</a>
             </div>
         </div>

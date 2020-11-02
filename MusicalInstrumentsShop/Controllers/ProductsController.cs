@@ -61,10 +61,18 @@ namespace MusicalInstrumentsShop.Controllers
                 IEnumerable<Photo> photos = new List<Photo>();
                 if (addProductModel.Photos != null && addProductModel.Photos.Count > 0)
                 {
-                    photos = imageService.SaveFiles(addProductModel.Photos);
-                    await productService.AddNew(addProductModel, photos);
+                    try
+                    {
+                        photos = imageService.SaveFiles(addProductModel.Photos);
+                        await productService.AddNew(addProductModel, photos);
+                    } 
+                    catch(ProductAlreadyExistsException e)
+                    {
+                        ViewBag["ErrorMessage"] = e.Message;
+                        return View(addProductModel);
+                    }
                 }
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("Create", "Specifications", new { id = addProductModel.Id });
             }
             return View(addProductModel);
         }

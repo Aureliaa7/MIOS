@@ -22,6 +22,7 @@ namespace MusicalInstrumentsShop.DataAccess.Data
         public DbSet<WishlistProduct> WishlistProducts { get; set; }
         public DbSet<Photo> Photos { get; set; }
         public DbSet<PhotoProduct> PhotoProducts { get; set; }
+        public DbSet<Specification> Specifications { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
