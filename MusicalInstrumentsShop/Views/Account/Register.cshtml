@@ -6,7 +6,17 @@
 }
 
 <div class="jumbotron register-jumbotron">
-    <div class="col-md-7 go-to-login">
+    @if (ViewData["RegisterResult"] != null)
+    {
+        <div class="alert alert-danger add-margin-top-30">
+            <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
+            @foreach (var errorMessage in ViewBag.RegisterResult)
+            {
+                <p>@errorMessage</p>
+            }
+        </div>
+    }
+    <div class="col-md-7 go-to-login add-margin-top-5">
         <a asp-area="" asp-controller="Account" asp-action="Login">Already have an account?</a>
     </div>
     <form asp-action="Register" class="register-form">

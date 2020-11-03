@@ -17,13 +17,14 @@
         <div class="card">
             <div class="card-body">
                 <h4>Account details</h4>
-                <h6><b> @Html.DisplayNameFor(model => model.FirstName)</b></h6>@Html.DisplayFor(model => model.FirstName)
-                <br />
-                <h6><b>@Html.DisplayNameFor(model => model.LastName)</b></h6>@Html.DisplayFor(model => model.LastName)
-                <br />
-                <h6><b>@Html.DisplayNameFor(model => model.Email)</b></h6>@Html.DisplayFor(model => model.Email)
-                <br />
-                <h6><b>@Html.DisplayNameFor(model => model.Role)</b></h6> @Html.DisplayFor(model => model.Role)
+                <b> @Html.DisplayNameFor(model => model.FirstName): </b>
+                @Html.DisplayFor(model => model.FirstName)<br />
+                <b>@Html.DisplayNameFor(model => model.LastName): </b>
+                @Html.DisplayFor(model => model.LastName)<br />
+                <b>@Html.DisplayNameFor(model => model.Email): </b>
+                @Html.DisplayFor(model => model.Email)<br />
+                <b>@Html.DisplayNameFor(model => model.Role): </b>
+                @Html.DisplayFor(model => model.Role)
                 <br /><br />
                 <a asp-controller="Account" asp-action="Edit">Edit account</a>
             </div>

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using MusicalInstrumentsShop.BusinessLogic.DTOs;
@@ -23,16 +24,17 @@ namespace MusicalInstrumentsShop.Controllers
             this.imageService = imageService;
         }
 
+        [Authorize]
         public async Task<IActionResult> Index()
         {
             return View(await productService.GetAll());
         }
 
+        [Authorize]
         public async Task<IActionResult> Details(string id)
         {
             if (id == null)
             {
-                Response.StatusCode = 404;
                 return RedirectToAction("NotFound", "Error");
             }
             try
@@ -42,11 +44,11 @@ namespace MusicalInstrumentsShop.Controllers
             }
             catch(ItemNotFoundException)
             {
-                Response.StatusCode = 404;
                 return RedirectToAction("NotFound", "Error");
             }
         }
 
+        [Authorize(Roles = "Administrator")]
         public IActionResult Create()
         {
             return View();
@@ -68,7 +70,7 @@ namespace MusicalInstrumentsShop.Controllers
                     } 
                     catch(ProductAlreadyExistsException e)
                     {
-                        ViewBag["ErrorMessage"] = e.Message;
+                        ViewBag.ErrorMessage = e.Message;
                         return View(addProductModel);
                     }
                 }
@@ -77,11 +79,11 @@ namespace MusicalInstrumentsShop.Controllers
             return View(addProductModel);
         }
 
+        [Authorize(Roles = "Administrator")]
         public async Task<IActionResult> Edit(string id)
         {
             if (id == null)
             {
-                Response.StatusCode = 404;
                 return RedirectToAction("NotFound", "Error");
             }
             try
@@ -90,7 +92,6 @@ namespace MusicalInstrumentsShop.Controllers
             }
             catch(ItemNotFoundException)
             {
-                Response.StatusCode = 404;
                 return RedirectToAction("NotFound", "Error");
             }
         }
@@ -101,7 +102,6 @@ namespace MusicalInstrumentsShop.Controllers
         {
             if (id == null)
             {
-                Response.StatusCode = 404;
                 return RedirectToAction("NotFound", "Error");
             }
 
@@ -122,11 +122,11 @@ namespace MusicalInstrumentsShop.Controllers
             return View(product);
         }
 
+        [Authorize(Roles = "Administrator")]
         public async Task<IActionResult> Delete(string id)
         {
             if (id == null)
             {
-                Response.StatusCode = 404;
                 return RedirectToAction("NotFound", "Error");
             }
             try {
@@ -134,7 +134,6 @@ namespace MusicalInstrumentsShop.Controllers
             }
             catch (ItemNotFoundException)
             {
-                Response.StatusCode = 404;
                 return RedirectToAction("NotFound", "Error");
             }
         }
@@ -152,7 +151,6 @@ namespace MusicalInstrumentsShop.Controllers
             }
             catch (ItemNotFoundException)
             {
-                Response.StatusCode = 404;
                 return RedirectToAction("NotFound", "Error");
             }
         }

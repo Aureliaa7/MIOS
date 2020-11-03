@@ -7,7 +7,17 @@
 
 <hr />
 <div class="jumbotron login-jumbotron">
-    <div class="col-md-12 go-to-register">
+    @if (ViewData["ErrorMessages"] != null)
+    {
+        <div class="alert alert-danger add-margin-top-30">
+            <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
+            @foreach (var errorMessage in ViewBag.ErrorMessages)
+            {
+                <p>@errorMessage</p>
+            }
+        </div>
+    }
+    <div class="col-md-12 go-to-register add-margin-top-5">
         <a asp-area="" asp-controller="Account" asp-action="Register">You don't have an account?</a>
     </div>
     <div class="col-md-4">

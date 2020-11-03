@@ -1,4 +1,5 @@
 ﻿using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MusicalInstrumentsShop.BusinessLogic.DTOs;
 using MusicalInstrumentsShop.BusinessLogic.Exceptions;
@@ -15,6 +16,7 @@ namespace MusicalInstrumentsShop.Controllers
             this.stockService = stockService;
         }
 
+        [Authorize(Roles = "Administrator")]
         public IActionResult Edit()
         {
             return View();

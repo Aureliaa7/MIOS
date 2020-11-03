@@ -7,7 +7,7 @@
 
 .login-jumbotron {
     width: 360px;
-    height: 350px;
+    height: 430px;
     margin-top: 120px;
     margin-left: 210px;
 }
@@ -25,7 +25,7 @@
 
 .register-jumbotron {
     width: 460px;
-    height: 460px;
+    height: 560px;
     margin-top: 90px;
 }
 
@@ -188,4 +188,12 @@
 .specification-form {
     width: 280px;
     height: 250px;
+}
+
+.add-margin-top-5 {
+    margin-top: 5px;
+}
+
+.add-margin-top-30 {
+    margin-top: -30px;
 }

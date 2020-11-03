@@ -4,9 +4,11 @@ using Microsoft.AspNetCore.Mvc;
 using MusicalInstrumentsShop.BusinessLogic.Exceptions;
 using MusicalInstrumentsShop.BusinessLogic.Services;
 using MusicalInstrumentsShop.BusinessLogic.DTOs;
+using Microsoft.AspNetCore.Authorization;
 
 namespace MusicalInstrumentsShop.Controllers
 {
+    [Authorize(Roles = "Administrator")]
     public class CategoriesController : Controller
     {
         private readonly ICategoryService categoryService;
@@ -25,7 +27,6 @@ namespace MusicalInstrumentsShop.Controllers
         {
             if (id == null)
             {
-                Response.StatusCode = 404;
                 return RedirectToAction("NotFound", "Error");
             }
 
@@ -35,7 +36,6 @@ namespace MusicalInstrumentsShop.Controllers
             }
             catch(ItemNotFoundException)
             {
-                Response.StatusCode = 404;
                 return RedirectToAction("NotFound", "Error");
             }
         }
@@ -62,7 +62,6 @@ namespace MusicalInstrumentsShop.Controllers
         {
             if (id == null)
             {
-                Response.StatusCode = 404;
                 return RedirectToAction("NotFound", "Error");
             }
 
@@ -72,7 +71,6 @@ namespace MusicalInstrumentsShop.Controllers
             }
             catch (ItemNotFoundException)
             {
-                Response.StatusCode = 404;
                 return RedirectToAction("NotFound", "Error");
             }
         }
@@ -83,7 +81,6 @@ namespace MusicalInstrumentsShop.Controllers
         {
             if (id != category.Id)
             {
-                Response.StatusCode = 404;
                 return RedirectToAction("NotFound", "Error");
             }
 
@@ -95,7 +92,6 @@ namespace MusicalInstrumentsShop.Controllers
                 }
                 catch (ItemNotFoundException)
                 {
-                    Response.StatusCode = 404;
                     return RedirectToAction("NotFound", "Error");
                 }
                 return RedirectToAction("Index", "Categories");
@@ -107,7 +103,6 @@ namespace MusicalInstrumentsShop.Controllers
         {
             if (id == null)
             {
-                Response.StatusCode = 404;
                 return RedirectToAction("NotFound", "Error");
             }
 
@@ -117,7 +112,6 @@ namespace MusicalInstrumentsShop.Controllers
             }
             catch (ItemNotFoundException)
             {
-                Response.StatusCode = 404;
                 return RedirectToAction("NotFound", "Error");
             }
         }
@@ -128,7 +122,6 @@ namespace MusicalInstrumentsShop.Controllers
         {
             if (id == null)
             {
-                Response.StatusCode = 404;
                 return RedirectToAction("NotFound", "Error");
             }
 
@@ -139,7 +132,6 @@ namespace MusicalInstrumentsShop.Controllers
             }
             catch (ItemNotFoundException)
             {
-                Response.StatusCode = 404;
                 return RedirectToAction("NotFound", "Error");
             }
         }

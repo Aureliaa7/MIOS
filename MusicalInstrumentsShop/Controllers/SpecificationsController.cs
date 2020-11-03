@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MusicalInstrumentsShop.BusinessLogic.DTOs;
 using MusicalInstrumentsShop.BusinessLogic.Exceptions;
@@ -16,6 +17,7 @@ namespace MusicalInstrumentsShop.Controllers
             this.specificationService = specificationService;
         }
 
+        [Authorize]
         public async Task<IActionResult> GetForProduct(string id)
         {
             try
@@ -28,6 +30,7 @@ namespace MusicalInstrumentsShop.Controllers
             }
         }
 
+        [Authorize(Roles = "Administrator")]
         public IActionResult Create()
         {
             return View();
@@ -46,11 +49,11 @@ namespace MusicalInstrumentsShop.Controllers
             return View(specification);
         }
 
+        [Authorize(Roles = "Administrator")]
         public async Task<IActionResult> Delete(Guid? id)
         {
             if (id == null)
             {
-                Response.StatusCode = 404;
                 return RedirectToAction("NotFound", "Error");
             }
 
@@ -60,7 +63,6 @@ namespace MusicalInstrumentsShop.Controllers
             }
             catch (ItemNotFoundException)
             {
-                Response.StatusCode = 404;
                 return RedirectToAction("NotFound", "Error");
             }
         }
@@ -71,7 +73,6 @@ namespace MusicalInstrumentsShop.Controllers
         {
             if (id == null)
             {
-                Response.StatusCode = 404;
                 return RedirectToAction("NotFound", "Error");
             }
 
@@ -82,7 +83,6 @@ namespace MusicalInstrumentsShop.Controllers
             }
             catch (ItemNotFoundException)
             {
-                Response.StatusCode = 404;
                 return RedirectToAction("NotFound", "Error");
             }
         }

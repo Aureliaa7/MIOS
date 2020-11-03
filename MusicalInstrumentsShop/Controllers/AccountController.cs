@@ -44,10 +44,9 @@ namespace MusicalInstrumentsShop.Controllers
                         return RedirectToAction("Customer", "Dashboards");
                     }
                 }
-                TempData["ErrorMessages"] = loginResult.ErrorMessages;
-                return RedirectToAction("FailedLogin", "Account");
+                ViewBag.ErrorMessages = loginResult.ErrorMessages;
             }
-            return View();
+            return View(loginInfo);
         }
 
         [HttpGet]
@@ -66,10 +65,9 @@ namespace MusicalInstrumentsShop.Controllers
                 {
                     return RedirectToAction("Login", "Account");
                 }
-                TempData["RegisterResult"] = registerResult;
-                return RedirectToAction("RegisterResult", "Account");
+                ViewBag.RegisterResult = registerResult;
             }
-            return View();
+            return View(registrationInfo);
         }
 
         public async Task<IActionResult> Logout()
@@ -149,18 +147,6 @@ namespace MusicalInstrumentsShop.Controllers
         public IActionResult ChangePasswordResult()
         {
             ViewBag.Result = TempData["Result"];
-            return View();
-        }
-
-        public IActionResult FailedLogin()
-        {
-            ViewBag.ErrorMessages = TempData["ErrorMessages"];
-            return View();
-        }
-
-        public IActionResult RegisterResult()
-        {
-            ViewBag.RegisterResult = TempData["RegisterResult"];
             return View();
         }
     }

@@ -5,16 +5,16 @@
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
 
-@if (ViewData["ErrorMessage"] != null)
-{
-    <div class="alert">
-        <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
-        @ViewData["ErrorMessage"]
-    </div>
-}
-
 <hr />
 <div class="jumbotron product-jumbotron justify-content-center">
+
+    @if (ViewData["ErrorMessage"] != null)
+    {
+        <div class="alert alert-danger">
+            <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
+            @ViewData["ErrorMessage"]
+        </div>
+    }
     <h4 style="text-align: center;">Add Product</h4>
     <div class="col-md-4">
         <form asp-action="Create" class="product-form" method="post" enctype="multipart/form-data">
