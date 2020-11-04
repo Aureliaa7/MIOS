@@ -155,6 +155,24 @@ namespace MusicalInstrumentsShop.Controllers
             }
         }
 
+        public IActionResult FilterByCategory()
+        {
+            return View();
+        }
+
+        public async Task<IActionResult> FilteredByCategory(Guid id)
+        {
+            try
+            {
+                var products = await productService.GetByCategory(id);
+                return View(products);
+            }
+            catch(ItemNotFoundException)
+            {
+                return RedirectToAction("NotFound", "Error");
+            }
+        }
+
         public JsonResult GetByCategory(string categoryId)
         {
             var products = productService.GetByCategory(new Guid(categoryId)).Result;
