@@ -5,14 +5,16 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using MusicalInstrumentsShop.BusinessLogic.Services;
+using MusicalInstrumentsShop.BusinessLogic.Services.Interfaces;
 using MusicalInstrumentsShop.DataAccess.Data;
-using MusicalInstrumentsShop.DataAccess.Repositories;
+using MusicalInstrumentsShop.DataAccess.Repositories.Interfaces;
 using MusicalInstrumentsShop.DataAccess.Entities;
 using System;
 using Microsoft.AspNetCore.Http;
 using MusicalInstrumentsShop.BusinessLogic.Mappings;
 using AutoMapper;
+using MusicalInstrumentsShop.BusinessLogic.Services;
+using MusicalInstrumentsShop.DataAccess.Repositories;
 
 namespace MusicalInstrumentsShop
 {

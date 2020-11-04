@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MusicalInstrumentsShop.BusinessLogic.DTOs;
 using MusicalInstrumentsShop.BusinessLogic.Exceptions;
-using MusicalInstrumentsShop.BusinessLogic.Services;
+using MusicalInstrumentsShop.BusinessLogic.Services.Interfaces;
 
 namespace MusicalInstrumentsShop.Controllers
 {
@@ -20,7 +20,7 @@ namespace MusicalInstrumentsShop.Controllers
 
         public async Task<IActionResult> Index()
         {
-            return View(await supplierService.GetAll());
+            return View(await supplierService.GetAllAsync());
         }
 
         public async Task<IActionResult> Details(Guid? id)
@@ -33,7 +33,7 @@ namespace MusicalInstrumentsShop.Controllers
 
             try
             {
-                return View(await supplierService.GetById((Guid)id));
+                return View(await supplierService.GetByIdAsync((Guid)id));
             }
             catch (ItemNotFoundException)
             {
@@ -52,7 +52,7 @@ namespace MusicalInstrumentsShop.Controllers
         {
             if (ModelState.IsValid)
             {
-                await supplierService.Add(supplier);
+                await supplierService.AddAsync(supplier);
                 return RedirectToAction(nameof(Index));
             }
             return View(supplier);
@@ -67,7 +67,7 @@ namespace MusicalInstrumentsShop.Controllers
 
             try
             {
-                return View(await supplierService.GetById((Guid)id));
+                return View(await supplierService.GetByIdAsync((Guid)id));
             }
             catch (ItemNotFoundException)
             {
@@ -88,7 +88,7 @@ namespace MusicalInstrumentsShop.Controllers
             {
                 try
                 {
-                    await supplierService.Update(supplier);
+                    await supplierService.UpdateAsync(supplier);
                 }
                 catch (ItemNotFoundException)
                 {
@@ -108,7 +108,7 @@ namespace MusicalInstrumentsShop.Controllers
 
             try
             {
-                return View(await supplierService.GetById((Guid)id));
+                return View(await supplierService.GetByIdAsync((Guid)id));
             }
             catch (ItemNotFoundException)
             {
@@ -127,7 +127,7 @@ namespace MusicalInstrumentsShop.Controllers
 
             try
             {
-                await supplierService.Delete(id);
+                await supplierService.DeleteAsync(id);
                 return RedirectToAction(nameof(Index));
             }
             catch (ItemNotFoundException)
@@ -138,13 +138,13 @@ namespace MusicalInstrumentsShop.Controllers
 
         public JsonResult GetExistingSuppliers()
         {
-            var suppliers = supplierService.GetAll().Result;
+            var suppliers = supplierService.GetAllAsync().Result;
             return new JsonResult(suppliers);
         }
 
         public JsonResult GetSupplierByProduct(string productId)
         {
-            var supplier = supplierService.GetByProduct(productId).Result;
+            var supplier = supplierService.GetByProductAsync(productId).Result;
             return new JsonResult(supplier);
         }
     }

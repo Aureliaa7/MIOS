@@ -2,7 +2,7 @@
 using System;
 using System.Threading.Tasks;
 
-namespace MusicalInstrumentsShop.DataAccess.Repositories
+namespace MusicalInstrumentsShop.DataAccess.Repositories.Interfaces
 {
     public interface IStockRepository : IRepository<Stock>
     {

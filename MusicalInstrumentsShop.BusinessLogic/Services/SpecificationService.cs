@@ -1,10 +1,11 @@
 ﻿using MusicalInstrumentsShop.BusinessLogic.DTOs;
 using MusicalInstrumentsShop.BusinessLogic.Exceptions;
 using MusicalInstrumentsShop.DataAccess.Entities;
-using MusicalInstrumentsShop.DataAccess.Repositories;
+using MusicalInstrumentsShop.DataAccess.Repositories.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using MusicalInstrumentsShop.BusinessLogic.Services.Interfaces;
 
 namespace MusicalInstrumentsShop.BusinessLogic.Services
 {
@@ -19,7 +20,7 @@ namespace MusicalInstrumentsShop.BusinessLogic.Services
             this.productRepository = productRepository;
         }
 
-        public async Task Add(SpecificationDto specificationDto)
+        public async Task AddAsync(SpecificationDto specificationDto)
         {
             bool productExists = await productRepository.Exists(x => x.Id == specificationDto.ProductId);
             if(productExists)
@@ -40,7 +41,7 @@ namespace MusicalInstrumentsShop.BusinessLogic.Services
             }
         }
 
-        public async Task Delete(Guid id)
+        public async Task DeleteAsync(Guid id)
         {
             bool specificationExists = await specificationRepository.Exists(x => x.Id == id);
             if(specificationExists)
@@ -53,7 +54,7 @@ namespace MusicalInstrumentsShop.BusinessLogic.Services
             }
         }
 
-        public async Task<SpecificationDto> GetById(Guid id)
+        public async Task<SpecificationDto> GetByIdAsync(Guid id)
         {
             bool specificationExists = await specificationRepository.Exists(x => x.Id == id);
             if(specificationExists)
@@ -69,7 +70,7 @@ namespace MusicalInstrumentsShop.BusinessLogic.Services
             throw new ItemNotFoundException("The specification was not found...");
         }
 
-        public async Task<IEnumerable<SpecificationDto>> GetForProduct(string productId)
+        public async Task<IEnumerable<SpecificationDto>> GetForProductAsync(string productId)
         {
 
             bool productExists = await productRepository.Exists(x => x.Id == productId);

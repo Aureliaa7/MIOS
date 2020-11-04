@@ -1,11 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using MusicalInstrumentsShop.DataAccess.Repositories;
+using MusicalInstrumentsShop.DataAccess.Repositories.Interfaces;
 using MusicalInstrumentsShop.BusinessLogic.Exceptions;
 using MusicalInstrumentsShop.DataAccess.Entities;
 using MusicalInstrumentsShop.BusinessLogic.DTOs;
 using AutoMapper;
+using MusicalInstrumentsShop.BusinessLogic.Services.Interfaces;
 
 namespace MusicalInstrumentsShop.BusinessLogic.Services
 {
@@ -20,13 +21,13 @@ namespace MusicalInstrumentsShop.BusinessLogic.Services
             this.mapper = mapper;
         }
 
-        public async Task Add(CategoryDto categoryDto)
+        public async Task AddAsync(CategoryDto categoryDto)
         {
             var category = mapper.Map<Category>(categoryDto);
             await categoryRepository.Add(category);
         }
 
-        public async Task Delete(Guid id)
+        public async Task DeleteAsync(Guid id)
         {
             bool categoryExists = await categoryRepository.Exists(x => x.Id == id);
             if(categoryExists)
@@ -39,7 +40,7 @@ namespace MusicalInstrumentsShop.BusinessLogic.Services
             }
         }
 
-        public async Task<IEnumerable<CategoryDto>> GetAll()
+        public async Task<IEnumerable<CategoryDto>> GetAllAsync()
         {
             var categories = await categoryRepository.GetAll();
             var categoryDtos = new List<CategoryDto>();
@@ -50,7 +51,7 @@ namespace MusicalInstrumentsShop.BusinessLogic.Services
             return categoryDtos;
         }
 
-        public async Task<CategoryDto> GetById(Guid id)
+        public async Task<CategoryDto> GetByIdAsync(Guid id)
         {
             bool categoryExists = await categoryRepository.Exists(x => x.Id == id);
             if (categoryExists)
@@ -61,7 +62,7 @@ namespace MusicalInstrumentsShop.BusinessLogic.Services
             throw new ItemNotFoundException("The category was not found...");
         }
 
-        public async Task Update(CategoryDto categoryDto)
+        public async Task UpdateAsync(CategoryDto categoryDto)
         {
             var category = mapper.Map<Category>(categoryDto);
             await categoryRepository.Update(category);

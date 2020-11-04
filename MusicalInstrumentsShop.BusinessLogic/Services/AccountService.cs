@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using MusicalInstrumentsShop.BusinessLogic.Services.Interfaces;
 
 namespace MusicalInstrumentsShop.BusinessLogic.Services
 {
@@ -22,7 +23,7 @@ namespace MusicalInstrumentsShop.BusinessLogic.Services
             loginResult = new LoginResult();
         }
 
-        public async Task<string> ChangePassword(PasswordChangeDto passwordDto)
+        public async Task<string> ChangePasswordAsync(PasswordChangeDto passwordDto)
         {
             var user = await userManager.FindByIdAsync(passwordDto.UserId.ToString());
             if (user != null)
@@ -41,7 +42,7 @@ namespace MusicalInstrumentsShop.BusinessLogic.Services
             throw new ItemNotFoundException("The user was not found...");
         }
 
-        public async Task Edit(Guid userId, AccountInfoDto accountInfo)
+        public async Task EditAsync(Guid userId, AccountInfoDto accountInfo)
         {
             var user = await userManager.FindByIdAsync(userId.ToString());
             if (user != null)
@@ -56,7 +57,7 @@ namespace MusicalInstrumentsShop.BusinessLogic.Services
             }
         }
 
-        public async Task<AccountInfoDto> GetAccountInfo(Guid userId)
+        public async Task<AccountInfoDto> GetAccountInfoAsync(Guid userId)
         {
             var user = await userManager.FindByIdAsync(userId.ToString());
             if (user != null)
@@ -74,7 +75,7 @@ namespace MusicalInstrumentsShop.BusinessLogic.Services
             throw new ItemNotFoundException("The user was not found...");
         }
 
-        public async Task<LoginResult> Login(LoginDto loginInfo)
+        public async Task<LoginResult> LoginAsync(LoginDto loginInfo)
         {
             var result = await signInManager.PasswordSignInAsync(loginInfo.Email, loginInfo.Password, false, lockoutOnFailure: false);
 
@@ -92,7 +93,7 @@ namespace MusicalInstrumentsShop.BusinessLogic.Services
             return loginResult;
         }
 
-        public async Task<List<string>> Register(RegistrationDto registrationInfo)
+        public async Task<List<string>> RegisterAsync(RegistrationDto registrationInfo)
         {
             List<string> errorMessages = new List<string>();
             ApplicationUser newApplicationUser = new ApplicationUser

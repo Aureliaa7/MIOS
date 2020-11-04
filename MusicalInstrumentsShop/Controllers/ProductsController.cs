@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using MusicalInstrumentsShop.BusinessLogic.DTOs;
 using MusicalInstrumentsShop.BusinessLogic.Exceptions;
-using MusicalInstrumentsShop.BusinessLogic.Services;
+using MusicalInstrumentsShop.BusinessLogic.Services.Interfaces;
 using MusicalInstrumentsShop.DataAccess.Entities;
 
 namespace MusicalInstrumentsShop.Controllers
@@ -27,7 +27,7 @@ namespace MusicalInstrumentsShop.Controllers
         [Authorize]
         public async Task<IActionResult> Index()
         {
-            return View(await productService.GetAll());
+            return View(await productService.GetAllAsync());
         }
 
         [Authorize]
@@ -39,7 +39,7 @@ namespace MusicalInstrumentsShop.Controllers
             }
             try
             {
-                var product = await productService.GetById(id);
+                var product = await productService.GetByIdAsync(id);
                 return View(product);
             }
             catch(ItemNotFoundException)
@@ -66,7 +66,7 @@ namespace MusicalInstrumentsShop.Controllers
                     try
                     {
                         photos = imageService.SaveFiles(addProductModel.Photos);
-                        await productService.AddNew(addProductModel, photos);
+                        await productService.AddNewAsync(addProductModel, photos);
                     } 
                     catch(ProductAlreadyExistsException e)
                     {
@@ -88,7 +88,7 @@ namespace MusicalInstrumentsShop.Controllers
             }
             try
             {
-                return View(await productService.GetForUpdate(id));
+                return View(await productService.GetForUpdateAsync(id));
             }
             catch(ItemNotFoundException)
             {
@@ -111,7 +111,7 @@ namespace MusicalInstrumentsShop.Controllers
                 if (product.Photos != null)
                 {
                     photos = imageService.SaveFiles(product.Photos);
-                    var fileNames = await productService.Update(product, photos);
+                    var fileNames = await productService.UpdateAsync(product, photos);
                     if (fileNames != null)
                     {
                         imageService.DeleteFiles(fileNames);
@@ -130,7 +130,7 @@ namespace MusicalInstrumentsShop.Controllers
                 return RedirectToAction("NotFound", "Error");
             }
             try {
-                return View(await productService.GetById(id));
+                return View(await productService.GetByIdAsync(id));
             }
             catch (ItemNotFoundException)
             {
@@ -144,7 +144,7 @@ namespace MusicalInstrumentsShop.Controllers
         {
             try
             {
-                var fileNames = await productService.Delete(id);
+                var fileNames = await productService.DeleteAsync(id);
                 imageService.DeleteFiles(fileNames);
 
                 return RedirectToAction(nameof(Index));
@@ -164,7 +164,7 @@ namespace MusicalInstrumentsShop.Controllers
         {
             try
             {
-                var products = await productService.GetByCategory(id);
+                var products = await productService.GetByCategoryAsync(id);
                 return View(products);
             }
             catch(ItemNotFoundException)
@@ -175,7 +175,7 @@ namespace MusicalInstrumentsShop.Controllers
 
         public JsonResult GetByCategory(string categoryId)
         {
-            var products = productService.GetByCategory(new Guid(categoryId)).Result;
+            var products = productService.GetByCategoryAsync(new Guid(categoryId)).Result;
             return new JsonResult(products);
         }
     }

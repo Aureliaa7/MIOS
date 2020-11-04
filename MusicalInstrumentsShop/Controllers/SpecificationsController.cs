@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MusicalInstrumentsShop.BusinessLogic.DTOs;
 using MusicalInstrumentsShop.BusinessLogic.Exceptions;
-using MusicalInstrumentsShop.BusinessLogic.Services;
+using MusicalInstrumentsShop.BusinessLogic.Services.Interfaces;
 
 namespace MusicalInstrumentsShop.Controllers
 {
@@ -22,7 +22,7 @@ namespace MusicalInstrumentsShop.Controllers
         {
             try
             {
-                return View(await specificationService.GetForProduct(id));
+                return View(await specificationService.GetForProductAsync(id));
             }
             catch(ItemNotFoundException)
             {
@@ -43,7 +43,7 @@ namespace MusicalInstrumentsShop.Controllers
             if (specification.Key != null && specification.Value != null && id != null)
             {
                 specification.ProductId = id;
-                await specificationService.Add(specification);
+                await specificationService.AddAsync(specification);
                 return RedirectToAction("Details", "Products", new {id = specification.ProductId});
             }
             return View(specification);
@@ -59,7 +59,7 @@ namespace MusicalInstrumentsShop.Controllers
 
             try
             {
-                return View(await specificationService.GetById((Guid)id));
+                return View(await specificationService.GetByIdAsync((Guid)id));
             }
             catch (ItemNotFoundException)
             {
@@ -78,7 +78,7 @@ namespace MusicalInstrumentsShop.Controllers
 
             try
             {
-                await specificationService.Delete(id);
+                await specificationService.DeleteAsync(id);
                 return RedirectToAction("Index", "Products");
             }
             catch (ItemNotFoundException)

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace MusicalInstrumentsShop.DataAccess.Repositories
+namespace MusicalInstrumentsShop.DataAccess.Repositories.Interfaces
 {
     public interface IProductRepository : IRepository<Product>
     {

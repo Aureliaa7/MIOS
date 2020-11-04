@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MusicalInstrumentsShop.BusinessLogic.DTOs;
 using MusicalInstrumentsShop.BusinessLogic.Exceptions;
-using MusicalInstrumentsShop.BusinessLogic.Services;
+using MusicalInstrumentsShop.BusinessLogic.Services.Interfaces;
 
 namespace MusicalInstrumentsShop.Controllers
 {
@@ -30,7 +30,7 @@ namespace MusicalInstrumentsShop.Controllers
             {
                 try
                 {
-                    await stockService.AddProductsInStock(stockDto);
+                    await stockService.AddProductsInStockAsync(stockDto);
                     return RedirectToAction("Index", "Products");
                 }
                 catch (ItemNotFoundException)

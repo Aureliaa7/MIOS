@@ -2,7 +2,7 @@
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using MusicalInstrumentsShop.BusinessLogic.Exceptions;
-using MusicalInstrumentsShop.BusinessLogic.Services;
+using MusicalInstrumentsShop.BusinessLogic.Services.Interfaces;
 using MusicalInstrumentsShop.BusinessLogic.DTOs;
 using Microsoft.AspNetCore.Authorization;
 
@@ -20,7 +20,7 @@ namespace MusicalInstrumentsShop.Controllers
 
         public async Task<IActionResult> Index()
         {
-            return View(await categoryService.GetAll());
+            return View(await categoryService.GetAllAsync());
         }
 
         public async Task<IActionResult> Details(Guid? id)
@@ -32,7 +32,7 @@ namespace MusicalInstrumentsShop.Controllers
 
             try
             {
-                return View(await categoryService.GetById((Guid)id));
+                return View(await categoryService.GetByIdAsync((Guid)id));
             }
             catch(ItemNotFoundException)
             {
@@ -52,7 +52,7 @@ namespace MusicalInstrumentsShop.Controllers
             if (ModelState.IsValid)
             {
                 category.Id = Guid.NewGuid();
-                await categoryService.Add(category);
+                await categoryService.AddAsync(category);
                 return RedirectToAction(nameof(Index));
             }
             return View(category);
@@ -67,7 +67,7 @@ namespace MusicalInstrumentsShop.Controllers
 
             try
             {
-                return View(await categoryService.GetById((Guid)id));
+                return View(await categoryService.GetByIdAsync((Guid)id));
             }
             catch (ItemNotFoundException)
             {
@@ -88,7 +88,7 @@ namespace MusicalInstrumentsShop.Controllers
             {
                 try
                 {
-                    await categoryService.Update(category);
+                    await categoryService.UpdateAsync(category);
                 }
                 catch (ItemNotFoundException)
                 {
@@ -108,7 +108,7 @@ namespace MusicalInstrumentsShop.Controllers
 
             try
             {
-                return View(await categoryService.GetById((Guid)id));
+                return View(await categoryService.GetByIdAsync((Guid)id));
             }
             catch (ItemNotFoundException)
             {
@@ -127,7 +127,7 @@ namespace MusicalInstrumentsShop.Controllers
 
             try
             {
-                await categoryService.Delete(id);
+                await categoryService.DeleteAsync(id);
                 return RedirectToAction(nameof(Index));
             }
             catch (ItemNotFoundException)
@@ -138,7 +138,7 @@ namespace MusicalInstrumentsShop.Controllers
 
         public JsonResult GetExistingCategories()
         {
-            var categories = categoryService.GetAll().Result;
+            var categories = categoryService.GetAllAsync().Result;
             return new JsonResult(categories);
         }
     }

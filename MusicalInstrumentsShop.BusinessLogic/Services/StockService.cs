@@ -1,8 +1,9 @@
 ﻿using MusicalInstrumentsShop.BusinessLogic.DTOs;
 using MusicalInstrumentsShop.BusinessLogic.Exceptions;
 using MusicalInstrumentsShop.DataAccess.Entities;
-using MusicalInstrumentsShop.DataAccess.Repositories;
+using MusicalInstrumentsShop.DataAccess.Repositories.Interfaces;
 using System.Threading.Tasks;
+using MusicalInstrumentsShop.BusinessLogic.Services.Interfaces;
 
 namespace MusicalInstrumentsShop.BusinessLogic.Services
 {
@@ -22,7 +23,7 @@ namespace MusicalInstrumentsShop.BusinessLogic.Services
             this.stockRepository = stockRepository;
         }
 
-        public async Task AddProductsInStock(StockDto stockDto)
+        public async Task AddProductsInStockAsync(StockDto stockDto)
         {
             bool categoryExists = await categoryRepository.Exists(x => x.Id == stockDto.CategoryId);
             bool supplierExists = await supplierRepository.Exists(x => x.Id == stockDto.SupplierId);

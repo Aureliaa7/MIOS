@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using MusicalInstrumentsShop.BusinessLogic.DTOs;
 using MusicalInstrumentsShop.BusinessLogic.Exceptions;
-using MusicalInstrumentsShop.BusinessLogic.Services;
+using MusicalInstrumentsShop.BusinessLogic.Services.Interfaces;
 using MusicalInstrumentsShop.DataAccess.Entities;
 using System;
 using System.Security.Claims;
@@ -32,7 +32,7 @@ namespace MusicalInstrumentsShop.Controllers
         {
             if (ModelState.IsValid)
             {
-                var loginResult = await accountService.Login(loginInfo);
+                var loginResult = await accountService.LoginAsync(loginInfo);
                 if (loginResult.ErrorMessages == null)
                 {
                     if (loginResult.UserRole.Equals("Administrator"))
@@ -60,7 +60,7 @@ namespace MusicalInstrumentsShop.Controllers
         {
             if (ModelState.IsValid)
             {
-                var registerResult = await accountService.Register(registrationInfo);
+                var registerResult = await accountService.RegisterAsync(registrationInfo);
                 if (registerResult == null)
                 {
                     return RedirectToAction("Login", "Account");
@@ -81,7 +81,7 @@ namespace MusicalInstrumentsShop.Controllers
             try
             {
                 Guid currentUserId = new Guid(User.FindFirstValue(ClaimTypes.NameIdentifier));
-                var accountInfo = await accountService.GetAccountInfo(currentUserId);
+                var accountInfo = await accountService.GetAccountInfoAsync(currentUserId);
                 return View(accountInfo);
             }
             catch (ItemNotFoundException) {
@@ -94,7 +94,7 @@ namespace MusicalInstrumentsShop.Controllers
             Guid currentUserId = new Guid(User.FindFirstValue(ClaimTypes.NameIdentifier));
             try
             {
-                var accountInfo = await accountService.GetAccountInfo(currentUserId);
+                var accountInfo = await accountService.GetAccountInfoAsync(currentUserId);
                 return View(accountInfo);
             }
             catch (ItemNotFoundException)
@@ -109,7 +109,7 @@ namespace MusicalInstrumentsShop.Controllers
             Guid currentUserId = new Guid(User.FindFirstValue(ClaimTypes.NameIdentifier));
             try
             {
-                await accountService.Edit(currentUserId, accountInfo);
+                await accountService.EditAsync(currentUserId, accountInfo);
                 return RedirectToAction("Profile", "Account");
             }
             catch(ItemNotFoundException)
@@ -132,7 +132,7 @@ namespace MusicalInstrumentsShop.Controllers
                 passwordDto.UserId = currentUserId;
                 try
                 {
-                    var result = await accountService.ChangePassword(passwordDto);
+                    var result = await accountService.ChangePasswordAsync(passwordDto);
                     TempData["Result"] = result;
                     return RedirectToAction("ChangePasswordResult", "Account");
                 }

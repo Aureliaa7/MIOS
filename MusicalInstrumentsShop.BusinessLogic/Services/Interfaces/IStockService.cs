@@ -1,10 +1,10 @@
 ﻿using MusicalInstrumentsShop.BusinessLogic.DTOs;
 using System.Threading.Tasks;
 
-namespace MusicalInstrumentsShop.BusinessLogic.Services
+namespace MusicalInstrumentsShop.BusinessLogic.Services.Interfaces
 {
     public interface IStockService
     {
-        Task AddProductsInStock(StockDto stockDto);
+        Task AddProductsInStockAsync(StockDto stockDto);
     }
 }

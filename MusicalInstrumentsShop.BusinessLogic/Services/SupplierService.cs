@@ -1,11 +1,12 @@
 ﻿using MusicalInstrumentsShop.BusinessLogic.Exceptions;
-using MusicalInstrumentsShop.DataAccess.Repositories;
+using MusicalInstrumentsShop.DataAccess.Repositories.Interfaces;
 using MusicalInstrumentsShop.DataAccess.Entities;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using MusicalInstrumentsShop.BusinessLogic.DTOs;
 using AutoMapper;
+using MusicalInstrumentsShop.BusinessLogic.Services.Interfaces;
 
 namespace MusicalInstrumentsShop.BusinessLogic.Services
 {
@@ -25,13 +26,13 @@ namespace MusicalInstrumentsShop.BusinessLogic.Services
             this.mapper = mapper;
         }
 
-        public async Task Add(SupplierDto supplierDto)
+        public async Task AddAsync(SupplierDto supplierDto)
         {
             var supplier = mapper.Map<Supplier>(supplierDto);
             await supplierRepository.Add(supplier);
         }
 
-        public async Task Delete(Guid id)
+        public async Task DeleteAsync(Guid id)
         {
             bool supplierExists = await supplierRepository.Exists(x => x.Id == id);
             if (supplierExists)
@@ -44,7 +45,7 @@ namespace MusicalInstrumentsShop.BusinessLogic.Services
             }
         }
 
-        public async Task<IEnumerable<SupplierDto>> GetAll()
+        public async Task<IEnumerable<SupplierDto>> GetAllAsync()
         {
             var suppliers = await supplierRepository.GetAll();
             var supplierDtos = new List<SupplierDto>();
@@ -56,7 +57,7 @@ namespace MusicalInstrumentsShop.BusinessLogic.Services
             return supplierDtos;
         }
 
-        public async Task<SupplierDto> GetById(Guid id)
+        public async Task<SupplierDto> GetByIdAsync(Guid id)
         {
             bool supplierExists = await supplierRepository.Exists(x => x.Id == id);
             if (supplierExists)
@@ -67,7 +68,7 @@ namespace MusicalInstrumentsShop.BusinessLogic.Services
             throw new ItemNotFoundException("The supplier was not found...");
         }
 
-        public async Task<SupplierDto> GetByProduct(string productId)
+        public async Task<SupplierDto> GetByProductAsync(string productId)
         {
             bool productExists = await productRepository.Exists(x => x.Id == productId);
             if (productExists)
@@ -81,7 +82,7 @@ namespace MusicalInstrumentsShop.BusinessLogic.Services
             throw new ItemNotFoundException("The product was not found");
         }
 
-        public async Task Update(SupplierDto supplierDto)
+        public async Task UpdateAsync(SupplierDto supplierDto)
         {
             var supplier = mapper.Map<Supplier>(supplierDto);
             await supplierRepository.Update(supplier);

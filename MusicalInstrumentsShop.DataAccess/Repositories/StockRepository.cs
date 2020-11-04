@@ -4,6 +4,7 @@ using MusicalInstrumentsShop.DataAccess.Entities;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
+using MusicalInstrumentsShop.DataAccess.Repositories.Interfaces;
 
 namespace MusicalInstrumentsShop.DataAccess.Repositories
 {

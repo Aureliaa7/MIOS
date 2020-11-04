@@ -1,11 +1,12 @@
 ﻿using MusicalInstrumentsShop.BusinessLogic.Exceptions;
-using MusicalInstrumentsShop.DataAccess.Repositories;
+using MusicalInstrumentsShop.DataAccess.Repositories.Interfaces;
 using MusicalInstrumentsShop.DataAccess.Entities;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using MusicalInstrumentsShop.BusinessLogic.DTOs;
 using System;
 using System.Linq;
+using MusicalInstrumentsShop.BusinessLogic.Services.Interfaces;
 
 namespace MusicalInstrumentsShop.BusinessLogic.Services
 {
@@ -27,7 +28,7 @@ namespace MusicalInstrumentsShop.BusinessLogic.Services
             this.photoProductRepository = photoProductRepository;
         }
 
-        public async Task AddNew(ProductCreationDto productModel, IEnumerable<Photo> photos)
+        public async Task AddNewAsync(ProductCreationDto productModel, IEnumerable<Photo> photos)
         {
             bool categoryExists = await categoryRepository.Exists(x => x.Id == productModel.CategoryId);
             bool supplierExists = await supplierRepository.Exists(x => x.Id == productModel.SupplierId);
@@ -75,7 +76,7 @@ namespace MusicalInstrumentsShop.BusinessLogic.Services
             }
         }
 
-        public async Task<IEnumerable<string>> Delete(string id)
+        public async Task<IEnumerable<string>> DeleteAsync(string id)
         {
             bool productExists = await productRepository.Exists(x => x.Id == id);
             if (productExists)
@@ -85,13 +86,13 @@ namespace MusicalInstrumentsShop.BusinessLogic.Services
             throw new ItemNotFoundException("The product was not found...");
         }
 
-        public async Task<IEnumerable<ProductDto>> GetAll()
+        public async Task<IEnumerable<ProductDto>> GetAllAsync()
         {
             var products = await productRepository.GetAllWithRelatedData();
             return await MapProducts(products);
         }
 
-        public async Task<IEnumerable<ProductDto>> GetByCategory(Guid categoryId)
+        public async Task<IEnumerable<ProductDto>> GetByCategoryAsync(Guid categoryId)
         {
             bool categoryExists = await categoryRepository.Exists(x => x.Id == categoryId);
             if (categoryExists)
@@ -104,7 +105,7 @@ namespace MusicalInstrumentsShop.BusinessLogic.Services
             throw new ItemNotFoundException("The category was not found...");
         }
 
-        public async Task<ProductDto> GetById(string id)
+        public async Task<ProductDto> GetByIdAsync(string id)
         {
             bool productExists = await productRepository.Exists(x => x.Id == id);
             if (productExists)
@@ -115,7 +116,7 @@ namespace MusicalInstrumentsShop.BusinessLogic.Services
             throw new ItemNotFoundException("The product was not found...");
         }
 
-        public async Task<ProductEditingDto> GetForUpdate(string id)
+        public async Task<ProductEditingDto> GetForUpdateAsync(string id)
         {
             bool productExists = await productRepository.Exists(x => x.Id == id);
             if (productExists)
@@ -133,7 +134,7 @@ namespace MusicalInstrumentsShop.BusinessLogic.Services
             throw new ItemNotFoundException("The product was not found...");
         }
 
-        public async Task<IEnumerable<string>> Update(ProductEditingDto productDto, IEnumerable<Photo> photos)
+        public async Task<IEnumerable<string>> UpdateAsync(ProductEditingDto productDto, IEnumerable<Photo> photos)
         {
             IEnumerable<string> fileNames = new List<string>();
             var product = await productRepository.GetWithRelatedData(productDto.Id);
