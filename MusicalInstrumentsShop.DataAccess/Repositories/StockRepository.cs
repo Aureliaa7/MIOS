@@ -5,6 +5,7 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 using MusicalInstrumentsShop.DataAccess.Repositories.Interfaces;
+using System.Collections.Generic;
 
 namespace MusicalInstrumentsShop.DataAccess.Repositories
 {
@@ -12,10 +13,10 @@ namespace MusicalInstrumentsShop.DataAccess.Repositories
     {
         public StockRepository(ApplicationDbContext context) : base(context) {}
 
-        public async Task<Stock> GetByProductId(string productId)
+        public async Task<Stock> GetByProductId(string id)
         {
             return await Context.Set<Stock>()
-               .Where(x => x.Product.Id == productId)
+               .Where(x => x.Product.Id == id)
                .Include(x => x.Supplier)
                .FirstAsync();
         }
@@ -26,6 +27,15 @@ namespace MusicalInstrumentsShop.DataAccess.Repositories
                 .Where(x => x.Id == id)
                 .Include(x => x.Supplier)
                 .FirstAsync();
+        }
+
+        public async Task<IEnumerable<Stock>> GetBySupplierId(Guid id)
+        {
+            return await Context.Set<Stock>()
+               .Where(x => x.Supplier.Id == id)
+               .Include(x => x.Supplier)
+               .Include(x => x.Product)
+               .ToListAsync();
         }
     }
 }

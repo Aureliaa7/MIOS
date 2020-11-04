@@ -16,6 +16,7 @@ namespace MusicalInstrumentsShop.BusinessLogic.DTOs
         public string ProductId { get;set;}
         [Required]
         [Display(Name = "Number of products")]
+        [Range(0, int.MaxValue, ErrorMessage = "Please enter a value bigger than 0")]
         public int NumberOfProducts { get; set; }
     }
 }

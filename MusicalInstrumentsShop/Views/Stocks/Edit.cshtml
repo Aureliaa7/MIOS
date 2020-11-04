@@ -26,7 +26,7 @@
 
             <div class="form-group">
                 <label asp-for="ProductId" class="control-label"></label>
-                <select id="product-field" asp-for="ProductId" class="form-control" onchange="get_supplier()">
+                <select id="product-field" asp-for="ProductId" class="form-control" onclick="get_supplier()">
                     <option>Select product</option>
                 </select>
                 <span asp-validation-for="ProductId" class="text-danger"></span>
