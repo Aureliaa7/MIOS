@@ -5,10 +5,10 @@ namespace MusicalInstrumentsShop.DataAccess.Entities
     public class OrderProduct
     {
         public Guid Id { get; set; }
-        public Order Order { get; set; }
+        public ApplicationUser Customer { get; set; }
         public Product Product { get; set; }
-        public int Quantity { get; set; }
-        public double Price { get; set; }
-        public double Discount { get; set; }
+        public int NumberOfProducts { get; set; }
+        public OrderStatus Status { get; set; }
+        public OrderDetails OrderDetails { get; set; }
     }
 }

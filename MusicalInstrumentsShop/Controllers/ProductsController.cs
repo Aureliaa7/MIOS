@@ -155,11 +155,13 @@ namespace MusicalInstrumentsShop.Controllers
             }
         }
 
+        [Authorize(Roles = "Administrator")]
         public IActionResult FilterByCategory()
         {
             return View();
         }
 
+        [Authorize(Roles = "Administrator")]
         public async Task<IActionResult> FilteredByCategory(Guid id)
         {
             try

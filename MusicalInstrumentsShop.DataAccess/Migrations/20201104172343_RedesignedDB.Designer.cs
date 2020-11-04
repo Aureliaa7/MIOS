@@ -10,8 +10,8 @@ using MusicalInstrumentsShop.DataAccess.Data;
 namespace MusicalInstrumentsShop.DataAccess.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20201102134832_AddedSpecificationsTable")]
-    partial class AddedSpecificationsTable
+    [Migration("20201104172343_RedesignedDB")]
+    partial class RedesignedDB
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -261,26 +261,45 @@ namespace MusicalInstrumentsShop.DataAccess.Migrations
                     b.ToTable("CreditCards");
                 });
 
-            modelBuilder.Entity("MusicalInstrumentsShop.DataAccess.Entities.Order", b =>
+            modelBuilder.Entity("MusicalInstrumentsShop.DataAccess.Entities.DeliveryMethod", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<DateTime>("OrderDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("OrderStatus")
-                        .HasColumnType("int");
-
-                    b.Property<Guid?>("UserId")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<string>("Method")
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("UserId");
+                    b.ToTable("DeliveryMethods");
+                });
 
-                    b.ToTable("Orders");
+            modelBuilder.Entity("MusicalInstrumentsShop.DataAccess.Entities.OrderDetails", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Address")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid?>("CustomerId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid?>("DeliveryMethodId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("OrderPlacementDate")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CustomerId");
+
+                    b.HasIndex("DeliveryMethodId");
+
+                    b.ToTable("OrderDetails");
                 });
 
             modelBuilder.Entity("MusicalInstrumentsShop.DataAccess.Entities.OrderProduct", b =>
@@ -289,24 +308,26 @@ namespace MusicalInstrumentsShop.DataAccess.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<double>("Discount")
-                        .HasColumnType("float");
-
-                    b.Property<Guid?>("OrderId")
+                    b.Property<Guid?>("CustomerId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<double>("Price")
-                        .HasColumnType("float");
+                    b.Property<int>("NumberOfProducts")
+                        .HasColumnType("int");
+
+                    b.Property<Guid?>("OrderDetailsId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("ProductId")
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<int>("Quantity")
+                    b.Property<int>("Status")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("OrderId");
+                    b.HasIndex("CustomerId");
+
+                    b.HasIndex("OrderDetailsId");
 
                     b.HasIndex("ProductId");
 
@@ -325,14 +346,17 @@ namespace MusicalInstrumentsShop.DataAccess.Migrations
                     b.Property<Guid?>("CreditCardId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid?>("OrderId")
+                    b.Property<DateTime>("Date")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid?>("OrderDetailsId")
                         .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
 
                     b.HasIndex("CreditCardId");
 
-                    b.HasIndex("OrderId");
+                    b.HasIndex("OrderDetailsId");
 
                     b.ToTable("Payments");
                 });
@@ -394,28 +418,6 @@ namespace MusicalInstrumentsShop.DataAccess.Migrations
                     b.HasIndex("CategoryId");
 
                     b.ToTable("Products");
-                });
-
-            modelBuilder.Entity("MusicalInstrumentsShop.DataAccess.Entities.Shipping", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateTime>("Date")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Method")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<Guid?>("OrderId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("OrderId");
-
-                    b.ToTable("Shippings");
                 });
 
             modelBuilder.Entity("MusicalInstrumentsShop.DataAccess.Entities.Specification", b =>
@@ -579,18 +581,26 @@ namespace MusicalInstrumentsShop.DataAccess.Migrations
                         .HasForeignKey("UserId");
                 });
 
-            modelBuilder.Entity("MusicalInstrumentsShop.DataAccess.Entities.Order", b =>
+            modelBuilder.Entity("MusicalInstrumentsShop.DataAccess.Entities.OrderDetails", b =>
                 {
-                    b.HasOne("MusicalInstrumentsShop.DataAccess.Entities.ApplicationUser", "User")
+                    b.HasOne("MusicalInstrumentsShop.DataAccess.Entities.ApplicationUser", "Customer")
                         .WithMany()
-                        .HasForeignKey("UserId");
+                        .HasForeignKey("CustomerId");
+
+                    b.HasOne("MusicalInstrumentsShop.DataAccess.Entities.DeliveryMethod", "DeliveryMethod")
+                        .WithMany()
+                        .HasForeignKey("DeliveryMethodId");
                 });
 
             modelBuilder.Entity("MusicalInstrumentsShop.DataAccess.Entities.OrderProduct", b =>
                 {
-                    b.HasOne("MusicalInstrumentsShop.DataAccess.Entities.Order", "Order")
+                    b.HasOne("MusicalInstrumentsShop.DataAccess.Entities.ApplicationUser", "Customer")
                         .WithMany()
-                        .HasForeignKey("OrderId");
+                        .HasForeignKey("CustomerId");
+
+                    b.HasOne("MusicalInstrumentsShop.DataAccess.Entities.OrderDetails", "OrderDetails")
+                        .WithMany()
+                        .HasForeignKey("OrderDetailsId");
 
                     b.HasOne("MusicalInstrumentsShop.DataAccess.Entities.Product", "Product")
                         .WithMany()
@@ -603,9 +613,9 @@ namespace MusicalInstrumentsShop.DataAccess.Migrations
                         .WithMany()
                         .HasForeignKey("CreditCardId");
 
-                    b.HasOne("MusicalInstrumentsShop.DataAccess.Entities.Order", "Order")
+                    b.HasOne("MusicalInstrumentsShop.DataAccess.Entities.OrderDetails", "OrderDetails")
                         .WithMany()
-                        .HasForeignKey("OrderId");
+                        .HasForeignKey("OrderDetailsId");
                 });
 
             modelBuilder.Entity("MusicalInstrumentsShop.DataAccess.Entities.PhotoProduct", b =>
@@ -624,13 +634,6 @@ namespace MusicalInstrumentsShop.DataAccess.Migrations
                     b.HasOne("MusicalInstrumentsShop.DataAccess.Entities.Category", "Category")
                         .WithMany()
                         .HasForeignKey("CategoryId");
-                });
-
-            modelBuilder.Entity("MusicalInstrumentsShop.DataAccess.Entities.Shipping", b =>
-                {
-                    b.HasOne("MusicalInstrumentsShop.DataAccess.Entities.Order", "Order")
-                        .WithMany()
-                        .HasForeignKey("OrderId");
                 });
 
             modelBuilder.Entity("MusicalInstrumentsShop.DataAccess.Entities.Specification", b =>

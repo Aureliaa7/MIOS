@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace MusicalInstrumentsShop.DataAccess.Migrations
 {
-    public partial class RedoneDB : Migration
+    public partial class RedesignedDB : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -28,7 +28,7 @@ namespace MusicalInstrumentsShop.DataAccess.Migrations
                     Id = table.Column<Guid>(nullable: false),
                     UserName = table.Column<string>(maxLength: 256, nullable: true),
                     NormalizedUserName = table.Column<string>(maxLength: 256, nullable: true),
-                    Email = table.Column<string>(maxLength: 256, nullable: false),
+                    Email = table.Column<string>(maxLength: 256, nullable: true),
                     NormalizedEmail = table.Column<string>(maxLength: 256, nullable: true),
                     EmailConfirmed = table.Column<bool>(nullable: false),
                     PasswordHash = table.Column<string>(nullable: true),
@@ -40,8 +40,8 @@ namespace MusicalInstrumentsShop.DataAccess.Migrations
                     LockoutEnd = table.Column<DateTimeOffset>(nullable: true),
                     LockoutEnabled = table.Column<bool>(nullable: false),
                     AccessFailedCount = table.Column<int>(nullable: false),
-                    FirstName = table.Column<string>(nullable: false),
-                    LastName = table.Column<string>(nullable: false)
+                    FirstName = table.Column<string>(nullable: true),
+                    LastName = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -58,6 +58,18 @@ namespace MusicalInstrumentsShop.DataAccess.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Categories", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "DeliveryMethods",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(nullable: false),
+                    Method = table.Column<string>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_DeliveryMethods", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -214,26 +226,6 @@ namespace MusicalInstrumentsShop.DataAccess.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Orders",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(nullable: false),
-                    UserId = table.Column<Guid>(nullable: false),
-                    OrderDate = table.Column<DateTime>(nullable: false),
-                    OrderStatus = table.Column<int>(nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Orders", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Orders_AspNetUsers_UserId",
-                        column: x => x.UserId,
-                        principalTable: "AspNetUsers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Wishlists",
                 columns: table => new
                 {
@@ -259,8 +251,7 @@ namespace MusicalInstrumentsShop.DataAccess.Migrations
                     Name = table.Column<string>(nullable: false),
                     Price = table.Column<double>(nullable: false),
                     Description = table.Column<string>(nullable: false),
-                    CategoryId = table.Column<Guid>(nullable: false),
-                    Specifications = table.Column<string>(nullable: false)
+                    CategoryId = table.Column<Guid>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -274,77 +265,30 @@ namespace MusicalInstrumentsShop.DataAccess.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Payments",
+                name: "OrderDetails",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(nullable: false),
-                    Amount = table.Column<double>(nullable: false),
-                    CreditCardId = table.Column<Guid>(nullable: false),
-                    OrderId = table.Column<Guid>(nullable: false)
+                    Address = table.Column<string>(nullable: false),
+                    DeliveryMethodId = table.Column<Guid>(nullable: false),
+                    OrderPlacementDate = table.Column<DateTime>(nullable: false),
+                    CustomerId = table.Column<Guid>(nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Payments", x => x.Id);
+                    table.PrimaryKey("PK_OrderDetails", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Payments_CreditCards_CreditCardId",
-                        column: x => x.CreditCardId,
-                        principalTable: "CreditCards",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_Payments_Orders_OrderId",
-                        column: x => x.OrderId,
-                        principalTable: "Orders",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Shippings",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(nullable: false),
-                    Method = table.Column<string>(nullable: false),
-                    Date = table.Column<DateTime>(nullable: false),
-                    OrderId = table.Column<Guid>(nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Shippings", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Shippings_Orders_OrderId",
-                        column: x => x.OrderId,
-                        principalTable: "Orders",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "OrderProducts",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(nullable: false),
-                    OrderId = table.Column<Guid>(nullable: false),
-                    ProductId = table.Column<string>(nullable: false),
-                    Quantity = table.Column<int>(nullable: false),
-                    Price = table.Column<double>(nullable: false),
-                    Discount = table.Column<double>(nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_OrderProducts", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_OrderProducts_Orders_OrderId",
-                        column: x => x.OrderId,
-                        principalTable: "Orders",
+                        name: "FK_OrderDetails_AspNetUsers_CustomerId",
+                        column: x => x.CustomerId,
+                        principalTable: "AspNetUsers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_OrderProducts_Products_ProductId",
-                        column: x => x.ProductId,
-                        principalTable: "Products",
+                        name: "FK_OrderDetails_DeliveryMethods_DeliveryMethodId",
+                        column: x => x.DeliveryMethodId,
+                        principalTable: "DeliveryMethods",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -366,6 +310,26 @@ namespace MusicalInstrumentsShop.DataAccess.Migrations
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_PhotoProducts_Products_ProductId",
+                        column: x => x.ProductId,
+                        principalTable: "Products",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Specifications",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(nullable: false),
+                    Key = table.Column<string>(nullable: false),
+                    Value = table.Column<string>(nullable: false),
+                    ProductId = table.Column<string>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Specifications", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Specifications_Products_ProductId",
                         column: x => x.ProductId,
                         principalTable: "Products",
                         principalColumn: "Id",
@@ -420,7 +384,68 @@ namespace MusicalInstrumentsShop.DataAccess.Migrations
                         column: x => x.WishlistId,
                         principalTable: "Wishlists",
                         principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "OrderProducts",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(nullable: false),
+                    CustomerId = table.Column<Guid>(nullable: false),
+                    ProductId = table.Column<string>(nullable: false),
+                    NumberOfProducts = table.Column<int>(nullable: false),
+                    Status = table.Column<int>(nullable: false),
+                    OrderDetailsId = table.Column<Guid>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_OrderProducts", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_OrderProducts_AspNetUsers_CustomerId",
+                        column: x => x.CustomerId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_OrderProducts_OrderDetails_OrderDetailsId",
+                        column: x => x.OrderDetailsId,
+                        principalTable: "OrderDetails",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.NoAction);
+                    table.ForeignKey(
+                        name: "FK_OrderProducts_Products_ProductId",
+                        column: x => x.ProductId,
+                        principalTable: "Products",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Payments",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(nullable: false),
+                    Amount = table.Column<double>(nullable: false),
+                    CreditCardId = table.Column<Guid>(nullable: false),
+                    Date = table.Column<DateTime>(nullable: false),
+                    OrderDetailsId = table.Column<Guid>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Payments", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Payments_CreditCards_CreditCardId",
+                        column: x => x.CreditCardId,
+                        principalTable: "CreditCards",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Payments_OrderDetails_OrderDetailsId",
+                        column: x => x.OrderDetailsId,
+                        principalTable: "OrderDetails",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateIndex(
@@ -468,9 +493,24 @@ namespace MusicalInstrumentsShop.DataAccess.Migrations
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_OrderProducts_OrderId",
+                name: "IX_OrderDetails_CustomerId",
+                table: "OrderDetails",
+                column: "CustomerId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_OrderDetails_DeliveryMethodId",
+                table: "OrderDetails",
+                column: "DeliveryMethodId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_OrderProducts_CustomerId",
                 table: "OrderProducts",
-                column: "OrderId");
+                column: "CustomerId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_OrderProducts_OrderDetailsId",
+                table: "OrderProducts",
+                column: "OrderDetailsId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_OrderProducts_ProductId",
@@ -478,19 +518,14 @@ namespace MusicalInstrumentsShop.DataAccess.Migrations
                 column: "ProductId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Orders_UserId",
-                table: "Orders",
-                column: "UserId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_Payments_CreditCardId",
                 table: "Payments",
                 column: "CreditCardId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Payments_OrderId",
+                name: "IX_Payments_OrderDetailsId",
                 table: "Payments",
-                column: "OrderId");
+                column: "OrderDetailsId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_PhotoProducts_PhotoId",
@@ -508,9 +543,9 @@ namespace MusicalInstrumentsShop.DataAccess.Migrations
                 column: "CategoryId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Shippings_OrderId",
-                table: "Shippings",
-                column: "OrderId");
+                name: "IX_Specifications_ProductId",
+                table: "Specifications",
+                column: "ProductId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Stocks_ProductId",
@@ -565,7 +600,7 @@ namespace MusicalInstrumentsShop.DataAccess.Migrations
                 name: "PhotoProducts");
 
             migrationBuilder.DropTable(
-                name: "Shippings");
+                name: "Specifications");
 
             migrationBuilder.DropTable(
                 name: "Stocks");
@@ -580,10 +615,10 @@ namespace MusicalInstrumentsShop.DataAccess.Migrations
                 name: "CreditCards");
 
             migrationBuilder.DropTable(
-                name: "Photos");
+                name: "OrderDetails");
 
             migrationBuilder.DropTable(
-                name: "Orders");
+                name: "Photos");
 
             migrationBuilder.DropTable(
                 name: "Suppliers");
@@ -593,6 +628,9 @@ namespace MusicalInstrumentsShop.DataAccess.Migrations
 
             migrationBuilder.DropTable(
                 name: "Wishlists");
+
+            migrationBuilder.DropTable(
+                name: "DeliveryMethods");
 
             migrationBuilder.DropTable(
                 name: "Categories");

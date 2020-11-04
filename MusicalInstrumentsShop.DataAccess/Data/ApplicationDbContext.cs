@@ -13,12 +13,12 @@ namespace MusicalInstrumentsShop.DataAccess.Data
         public DbSet<Supplier> Suppliers { get; set; }
         public DbSet<Stock> Stocks { get; set; }
         public DbSet<Product> Products { get; set; }
-        public DbSet<Order> Orders { get; set; }
-        public DbSet<Shipping> Shippings { get; set; }
+        public DbSet<DeliveryMethod> DeliveryMethods { get; set; }
         public DbSet<Payment> Payments { get; set; }
         public DbSet<Wishlist> Wishlists { get; set; }
         public DbSet<CreditCard> CreditCards { get; set; }
         public DbSet<OrderProduct> OrderProducts { get; set; }
+        public DbSet<OrderDetails> OrderDetails { get; set; }
         public DbSet<WishlistProduct> WishlistProducts { get; set; }
         public DbSet<Photo> Photos { get; set; }
         public DbSet<PhotoProduct> PhotoProducts { get; set; }
