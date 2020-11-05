@@ -15,6 +15,7 @@ using MusicalInstrumentsShop.BusinessLogic.Mappings;
 using AutoMapper;
 using MusicalInstrumentsShop.BusinessLogic.Services;
 using MusicalInstrumentsShop.DataAccess.Repositories;
+using MusicalInstrumentsShop.DataAccess.UnitOfWork;
 
 namespace MusicalInstrumentsShop
 {
@@ -64,6 +65,7 @@ namespace MusicalInstrumentsShop
             services.AddScoped<IProductRepository, ProductRepository>();
             services.AddScoped<IStockRepository, StockRepository>();
             services.AddScoped<IPhotoProductRepository, PhotoProductRepository>();
+            services.AddScoped<IUnitOfWork, UnitOfWork>();
 
             services.AddScoped<ICategoryService, CategoryService>();
             services.AddScoped<IAccountService, AccountService>();

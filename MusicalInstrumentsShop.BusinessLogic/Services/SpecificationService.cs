@@ -1,31 +1,29 @@
 ﻿using MusicalInstrumentsShop.BusinessLogic.DTOs;
 using MusicalInstrumentsShop.BusinessLogic.Exceptions;
 using MusicalInstrumentsShop.DataAccess.Entities;
-using MusicalInstrumentsShop.DataAccess.Repositories.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using MusicalInstrumentsShop.BusinessLogic.Services.Interfaces;
+using MusicalInstrumentsShop.DataAccess.UnitOfWork;
 
 namespace MusicalInstrumentsShop.BusinessLogic.Services
 {
     public class SpecificationService : ISpecificationService
     {
-        private readonly ISpecificationRepository specificationRepository;
-        private readonly IProductRepository productRepository;
+        private readonly IUnitOfWork unitOfWork;
 
-        public SpecificationService(ISpecificationRepository specificationRepository, IProductRepository productRepository)
+        public SpecificationService(IUnitOfWork unitOfWork)
         {
-            this.specificationRepository = specificationRepository;
-            this.productRepository = productRepository;
+            this.unitOfWork = unitOfWork;
         }
 
         public async Task AddAsync(SpecificationDto specificationDto)
         {
-            bool productExists = await productRepository.Exists(x => x.Id == specificationDto.ProductId);
+            bool productExists = await unitOfWork.ProductRepository.Exists(x => x.Id == specificationDto.ProductId);
             if(productExists)
             {
-                var product = await productRepository.GetWithRelatedData(specificationDto.ProductId);
+                var product = await unitOfWork.ProductRepository.GetWithRelatedData(specificationDto.ProductId);
                 var specification = new Specification
                 {
                     Id = new Guid(),
@@ -33,7 +31,7 @@ namespace MusicalInstrumentsShop.BusinessLogic.Services
                     Value = specificationDto.Value,
                     Product = product
                 };
-                await specificationRepository.Add(specification);
+                await unitOfWork.SpecificationRepository.Add(specification);
             }
             else
             {
@@ -43,10 +41,10 @@ namespace MusicalInstrumentsShop.BusinessLogic.Services
 
         public async Task DeleteAsync(Guid id)
         {
-            bool specificationExists = await specificationRepository.Exists(x => x.Id == id);
+            bool specificationExists = await unitOfWork.SpecificationRepository.Exists(x => x.Id == id);
             if(specificationExists)
             {
-                await specificationRepository.Remove(id);
+                await unitOfWork.SpecificationRepository.Remove(id);
             }
             else
             {
@@ -56,10 +54,10 @@ namespace MusicalInstrumentsShop.BusinessLogic.Services
 
         public async Task<SpecificationDto> GetByIdAsync(Guid id)
         {
-            bool specificationExists = await specificationRepository.Exists(x => x.Id == id);
+            bool specificationExists = await unitOfWork.SpecificationRepository.Exists(x => x.Id == id);
             if(specificationExists)
             {
-                var specification = await specificationRepository.Get(id);
+                var specification = await unitOfWork.SpecificationRepository.Get(id);
                 return new SpecificationDto
                 {
                     Id = specification.Id,
@@ -73,10 +71,10 @@ namespace MusicalInstrumentsShop.BusinessLogic.Services
         public async Task<IEnumerable<SpecificationDto>> GetForProductAsync(string productId)
         {
 
-            bool productExists = await productRepository.Exists(x => x.Id == productId);
+            bool productExists = await unitOfWork.ProductRepository.Exists(x => x.Id == productId);
             if (productExists)
             {
-                var specifications = await specificationRepository.GetByProductId(productId);
+                var specifications = await unitOfWork.SpecificationRepository.GetByProductId(productId);
                 var specificationDtos = new List<SpecificationDto>();
                 foreach(var specification in specifications)
                 {

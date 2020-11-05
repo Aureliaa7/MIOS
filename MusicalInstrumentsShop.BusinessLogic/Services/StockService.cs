@@ -1,38 +1,30 @@
 ﻿using MusicalInstrumentsShop.BusinessLogic.DTOs;
 using MusicalInstrumentsShop.BusinessLogic.Exceptions;
-using MusicalInstrumentsShop.DataAccess.Entities;
-using MusicalInstrumentsShop.DataAccess.Repositories.Interfaces;
 using System.Threading.Tasks;
 using MusicalInstrumentsShop.BusinessLogic.Services.Interfaces;
+using MusicalInstrumentsShop.DataAccess.UnitOfWork;
 
 namespace MusicalInstrumentsShop.BusinessLogic.Services
 {
     public class StockService : IStockService
     {
-        private readonly IRepository<Product> productRepository;
-        private readonly IRepository<Category> categoryRepository;
-        private readonly IRepository<Supplier> supplierRepository;
-        private readonly IStockRepository stockRepository;
+        private readonly IUnitOfWork unitOfWork;
 
-        public StockService(IRepository<Product> productRepository, IRepository<Category> categoryRepository,
-            IRepository<Supplier> supplierRepository, IStockRepository stockRepository)
+        public StockService(IUnitOfWork unitOfWork)
         {
-            this.productRepository = productRepository;
-            this.categoryRepository = categoryRepository;
-            this.supplierRepository = supplierRepository;
-            this.stockRepository = stockRepository;
+            this.unitOfWork = unitOfWork;
         }
 
         public async Task AddProductsInStockAsync(StockDto stockDto)
         {
-            bool categoryExists = await categoryRepository.Exists(x => x.Id == stockDto.CategoryId);
-            bool supplierExists = await supplierRepository.Exists(x => x.Id == stockDto.SupplierId);
-            bool productExists = await productRepository.Exists(x => x.Id == stockDto.ProductId);
+            bool categoryExists = await unitOfWork.CategoryRepository.Exists(x => x.Id == stockDto.CategoryId);
+            bool supplierExists = await unitOfWork.SupplierRepository.Exists(x => x.Id == stockDto.SupplierId);
+            bool productExists = await unitOfWork.ProductRepository.Exists(x => x.Id == stockDto.ProductId);
             if(categoryExists && supplierExists && productExists)
             {
-                var searchedStock = await stockRepository.GetByProductId(stockDto.ProductId);
+                var searchedStock = await unitOfWork.StockRepository.GetByProductId(stockDto.ProductId);
                 searchedStock.NumberOfProducts += stockDto.NumberOfProducts;
-                await stockRepository.Update(searchedStock);
+                await unitOfWork.StockRepository.Update(searchedStock);
             }
             else
             {

@@ -1,5 +1,4 @@
 ﻿using MusicalInstrumentsShop.BusinessLogic.Exceptions;
-using MusicalInstrumentsShop.DataAccess.Repositories.Interfaces;
 using MusicalInstrumentsShop.DataAccess.Entities;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -7,32 +6,24 @@ using MusicalInstrumentsShop.BusinessLogic.DTOs;
 using System;
 using System.Linq;
 using MusicalInstrumentsShop.BusinessLogic.Services.Interfaces;
+using MusicalInstrumentsShop.DataAccess.UnitOfWork;
 
 namespace MusicalInstrumentsShop.BusinessLogic.Services
 {
     public class ProductService : IProductService
     {
-        private readonly IProductRepository productRepository;
-        private readonly IRepository<Category> categoryRepository;
-        private readonly IRepository<Supplier> supplierRepository;
-        private readonly IStockRepository stockRepository;
-        private readonly IPhotoProductRepository photoProductRepository;
+        private readonly IUnitOfWork unitOfWork;
 
-        public ProductService(IProductRepository productRepository, IRepository<Category> categoryRepository,
-            IRepository<Supplier> supplierRepository, IStockRepository stockRepository, IPhotoProductRepository photoProductRepository)
+        public ProductService(IUnitOfWork unitOfWork)
         {
-            this.productRepository = productRepository;
-            this.categoryRepository = categoryRepository;
-            this.supplierRepository = supplierRepository;
-            this.stockRepository = stockRepository;
-            this.photoProductRepository = photoProductRepository;
+            this.unitOfWork = unitOfWork;
         }
 
         public async Task AddNewAsync(ProductCreationDto productModel, IEnumerable<Photo> photos)
         {
-            bool categoryExists = await categoryRepository.Exists(x => x.Id == productModel.CategoryId);
-            bool supplierExists = await supplierRepository.Exists(x => x.Id == productModel.SupplierId);
-            bool productAlreadyExists = await productRepository.Exists(x => x.Id == productModel.Id);
+            bool categoryExists = await unitOfWork.CategoryRepository.Exists(x => x.Id == productModel.CategoryId);
+            bool supplierExists = await unitOfWork.SupplierRepository.Exists(x => x.Id == productModel.SupplierId);
+            bool productAlreadyExists = await unitOfWork.ProductRepository.Exists(x => x.Id == productModel.Id);
 
             if (productAlreadyExists)
             {
@@ -40,8 +31,8 @@ namespace MusicalInstrumentsShop.BusinessLogic.Services
             }
             if (categoryExists && supplierExists)
             {
-                Category category = await categoryRepository.Get(productModel.CategoryId);
-                Supplier supplier = await supplierRepository.Get(productModel.SupplierId);
+                Category category = await unitOfWork.CategoryRepository.Get(productModel.CategoryId);
+                Supplier supplier = await unitOfWork.SupplierRepository.Get(productModel.SupplierId);
                 Product product = new Product
                 {
                     Category = category,
@@ -50,7 +41,7 @@ namespace MusicalInstrumentsShop.BusinessLogic.Services
                     Name = productModel.Name,
                     Price = productModel.Price
                 };
-                await productRepository.Add(product);
+                await unitOfWork.ProductRepository.Add(product);
 
                 Stock stock = new Stock
                 {
@@ -58,7 +49,7 @@ namespace MusicalInstrumentsShop.BusinessLogic.Services
                     Product = product,
                     Supplier = supplier
                 };
-                await stockRepository.Add(stock);
+                await unitOfWork.StockRepository.Add(stock);
 
                 foreach (var photo in photos)
                 {
@@ -67,7 +58,7 @@ namespace MusicalInstrumentsShop.BusinessLogic.Services
                         Photo = photo,
                         Product = product
                     };
-                    await photoProductRepository.Add(photoProduct);
+                    await unitOfWork.PhotoProductRepository.Add(photoProduct);
                 }
             }
             else
@@ -78,26 +69,26 @@ namespace MusicalInstrumentsShop.BusinessLogic.Services
 
         public async Task<IEnumerable<string>> DeleteAsync(string id)
         {
-            bool productExists = await productRepository.Exists(x => x.Id == id);
+            bool productExists = await unitOfWork.ProductRepository.Exists(x => x.Id == id);
             if (productExists)
             {
-                return await productRepository.Delete(id);
+                return await unitOfWork.ProductRepository.Delete(id);
             }
             throw new ItemNotFoundException("The product was not found...");
         }
 
         public async Task<IEnumerable<ProductDto>> GetAllAsync()
         {
-            var products = await productRepository.GetAllWithRelatedData();
+            var products = await unitOfWork.ProductRepository.GetAllWithRelatedData();
             return await MapProducts(products);
         }
 
         public async Task<IEnumerable<ProductDto>> GetByCategoryAsync(Guid categoryId)
         {
-            bool categoryExists = await categoryRepository.Exists(x => x.Id == categoryId);
+            bool categoryExists = await unitOfWork.CategoryRepository.Exists(x => x.Id == categoryId);
             if (categoryExists)
             {
-                var allProducts = await productRepository.GetAllWithRelatedData();
+                var allProducts = await unitOfWork.ProductRepository.GetAllWithRelatedData();
                 var searchedProducts = allProducts.Where(x => x.Category.Id == categoryId).ToList();
 
                 return await MapProducts(searchedProducts);
@@ -107,10 +98,10 @@ namespace MusicalInstrumentsShop.BusinessLogic.Services
 
         public async Task<ProductDto> GetByIdAsync(string id)
         {
-            bool productExists = await productRepository.Exists(x => x.Id == id);
+            bool productExists = await unitOfWork.ProductRepository.Exists(x => x.Id == id);
             if (productExists)
             {
-                var product = await productRepository.GetWithRelatedData(id);
+                var product = await unitOfWork.ProductRepository.GetWithRelatedData(id);
                 return await MapProductToProductDto(product);
             }
             throw new ItemNotFoundException("The product was not found...");
@@ -118,10 +109,10 @@ namespace MusicalInstrumentsShop.BusinessLogic.Services
 
         public async Task<ProductEditingDto> GetForUpdateAsync(string id)
         {
-            bool productExists = await productRepository.Exists(x => x.Id == id);
+            bool productExists = await unitOfWork.ProductRepository.Exists(x => x.Id == id);
             if (productExists)
             {
-                var product = await productRepository.GetWithRelatedData(id);
+                var product = await unitOfWork.ProductRepository.GetWithRelatedData(id);
                 var updateProductDto = new ProductEditingDto
                 {
                     Id = product.Id,
@@ -137,19 +128,19 @@ namespace MusicalInstrumentsShop.BusinessLogic.Services
         public async Task<IEnumerable<string>> UpdateAsync(ProductEditingDto productDto, IEnumerable<Photo> photos)
         {
             IEnumerable<string> fileNames = new List<string>();
-            var product = await productRepository.GetWithRelatedData(productDto.Id);
+            var product = await unitOfWork.ProductRepository.GetWithRelatedData(productDto.Id);
             product.Name = productDto.Name;
             product.Price = productDto.Price;
             product.Description = product.Description;
-            await productRepository.Update(product);
+            await unitOfWork.ProductRepository.Update(product);
             if (productDto.PhotoOption != PhotoOption.KeepCurrentPhotos)
             {
                 if (photos != null)
                 {
                     if (productDto.PhotoOption == PhotoOption.DeleteCurrentPhotos)
                     {
-                        fileNames = await productRepository.GetPhotoNames(productDto.Id);
-                        await photoProductRepository.DeleteByProductId(productDto.Id);
+                        fileNames = await unitOfWork.ProductRepository.GetPhotoNames(productDto.Id);
+                        await unitOfWork.PhotoProductRepository.DeleteByProductId(productDto.Id);
                     }
                     foreach (var photo in photos)
                     {
@@ -158,7 +149,7 @@ namespace MusicalInstrumentsShop.BusinessLogic.Services
                             Photo = photo,
                             Product = product
                         };
-                        await photoProductRepository.Add(photoProduct);
+                        await unitOfWork.PhotoProductRepository.Add(photoProduct);
                     }
                 }
             }
@@ -178,11 +169,11 @@ namespace MusicalInstrumentsShop.BusinessLogic.Services
 
         private async Task<ProductDto> MapProductToProductDto(Product product)
         {
-            Stock stock = await stockRepository.GetByProductId(product.Id);
+            Stock stock = await unitOfWork.StockRepository.GetByProductId(product.Id);
             ProductDto productDto = null;
             if (stock != null)
             {
-                var photos = await photoProductRepository.GetByProductId(product.Id);
+                var photos = await unitOfWork.PhotoProductRepository.GetByProductId(product.Id);
                 productDto = new ProductDto
                 {
                     CategoryName = product.Category.Name,
