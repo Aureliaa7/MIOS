@@ -22,7 +22,7 @@ namespace MusicalInstrumentsShop
             string fileName = null;
             foreach (IFormFile form in formFiles)
             {
-                string imageFolder = Path.Combine(hostEnvironment.WebRootPath, "images");
+                string imageFolder = Path.Combine(hostEnvironment.WebRootPath, "images\\products");
                 fileName = Guid.NewGuid().ToString() + "_" + form.FileName;
                 string filePath = Path.Combine(imageFolder, fileName);
                 form.CopyTo(new FileStream(filePath, FileMode.Create));
@@ -37,7 +37,7 @@ namespace MusicalInstrumentsShop
             {
                 foreach (var fileName in fileNames)
                 {
-                    string imageToBeDeleted = Path.Combine(hostEnvironment.WebRootPath, "images\\", fileName);
+                    string imageToBeDeleted = Path.Combine(hostEnvironment.WebRootPath, "images\\products\\", fileName);
                     if (File.Exists(imageToBeDeleted))
                     {
                         File.Delete(imageToBeDeleted);

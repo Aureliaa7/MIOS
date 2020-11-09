@@ -1,5 +1,6 @@
 ﻿using MusicalInstrumentsShop.DataAccess.Entities;
 using MusicalInstrumentsShop.DataAccess.Repositories.Interfaces;
+using System.Threading.Tasks;
 
 namespace MusicalInstrumentsShop.DataAccess.UnitOfWork
 {
@@ -12,5 +13,7 @@ namespace MusicalInstrumentsShop.DataAccess.UnitOfWork
         IRepository<Category> CategoryRepository { get; }
         IRepository<Photo> PhotoRepository { get; }
         IRepository<Supplier> SupplierRepository { get; }
+
+        Task<int> SaveChangesAsync();
     }
 }

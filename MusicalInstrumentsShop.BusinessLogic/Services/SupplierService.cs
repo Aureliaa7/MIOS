@@ -25,6 +25,7 @@ namespace MusicalInstrumentsShop.BusinessLogic.Services
         {
             var supplier = mapper.Map<Supplier>(supplierDto);
             await unitOfWork.SupplierRepository.Add(supplier);
+            await unitOfWork.SaveChangesAsync();
         }
 
         public async Task<IEnumerable<string>> DeleteAsync(Guid id)
@@ -41,6 +42,7 @@ namespace MusicalInstrumentsShop.BusinessLogic.Services
                     photoNamesToBeDeleted.AddRange(photoNames);
                 }
                 await unitOfWork.SupplierRepository.Remove(id);
+                await unitOfWork.SaveChangesAsync();
                 return photoNamesToBeDeleted;
             }
             throw new ItemNotFoundException("The supplier was not found...");
@@ -86,7 +88,8 @@ namespace MusicalInstrumentsShop.BusinessLogic.Services
         public async Task UpdateAsync(SupplierDto supplierDto)
         {
             var supplier = mapper.Map<Supplier>(supplierDto);
-            await unitOfWork.SupplierRepository.Update(supplier);
+            unitOfWork.SupplierRepository.Update(supplier);
+            await unitOfWork.SaveChangesAsync();
         }
     }
 }

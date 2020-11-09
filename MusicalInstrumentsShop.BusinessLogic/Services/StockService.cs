@@ -24,7 +24,8 @@ namespace MusicalInstrumentsShop.BusinessLogic.Services
             {
                 var searchedStock = await unitOfWork.StockRepository.GetByProductId(stockDto.ProductId);
                 searchedStock.NumberOfProducts += stockDto.NumberOfProducts;
-                await unitOfWork.StockRepository.Update(searchedStock);
+                unitOfWork.StockRepository.Update(searchedStock);
+                await unitOfWork.SaveChangesAsync();
             }
             else
             {

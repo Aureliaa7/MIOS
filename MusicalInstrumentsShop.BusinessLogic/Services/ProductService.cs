@@ -60,6 +60,7 @@ namespace MusicalInstrumentsShop.BusinessLogic.Services
                     };
                     await unitOfWork.PhotoProductRepository.Add(photoProduct);
                 }
+                await unitOfWork.SaveChangesAsync();
             }
             else
             {
@@ -73,6 +74,7 @@ namespace MusicalInstrumentsShop.BusinessLogic.Services
             if (productExists)
             {
                 return await unitOfWork.ProductRepository.Delete(id);
+                await unitOfWork.SaveChangesAsync();
             }
             throw new ItemNotFoundException("The product was not found...");
         }
@@ -132,7 +134,7 @@ namespace MusicalInstrumentsShop.BusinessLogic.Services
             product.Name = productDto.Name;
             product.Price = productDto.Price;
             product.Description = product.Description;
-            await unitOfWork.ProductRepository.Update(product);
+            unitOfWork.ProductRepository.Update(product);
             if (productDto.PhotoOption != PhotoOption.KeepCurrentPhotos)
             {
                 if (photos != null)
@@ -151,6 +153,7 @@ namespace MusicalInstrumentsShop.BusinessLogic.Services
                         };
                         await unitOfWork.PhotoProductRepository.Add(photoProduct);
                     }
+                    await unitOfWork.SaveChangesAsync();
                 }
             }
             return fileNames;

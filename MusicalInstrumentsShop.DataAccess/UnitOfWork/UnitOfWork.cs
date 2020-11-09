@@ -2,13 +2,17 @@
 using MusicalInstrumentsShop.DataAccess.Entities;
 using MusicalInstrumentsShop.DataAccess.Repositories;
 using MusicalInstrumentsShop.DataAccess.Repositories.Interfaces;
+using System.Threading.Tasks;
 
 namespace MusicalInstrumentsShop.DataAccess.UnitOfWork
 {
     public class UnitOfWork : IUnitOfWork
     {
+        private readonly ApplicationDbContext context;
         public UnitOfWork(ApplicationDbContext context)
         {
+            this.context = context;
+
             PhotoProductRepository = new PhotoProductRepository(context);
             ProductRepository = new ProductRepository(context);
             SpecificationRepository = new SpecificationRepository(context);
@@ -31,5 +35,11 @@ namespace MusicalInstrumentsShop.DataAccess.UnitOfWork
         public IRepository<Photo> PhotoRepository { get; private set; }
 
         public IRepository<Supplier> SupplierRepository { get; private set; }
+
+
+        public async Task<int> SaveChangesAsync()
+        {
+            return await context.SaveChangesAsync();
+        }
     }
 }

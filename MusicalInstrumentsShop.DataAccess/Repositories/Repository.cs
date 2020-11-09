@@ -20,15 +20,13 @@ namespace MusicalInstrumentsShop.DataAccess.Repositories
 
         public async Task<T> Add(T entity)
         {
-            Context.Set<T>().Add(entity);
-            await Context.SaveChangesAsync();
+            await Context.Set<T>().AddAsync(entity);
             return entity;
         }
 
         public async Task<IEnumerable<T>> AddRange(IEnumerable<T> entities)
         {
-            Context.Set<T>().AddRange(entities);
-            await Context.SaveChangesAsync();
+            await Context.Set<T>().AddRangeAsync(entities);
             return entities;
         }
 
@@ -51,21 +49,18 @@ namespace MusicalInstrumentsShop.DataAccess.Repositories
                 return entityToBeDeleted;
             }
             Context.Set<T>().Remove(entityToBeDeleted);
-            await Context.SaveChangesAsync();
             return entityToBeDeleted;
         }
 
-        public async Task<IEnumerable<T>> RemoveRange(IEnumerable<T> entities)
+        public IEnumerable<T> RemoveRange(IEnumerable<T> entities)
         {
             Context.Set<T>().RemoveRange(entities);
-            await Context.SaveChangesAsync();
             return entities;
         }
 
-        public async Task<T> Update(T entity)
+        public T Update(T entity)
         {
             Context.Set<T>().Update(entity);
-            await Context.SaveChangesAsync();
             return entity;
         }
 

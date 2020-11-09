@@ -12,8 +12,8 @@ namespace MusicalInstrumentsShop.DataAccess.Repositories.Interfaces
         Task<T> Add(T entity);
         Task<IEnumerable<T>> AddRange(IEnumerable<T> entities);
         Task<T> Remove(Guid id);
-        Task<IEnumerable<T>> RemoveRange(IEnumerable<T> entities);
-        Task<T> Update(T entity);
+        IEnumerable<T> RemoveRange(IEnumerable<T> entities);
+        T Update(T entity);
         Task<bool> Exists(Expression<Func<T, bool>> predicate);
     }
 }

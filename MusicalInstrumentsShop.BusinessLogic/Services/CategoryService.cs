@@ -25,6 +25,7 @@ namespace MusicalInstrumentsShop.BusinessLogic.Services
         {
             var category = mapper.Map<Category>(categoryDto);
             await unitOfWork.CategoryRepository.Add(category);
+            await unitOfWork.SaveChangesAsync();
         }
 
         public async Task DeleteAsync(Guid id)
@@ -33,6 +34,7 @@ namespace MusicalInstrumentsShop.BusinessLogic.Services
             if(categoryExists)
             {
                 await unitOfWork.CategoryRepository.Remove(id);
+                await unitOfWork.SaveChangesAsync();
             }
             else
             {
@@ -65,7 +67,8 @@ namespace MusicalInstrumentsShop.BusinessLogic.Services
         public async Task UpdateAsync(CategoryDto categoryDto)
         {
             var category = mapper.Map<Category>(categoryDto);
-            await unitOfWork.CategoryRepository.Update(category);
+            unitOfWork.CategoryRepository.Update(category);
+            await unitOfWork.SaveChangesAsync();
         }
     }
 }

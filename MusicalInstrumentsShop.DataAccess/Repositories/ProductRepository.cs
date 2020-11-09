@@ -18,7 +18,6 @@ namespace MusicalInstrumentsShop.DataAccess.Repositories
 
             var productToBeDeleted = await Context.Set<Product>().Where(x => x.Id == id).FirstAsync();
             Context.Set<Product>().Remove(productToBeDeleted);
-            await Context.SaveChangesAsync();
 
             return photoNames;
         }

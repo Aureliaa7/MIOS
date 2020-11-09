@@ -32,6 +32,7 @@ namespace MusicalInstrumentsShop.BusinessLogic.Services
                     Product = product
                 };
                 await unitOfWork.SpecificationRepository.Add(specification);
+                await unitOfWork.SaveChangesAsync();
             }
             else
             {
@@ -45,6 +46,7 @@ namespace MusicalInstrumentsShop.BusinessLogic.Services
             if(specificationExists)
             {
                 await unitOfWork.SpecificationRepository.Remove(id);
+                await unitOfWork.SaveChangesAsync();
             }
             else
             {

@@ -61,10 +61,6 @@ namespace MusicalInstrumentsShop
                 options.AccessDeniedPath = new PathString("/Error/AccessDenied");
             });
 
-            services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
-            services.AddScoped<IProductRepository, ProductRepository>();
-            services.AddScoped<IStockRepository, StockRepository>();
-            services.AddScoped<IPhotoProductRepository, PhotoProductRepository>();
             services.AddScoped<IUnitOfWork, UnitOfWork>();
 
             services.AddScoped<ICategoryService, CategoryService>();
