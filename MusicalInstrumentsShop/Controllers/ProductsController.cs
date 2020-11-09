@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
@@ -108,14 +109,15 @@ namespace MusicalInstrumentsShop.Controllers
             if (ModelState.IsValid)
             {
                 IEnumerable<Photo> photos = new List<Photo>();
-                if (product.Photos != null)
+                IEnumerable<string> fileNames = new List<string>();
+                if (product.Photos != null && product.PhotoOption != PhotoOption.KeepCurrentPhotos)
                 {
                     photos = imageService.SaveFiles(product.Photos);
-                    var fileNames = await productService.UpdateAsync(product, photos);
-                    if (fileNames != null)
-                    {
-                        imageService.DeleteFiles(fileNames);
-                    }
+                }
+                fileNames = await productService.UpdateAsync(product, photos);
+                if (fileNames.Count() > 0 && product.PhotoOption == PhotoOption.DeleteCurrentPhotos)
+                {
+                    imageService.DeleteFiles(fileNames);
                 }
                 return RedirectToAction(nameof(Index));
             }

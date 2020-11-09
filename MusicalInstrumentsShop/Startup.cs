@@ -16,6 +16,7 @@ using AutoMapper;
 using MusicalInstrumentsShop.BusinessLogic.Services;
 using MusicalInstrumentsShop.DataAccess.Repositories;
 using MusicalInstrumentsShop.DataAccess.UnitOfWork;
+using MusicalInstrumentsShop.BusinessLogic.Mappings.Products;
 
 namespace MusicalInstrumentsShop
 {
@@ -74,6 +75,10 @@ namespace MusicalInstrumentsShop
 
             services.AddAutoMapper(typeof(CategoryProfile));
             services.AddAutoMapper(typeof(SupplierProfile));
+            services.AddAutoMapper(typeof(ProductCreationProfile));
+            services.AddAutoMapper(typeof(ProductEditingProfile));
+            services.AddAutoMapper(typeof(ProductProfile));
+            services.AddAutoMapper(typeof(SpecificationProfile));
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env, UserManager<ApplicationUser> userManager,

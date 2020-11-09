@@ -7,16 +7,19 @@ using System;
 using System.Linq;
 using MusicalInstrumentsShop.BusinessLogic.Services.Interfaces;
 using MusicalInstrumentsShop.DataAccess.UnitOfWork;
+using AutoMapper;
 
 namespace MusicalInstrumentsShop.BusinessLogic.Services
 {
     public class ProductService : IProductService
     {
         private readonly IUnitOfWork unitOfWork;
+        private readonly IMapper mapper;
 
-        public ProductService(IUnitOfWork unitOfWork)
+        public ProductService(IUnitOfWork unitOfWork, IMapper mapper)
         {
             this.unitOfWork = unitOfWork;
+            this.mapper = mapper;
         }
 
         public async Task AddNewAsync(ProductCreationDto productModel, IEnumerable<Photo> photos)
@@ -33,14 +36,8 @@ namespace MusicalInstrumentsShop.BusinessLogic.Services
             {
                 Category category = await unitOfWork.CategoryRepository.Get(productModel.CategoryId);
                 Supplier supplier = await unitOfWork.SupplierRepository.Get(productModel.SupplierId);
-                Product product = new Product
-                {
-                    Category = category,
-                    Id = productModel.Id,
-                    Description = productModel.Description,
-                    Name = productModel.Name,
-                    Price = productModel.Price
-                };
+                Product product = mapper.Map<ProductCreationDto, Product>(productModel);
+                product.Category = category;
                 await unitOfWork.ProductRepository.Add(product);
 
                 Stock stock = new Stock
@@ -73,8 +70,9 @@ namespace MusicalInstrumentsShop.BusinessLogic.Services
             bool productExists = await unitOfWork.ProductRepository.Exists(x => x.Id == id);
             if (productExists)
             {
-                return await unitOfWork.ProductRepository.Delete(id);
+                var photoNames = await unitOfWork.ProductRepository.Delete(id);
                 await unitOfWork.SaveChangesAsync();
+                return photoNames;
             }
             throw new ItemNotFoundException("The product was not found...");
         }
@@ -103,7 +101,7 @@ namespace MusicalInstrumentsShop.BusinessLogic.Services
             bool productExists = await unitOfWork.ProductRepository.Exists(x => x.Id == id);
             if (productExists)
             {
-                var product = await unitOfWork.ProductRepository.GetWithRelatedData(id);
+                var product = await unitOfWork.ProductRepository.GetWithRelatedDataAsNoTracking(id);
                 return await MapProductToProductDto(product);
             }
             throw new ItemNotFoundException("The product was not found...");
@@ -114,15 +112,8 @@ namespace MusicalInstrumentsShop.BusinessLogic.Services
             bool productExists = await unitOfWork.ProductRepository.Exists(x => x.Id == id);
             if (productExists)
             {
-                var product = await unitOfWork.ProductRepository.GetWithRelatedData(id);
-                var updateProductDto = new ProductEditingDto
-                {
-                    Id = product.Id,
-                    Description = product.Description,
-                    Name = product.Name,
-                    Price = product.Price
-                };
-                return updateProductDto;
+                var product = await unitOfWork.ProductRepository.GetWithRelatedDataAsNoTracking(id);
+                return mapper.Map<Product, ProductEditingDto>(product);
             }
             throw new ItemNotFoundException("The product was not found...");
         }
@@ -130,14 +121,14 @@ namespace MusicalInstrumentsShop.BusinessLogic.Services
         public async Task<IEnumerable<string>> UpdateAsync(ProductEditingDto productDto, IEnumerable<Photo> photos)
         {
             IEnumerable<string> fileNames = new List<string>();
-            var product = await unitOfWork.ProductRepository.GetWithRelatedData(productDto.Id);
-            product.Name = productDto.Name;
-            product.Price = productDto.Price;
-            product.Description = product.Description;
+            var searchedProduct = await unitOfWork.ProductRepository.GetWithRelatedDataAsNoTracking(productDto.Id);
+            var product = mapper.Map<ProductEditingDto, Product>(productDto);
+            product.Category = searchedProduct.Category;
+
             unitOfWork.ProductRepository.Update(product);
             if (productDto.PhotoOption != PhotoOption.KeepCurrentPhotos)
             {
-                if (photos != null)
+                if (photos.Count() > 0)
                 {
                     if (productDto.PhotoOption == PhotoOption.DeleteCurrentPhotos)
                     {
@@ -153,9 +144,9 @@ namespace MusicalInstrumentsShop.BusinessLogic.Services
                         };
                         await unitOfWork.PhotoProductRepository.Add(photoProduct);
                     }
-                    await unitOfWork.SaveChangesAsync();
                 }
             }
+            await unitOfWork.SaveChangesAsync();
             return fileNames;
         }
 
@@ -177,17 +168,11 @@ namespace MusicalInstrumentsShop.BusinessLogic.Services
             if (stock != null)
             {
                 var photos = await unitOfWork.PhotoProductRepository.GetByProductId(product.Id);
-                productDto = new ProductDto
-                {
-                    CategoryName = product.Category.Name,
-                    Description = product.Description,
-                    Id = product.Id,
-                    Name = product.Name,
-                    SupplierName = stock.Supplier.Name,
-                    Photos = photos,
-                    Price = product.Price,
-                    NumberOfProducts = stock.NumberOfProducts
-                };
+                productDto = mapper.Map<Product, ProductDto>(product);
+                productDto.CategoryName = product.Category.Name;
+                productDto.SupplierName = stock.Supplier.Name;
+                productDto.Photos = photos;
+                productDto.NumberOfProducts = stock.NumberOfProducts;
             }
             return productDto;
         }

@@ -22,11 +22,20 @@ namespace MusicalInstrumentsShop.DataAccess.Repositories
             return photoNames;
         }
 
-        public async Task<Product> GetWithRelatedData(string id)
+        public async Task<Product> GetWithRelatedDataAsTracking(string id)
         {
             return await Context.Set<Product>()
                 .Where(x => x.Id == id)
                 .Include(x => x.Category)
+                .FirstAsync();
+        }
+
+        public async Task<Product> GetWithRelatedDataAsNoTracking(string id)
+        {
+            return await Context.Set<Product>()
+                .Where(x => x.Id == id)
+                .Include(x => x.Category)
+                .AsNoTracking()
                 .FirstAsync();
         }
 

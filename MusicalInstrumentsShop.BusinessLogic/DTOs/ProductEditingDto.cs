@@ -14,6 +14,7 @@ namespace MusicalInstrumentsShop.BusinessLogic.DTOs
         [Required]
         public string Description { get; set; }
         public IEnumerable<IFormFile> Photos { get; set; }
+        [Required]
         [Display(Name = "Photo option")]
         public PhotoOption PhotoOption{ get; set; }
     }

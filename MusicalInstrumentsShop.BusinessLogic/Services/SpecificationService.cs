@@ -1,21 +1,24 @@
 ﻿using MusicalInstrumentsShop.BusinessLogic.DTOs;
 using MusicalInstrumentsShop.BusinessLogic.Exceptions;
-using MusicalInstrumentsShop.DataAccess.Entities;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using MusicalInstrumentsShop.BusinessLogic.Services.Interfaces;
 using MusicalInstrumentsShop.DataAccess.UnitOfWork;
+using AutoMapper;
+using MusicalInstrumentsShop.DataAccess.Entities;
 
 namespace MusicalInstrumentsShop.BusinessLogic.Services
 {
     public class SpecificationService : ISpecificationService
     {
         private readonly IUnitOfWork unitOfWork;
+        private readonly IMapper mapper;
 
-        public SpecificationService(IUnitOfWork unitOfWork)
+        public SpecificationService(IUnitOfWork unitOfWork, IMapper mapper)
         {
             this.unitOfWork = unitOfWork;
+            this.mapper = mapper;
         }
 
         public async Task AddAsync(SpecificationDto specificationDto)
@@ -23,14 +26,9 @@ namespace MusicalInstrumentsShop.BusinessLogic.Services
             bool productExists = await unitOfWork.ProductRepository.Exists(x => x.Id == specificationDto.ProductId);
             if(productExists)
             {
-                var product = await unitOfWork.ProductRepository.GetWithRelatedData(specificationDto.ProductId);
-                var specification = new Specification
-                {
-                    Id = new Guid(),
-                    Key = specificationDto.Key,
-                    Value = specificationDto.Value,
-                    Product = product
-                };
+                var product = await unitOfWork.ProductRepository.GetWithRelatedDataAsTracking(specificationDto.ProductId);
+                var specification = mapper.Map<SpecificationDto, Specification>(specificationDto);
+                specification.Product = product;
                 await unitOfWork.SpecificationRepository.Add(specification);
                 await unitOfWork.SaveChangesAsync();
             }
@@ -60,12 +58,7 @@ namespace MusicalInstrumentsShop.BusinessLogic.Services
             if(specificationExists)
             {
                 var specification = await unitOfWork.SpecificationRepository.Get(id);
-                return new SpecificationDto
-                {
-                    Id = specification.Id,
-                    Key = specification.Key,
-                    Value = specification.Value
-                };
+                return mapper.Map<Specification, SpecificationDto>(specification);
             }
             throw new ItemNotFoundException("The specification was not found...");
         }
@@ -80,13 +73,8 @@ namespace MusicalInstrumentsShop.BusinessLogic.Services
                 var specificationDtos = new List<SpecificationDto>();
                 foreach(var specification in specifications)
                 {
-                    var specificationDto = new SpecificationDto
-                    {
-                        Id = specification.Id,
-                        Key = specification.Key,
-                        Value = specification.Value,
-                        ProductId = productId
-                    };
+                    var specificationDto = mapper.Map<Specification, SpecificationDto>(specification);
+                    specificationDto.ProductId = productId;
                     specificationDtos.Add(specificationDto);
                 }
                 return specificationDtos;
