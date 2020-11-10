@@ -18,5 +18,6 @@ namespace MusicalInstrumentsShop.BusinessLogic.DTOs
         [Display(Name = "Supplier")]
         public string SupplierName { get; set; }
         public IEnumerable<Photo> Photos { get; set; }
+        public IEnumerable<SpecificationDto> Specifications { get; set; }
     }
 }

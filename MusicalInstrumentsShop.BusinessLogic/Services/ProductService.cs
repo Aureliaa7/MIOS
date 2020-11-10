@@ -167,12 +167,23 @@ namespace MusicalInstrumentsShop.BusinessLogic.Services
             ProductDto productDto = null;
             if (stock != null)
             {
+                var specifications = await unitOfWork.SpecificationRepository.GetByProductId(product.Id);
+                var specificationDtos = new List<SpecificationDto>();
+                if(specifications != null)
+                {
+                    foreach(var specification in specifications)
+                    {
+                        var specificationDto = mapper.Map<Specification, SpecificationDto>(specification);
+                        specificationDtos.Add(specificationDto);
+                    }
+                }
                 var photos = await unitOfWork.PhotoProductRepository.GetByProductId(product.Id);
                 productDto = mapper.Map<Product, ProductDto>(product);
                 productDto.CategoryName = product.Category.Name;
                 productDto.SupplierName = stock.Supplier.Name;
                 productDto.Photos = photos;
                 productDto.NumberOfProducts = stock.NumberOfProducts;
+                productDto.Specifications = specificationDtos;
             }
             return productDto;
         }

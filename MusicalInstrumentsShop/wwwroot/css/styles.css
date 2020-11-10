@@ -197,3 +197,9 @@
 .add-margin-top-30 {
     margin-top: -30px;
 }
+
+#details-div {
+    background-color: whitesmoke;
+    width: 700px;
+    height: 900px;
+}
