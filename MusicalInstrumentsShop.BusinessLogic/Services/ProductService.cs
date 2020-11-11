@@ -80,7 +80,8 @@ namespace MusicalInstrumentsShop.BusinessLogic.Services
         public async Task<IEnumerable<ProductDto>> GetAllAsync()
         {
             var products = await unitOfWork.ProductRepository.GetAllWithRelatedData();
-            return await MapProducts(products);
+            var mappedProducts = await MapProducts(products);
+            return mappedProducts.OrderBy(x => x.CategoryName);
         }
 
         public async Task<IEnumerable<ProductDto>> GetByCategoryAsync(Guid categoryId)

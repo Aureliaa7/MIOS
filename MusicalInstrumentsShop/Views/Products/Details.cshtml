@@ -6,9 +6,13 @@
     {
         Layout = "~/Views/Shared/_AdminLayout.cshtml";
     }
-    else
+    else if(User.IsInRole("Customer"))
     {
         Layout = "~/Views/Shared/_CustomerLayout.cshtml";
+    }
+    else
+    {
+        Layout = "~/Views/Shared/_Layout.cshtml";
     }
 }
 

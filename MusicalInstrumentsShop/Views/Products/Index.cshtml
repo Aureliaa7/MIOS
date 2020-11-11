@@ -1,5 +1,4 @@
-﻿@model IEnumerable<MusicalInstrumentsShop.BusinessLogic.DTOs.ProductDto>
-
+﻿@model PaginatedList<MusicalInstrumentsShop.BusinessLogic.DTOs.ProductDto>
 @{
     ViewData["Title"] = "Index";
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
@@ -7,26 +6,37 @@
 
 <h3 class="text-center text-white">Products</h3>
 
+<form asp-action="Index" method="get">
+    <div class="form-actions">
+        <p>
+            <b style="color:white; font-size: 15px">Find by category:</b> <input type="text" name="SearchString" value="@ViewData["CurrentFilter"]" />
+            <input type="submit" value="Search" class="btn btn-primary" /> |
+            <a asp-action="Get" style="color:white; font-size: 15px">Back to Full List</a>
+        </p>
+    </div>
+</form>
+
+
 <table class="table table-hover table-dark">
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.Id)
+                <a asp-action="Index" asp-route-sortOrder="@ViewData["CodeSortParm"]" asp-route-currentFilter="@ViewData["CurrentFilter"]">Code</a>
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Name)
+                <a asp-action="Get" asp-route-sortOrder="@ViewData["NameSortParm"]" asp-route-currentFilter="@ViewData["CurrentFilter"]">Name</a>
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Price)
+                Price
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.NumberOfProducts)
+                Products in stock
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.SupplierName)
+                <a asp-action="Get" asp-route-sortOrder="@ViewData["SupplierSortParm"]" asp-route-currentFilter="@ViewData["CurrentFilter"]">Supplier Name</a>
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.CategoryName)
+                <a asp-action="Get" asp-route-sortOrder="@ViewData["CategorySortParm"]" asp-route-currentFilter="@ViewData["CurrentFilter"]">Category Name</a>
             </th>
             <th>
 
@@ -71,3 +81,24 @@
         }
     </tbody>
 </table>
+
+
+@{
+    var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
+    var nextDisabled = !Model.HasNextPage ? "disabled" : "";
+}
+
+<a asp-action="Index"
+   asp-route-sortOrder="@ViewData["CurrentSort"]"
+   asp-route-pageNumber="@(Model.PageIndex - 1)"
+   asp-route-currentFilter="@ViewData["CurrentFilter"]"
+   class="btn btn-primary @prevDisabled">
+    Previous
+</a>
+<a asp-action="Index"
+   asp-route-sortOrder="@ViewData["CurrentSort"]"
+   asp-route-pageNumber="@(Model.PageIndex + 1)"
+   asp-route-currentFilter="@ViewData["CurrentFilter"]"
+   class="btn btn-primary @nextDisabled">
+    Next
+</a>

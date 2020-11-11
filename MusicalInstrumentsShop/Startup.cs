@@ -17,6 +17,7 @@ using MusicalInstrumentsShop.BusinessLogic.Services;
 using MusicalInstrumentsShop.DataAccess.Repositories;
 using MusicalInstrumentsShop.DataAccess.UnitOfWork;
 using MusicalInstrumentsShop.BusinessLogic.Mappings.Products;
+using ReflectionIT.Mvc.Paging;
 
 namespace MusicalInstrumentsShop
 {
@@ -79,6 +80,8 @@ namespace MusicalInstrumentsShop
             services.AddAutoMapper(typeof(ProductEditingProfile));
             services.AddAutoMapper(typeof(ProductProfile));
             services.AddAutoMapper(typeof(SpecificationProfile));
+
+            services.AddPaging();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env, UserManager<ApplicationUser> userManager,

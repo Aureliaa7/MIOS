@@ -9,6 +9,7 @@ using MusicalInstrumentsShop.BusinessLogic.DTOs;
 using MusicalInstrumentsShop.BusinessLogic.Exceptions;
 using MusicalInstrumentsShop.BusinessLogic.Services.Interfaces;
 using MusicalInstrumentsShop.DataAccess.Entities;
+using ReflectionIT.Mvc.Paging;
 
 namespace MusicalInstrumentsShop.Controllers
 {
@@ -25,13 +26,72 @@ namespace MusicalInstrumentsShop.Controllers
             this.imageService = imageService;
         }
 
-        [Authorize]
-        public async Task<IActionResult> Index()
+        // browse products
+        public async Task<IActionResult> Browse(int? pageNumber = 1)
         {
-            return View(await productService.GetAllAsync());
+            var products = await productService.GetAllAsync();
+            int pageSize = 6;
+            return View(PaginatedList<ProductDto>.Create(products, pageNumber ?? 1, pageSize));
         }
 
+        //TODO heree- sorting functionality
         [Authorize]
+        public async Task<IActionResult> Index(string sortOrder, string currentFilter, string searchString, int? pageNumber)
+        {
+            ViewData["CurrentSort"] = sortOrder;
+            ViewData["NameSortParm"] = String.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
+            ViewData["CategorySortParm"] = sortOrder == "CategoryName" ? "category_desc" : "CategoryName";
+            ViewData["SupplierSortParm"] = sortOrder == "SupplierName" ? "supplier_desc" : "SupplierName";
+            ViewData["CodeSortParm"] = sortOrder == "Id" ? "id_desc" : "Id";
+            if (searchString != null)
+            {
+                pageNumber = 1;
+            }
+            else
+            {
+                searchString = currentFilter;
+            }
+
+            ViewData["CurrentFilter"] = searchString;
+
+            var products = await productService.GetAllAsync();
+
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                products = products.Where(x => x.CategoryName.Contains(searchString));
+            }
+
+            switch (sortOrder)
+            {
+                case "name_desc":
+                    products = products.OrderByDescending(x => x.Name);
+                    break;
+                case "CategoryName":
+                    products = products.OrderBy(x => x.CategoryName);
+                    break;
+                case "category_desc":
+                    products = products.OrderByDescending(s => s.CategoryName);
+                    break;
+                case "SupplierName":
+                    products = products.OrderBy(x => x.SupplierName);
+                    break;
+                case "supplier_desc":
+                    products = products.OrderByDescending(s => s.SupplierName);
+                    break;
+                case "Id":
+                    products = products.OrderBy(x => x.Id);
+                    break;
+                case "id_desc":
+                    products = products.OrderByDescending(s => s.Id);
+                    break;
+                default:
+                    products = products.OrderBy(s => s.Name);
+                    break;
+            }
+            int pageSize = 4;
+            return View(PaginatedList<ProductDto>.Create(products, pageNumber ?? 1, pageSize));
+        }
+
         public async Task<IActionResult> Details(string id)
         {
             if (id == null)
@@ -152,26 +212,6 @@ namespace MusicalInstrumentsShop.Controllers
                 return RedirectToAction(nameof(Index));
             }
             catch (ItemNotFoundException)
-            {
-                return RedirectToAction("NotFound", "Error");
-            }
-        }
-
-        [Authorize(Roles = "Administrator")]
-        public IActionResult FilterByCategory()
-        {
-            return View();
-        }
-
-        [Authorize(Roles = "Administrator")]
-        public async Task<IActionResult> FilteredByCategory(Guid id)
-        {
-            try
-            {
-                var products = await productService.GetByCategoryAsync(id);
-                return View(products);
-            }
-            catch(ItemNotFoundException)
             {
                 return RedirectToAction("NotFound", "Error");
             }
