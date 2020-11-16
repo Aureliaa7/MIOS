@@ -131,6 +131,7 @@
     position: fixed;
     top: 0;
     width: 100%;
+    z-index: 1;
 }
 
 .navbar-brand {
@@ -202,4 +203,5 @@
     background-color: whitesmoke;
     width: 700px;
     height: 900px;
+    margin-top: 90px;
 }

@@ -72,7 +72,7 @@ namespace MusicalInstrumentsShop
             services.AddScoped<IImageService, ImageService>();
             services.AddScoped<IStockService, StockService>();
             services.AddScoped<ISpecificationService, SpecificationService>();
-            services.AddScoped<ISpecificationRepository, SpecificationRepository>();
+            services.AddScoped<IDeliveryService, DeliveryService>();
 
             services.AddAutoMapper(typeof(CategoryProfile));
             services.AddAutoMapper(typeof(SupplierProfile));
@@ -80,8 +80,7 @@ namespace MusicalInstrumentsShop
             services.AddAutoMapper(typeof(ProductEditingProfile));
             services.AddAutoMapper(typeof(ProductProfile));
             services.AddAutoMapper(typeof(SpecificationProfile));
-
-            services.AddPaging();
+            services.AddAutoMapper(typeof(DeliveryMethodProfile));
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env, UserManager<ApplicationUser> userManager,
@@ -112,7 +111,7 @@ namespace MusicalInstrumentsShop
             {
                 endpoints.MapControllerRoute(
                     name: "default",
-                    pattern: "{controller=Account}/{action=Login}/{id?}");
+                    pattern: "{controller=Products}/{action=Browse}/{id?}");
             });
         }
     }

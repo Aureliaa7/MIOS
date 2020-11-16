@@ -1,0 +1,30 @@
+﻿@model MusicalInstrumentsShop.BusinessLogic.DTOs.DeliveryMethodDto
+
+@{
+    ViewData["Title"] = "Create";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<hr />
+<div class="jumbotron add-category-jumbotron">
+    <h4>Add Delivery Method</h4>
+    <div class="col-md-4">
+        <form asp-action="Create" class="add-category-form">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Method" class="control-label"></label>
+                <input asp-for="Method" class="form-control" />
+                <span asp-validation-for="Method" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Add" class="btn btn-primary" id="form-btn" />
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
+
+

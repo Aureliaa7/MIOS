@@ -13,6 +13,7 @@ namespace MusicalInstrumentsShop.DataAccess.UnitOfWork
         IRepository<Category> CategoryRepository { get; }
         IRepository<Photo> PhotoRepository { get; }
         IRepository<Supplier> SupplierRepository { get; }
+        IRepository<DeliveryMethod> DeliveryMethodRepository { get; }
 
         Task<int> SaveChangesAsync();
     }

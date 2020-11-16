@@ -15,7 +15,7 @@
 <h3 class="text-center text-white">Products</h3>
 
 
-<div class="container text-center" style="justify-content:center">
+<div class="container text-center" style="justify-content:center; margin-top: 50px;">
     <div class="row">
         @{ foreach (var item in Model)
             {
@@ -26,7 +26,7 @@
                             <div class="carousel slide" data-ride="carousel" id="product-carousel">
                                 <div class="carousel-inner">
                                     <div class="carousel-item active">
-                                        <img src="~/images/products/@item.Photos.ElementAt(0).Name" class="d-block w-100" alt="...">
+                                        <img src="~/images/products/@item.Photos.ElementAt(0).Name" class="d-block w-100" alt="..." style="width: 150px; height: 150px;">
                                     </div>
                                     @{ for (int contor = 1; contor < item.Photos.Count(); contor++)
                                         {

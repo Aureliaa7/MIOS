@@ -20,6 +20,7 @@ namespace MusicalInstrumentsShop.DataAccess.UnitOfWork
             CategoryRepository = new Repository<Category>(context);
             PhotoRepository = new Repository<Photo>(context);
             SupplierRepository = new Repository<Supplier>(context);
+            DeliveryMethodRepository = new Repository<DeliveryMethod>(context);
         }
 
         public IPhotoProductRepository PhotoProductRepository { get; private set; }
@@ -36,6 +37,7 @@ namespace MusicalInstrumentsShop.DataAccess.UnitOfWork
 
         public IRepository<Supplier> SupplierRepository { get; private set; }
 
+        public IRepository<DeliveryMethod> DeliveryMethodRepository { get; private set; }
 
         public async Task<int> SaveChangesAsync()
         {

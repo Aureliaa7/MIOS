@@ -1,16 +1,16 @@
-﻿@model IEnumerable<MusicalInstrumentsShop.BusinessLogic.DTOs.CategoryDto>
+﻿@model IEnumerable<MusicalInstrumentsShop.BusinessLogic.DTOs.DeliveryMethodDto>
 
 @{
     ViewData["Title"] = "Index";
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
 
-<h3 class="text-center text-white">Categories</h3>
+<h3 class="text-center text-white">Delivery methods</h3>
 <table class="table table-striped table-bordered table-hover table-dark categories-table">
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.Name)
+                @Html.DisplayNameFor(model => model.Method)
             </th>
             <th></th>
         </tr>
@@ -20,10 +20,9 @@
         {
             <tr>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Name)
+                    @Html.DisplayFor(modelItem => item.Method)
                 </td>
                 <td>
-                    <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
                     <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
                 </td>
             </tr>
