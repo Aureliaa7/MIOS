@@ -63,7 +63,7 @@ body {
     background: #2F323A;
     position: fixed;
     top: 70px;
-    width: 190px;
+    width: 200px;
     height: calc(100% - 9%);
     transition: 0.3s;
     transition-property: width;

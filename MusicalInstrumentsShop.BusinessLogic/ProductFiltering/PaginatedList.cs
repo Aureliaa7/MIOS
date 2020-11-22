@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 
-namespace MusicalInstrumentsShop
+namespace MusicalInstrumentsShop.BusinessLogic.ProductFiltering
 {
+    //TODO try moving this class in business layer
     public class PaginatedList<T> : List<T>
     {
         public int PageIndex { get; private set; }

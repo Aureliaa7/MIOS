@@ -18,6 +18,7 @@ using MusicalInstrumentsShop.DataAccess.Repositories;
 using MusicalInstrumentsShop.DataAccess.UnitOfWork;
 using MusicalInstrumentsShop.BusinessLogic.Mappings.Products;
 using ReflectionIT.Mvc.Paging;
+using MusicalInstrumentsShop.BusinessLogic.ProductFiltering;
 
 namespace MusicalInstrumentsShop
 {
@@ -73,6 +74,7 @@ namespace MusicalInstrumentsShop
             services.AddScoped<IStockService, StockService>();
             services.AddScoped<ISpecificationService, SpecificationService>();
             services.AddScoped<IDeliveryService, DeliveryService>();
+            services.AddScoped<IProductFilterService, ProductFilterService>();
 
             services.AddAutoMapper(typeof(CategoryProfile));
             services.AddAutoMapper(typeof(SupplierProfile));

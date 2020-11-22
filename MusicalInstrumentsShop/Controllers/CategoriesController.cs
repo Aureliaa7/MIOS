@@ -8,7 +8,6 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace MusicalInstrumentsShop.Controllers
 {
-    [Authorize(Roles = "Administrator")]
     public class CategoriesController : Controller
     {
         private readonly ICategoryService categoryService;
@@ -23,6 +22,7 @@ namespace MusicalInstrumentsShop.Controllers
             return View(await categoryService.GetAllAsync());
         }
 
+        [Authorize(Roles = "Administrator")]
         public async Task<IActionResult> Details(Guid? id)
         {
             if (id == null)
@@ -40,6 +40,7 @@ namespace MusicalInstrumentsShop.Controllers
             }
         }
 
+        [Authorize(Roles = "Administrator")]
         public IActionResult Create()
         {
             return View();
@@ -58,6 +59,7 @@ namespace MusicalInstrumentsShop.Controllers
             return View(category);
         }
 
+        [Authorize(Roles = "Administrator")]
         public async Task<IActionResult> Edit(Guid? id)
         {
             if (id == null)
@@ -99,6 +101,7 @@ namespace MusicalInstrumentsShop.Controllers
             return View(category);
         }
 
+        [Authorize(Roles = "Administrator")]
         public async Task<IActionResult> Delete(Guid? id)
         {
             if (id == null)

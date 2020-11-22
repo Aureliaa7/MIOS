@@ -49,9 +49,9 @@
                             <i class="fas fa-desktop"></i>Dashboard
                         </a>
                     </li>
-           
-                    <li class="item" id="profile">
-                        <a href="#profile" class="menu-btn">
+
+                    <li class="item" id="categories">
+                        <a href="#categories" class="menu-btn">
                             <i class="fas fa-list-alt"></i><span>Categories <i class="fas fa-chevron-down drop-down"></i></span>
                         </a>
                         <div class="sub-menu">
@@ -59,9 +59,9 @@
                             <a asp-area="" asp-controller="Categories" asp-action="Index">View</a>
                         </div>
                     </li>
-               
-                    <li class="item" id="messages">
-                        <a href="#messages" class="menu-btn">
+
+                    <li class="item" id="suppliers">
+                        <a href="#suppliers" class="menu-btn">
                             <i class="fas fa-users"></i><span>Suppliers <i class="fas fa-chevron-down drop-down"></i></span>
                         </a>
                         <div class="sub-menu">
@@ -70,14 +70,24 @@
                         </div>
                     </li>
 
-                    <li class="item" id="settings">
-                        <a href="#settings" class="menu-btn">
+                    <li class="item" id="products">
+                        <a href="#products" class="menu-btn">
                             <i class="fa fa-music"></i><span>Products <i class="fas fa-chevron-down drop-down"></i></span>
                         </a>
                         <div class="sub-menu">
                             <a asp-area="" asp-controller="Products" asp-action="Create">Add new product</a>
                             <a asp-area="" asp-controller="Products" asp-action="Index">View all products</a>
                             <a asp-area="" asp-controller="Stocks" asp-action="Edit">Update stock</a>
+                        </div>
+                    </li>
+
+                    <li class="item" id="deliveryMethods">
+                        <a href="#deliveryMethods" class="menu-btn">
+                            <i class="fa fa-truck"></i><span>Delivery <i class="fas fa-chevron-down drop-down"></i></span>
+                        </a>
+                        <div class="sub-menu">
+                            <a asp-area="" asp-controller="DeliveryMethods" asp-action="Create">Add</a>
+                            <a asp-area="" asp-controller="DeliveryMethods" asp-action="Index">View</a>
                         </div>
                     </li>
                 </ul>

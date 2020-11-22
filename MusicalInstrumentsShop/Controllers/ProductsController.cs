@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
+using MusicalInstrumentsShop.BusinessLogic.ProductFiltering;
 using MusicalInstrumentsShop.BusinessLogic.DTOs;
 using MusicalInstrumentsShop.BusinessLogic.Exceptions;
 using MusicalInstrumentsShop.BusinessLogic.Services.Interfaces;
@@ -26,15 +27,26 @@ namespace MusicalInstrumentsShop.Controllers
             this.imageService = imageService;
         }
 
-        // browse products
-        public async Task<IActionResult> Browse(int? pageNumber = 1)
+
+        //TODO change the logic of this action
+        public async Task<IActionResult> Browse([FromServices] IProductFilterService productFilterService, ProductsFilteringModel filteringModel, int? pageNumber = 1)
         {
+            /*
             var products = await productService.GetAllAsync();
             int pageSize = 6;
-            return View(PaginatedList<ProductDto>.Create(products, pageNumber ?? 1, pageSize));
+            var productsFiltering = new ProductsFiltering
+            {
+                Products = PaginatedList<ProductDto>.Create(products, pageNumber ?? 1, pageSize)
+            };
+            return View(productsFiltering);
+          */
+
+
+            var productFilteringModel = await productFilterService.Filter(filteringModel, 6, pageNumber ?? 1);
+            return View(productFilteringModel);
+
         }
 
-        //TODO heree- sorting functionality
         [Authorize]
         public async Task<IActionResult> Index(string sortOrder, string currentFilter, string searchString, int? pageNumber)
         {
