@@ -8,7 +8,6 @@ namespace MusicalInstrumentsShop.DataAccess.Entities
         public ApplicationUser Customer { get; set; }
         public Product Product { get; set; }
         public int NumberOfProducts { get; set; }
-        public OrderStatus Status { get; set; }
         public OrderDetails OrderDetails { get; set; }
     }
 }

@@ -10,7 +10,6 @@ using MusicalInstrumentsShop.BusinessLogic.DTOs;
 using MusicalInstrumentsShop.BusinessLogic.Exceptions;
 using MusicalInstrumentsShop.BusinessLogic.Services.Interfaces;
 using MusicalInstrumentsShop.DataAccess.Entities;
-using ReflectionIT.Mvc.Paging;
 
 namespace MusicalInstrumentsShop.Controllers
 {
@@ -27,27 +26,14 @@ namespace MusicalInstrumentsShop.Controllers
             this.imageService = imageService;
         }
 
-
-        //TODO change the logic of this action
         public async Task<IActionResult> Browse([FromServices] IProductFilterService productFilterService, ProductsFilteringModel filteringModel, int? pageNumber = 1)
         {
-            /*
-            var products = await productService.GetAllAsync();
-            int pageSize = 6;
-            var productsFiltering = new ProductsFiltering
-            {
-                Products = PaginatedList<ProductDto>.Create(products, pageNumber ?? 1, pageSize)
-            };
-            return View(productsFiltering);
-          */
-
-
-            var productFilteringModel = await productFilterService.Filter(filteringModel, 6, pageNumber ?? 1);
+            var productFilteringModel = await productFilterService.Filter(filteringModel, 4, pageNumber ?? 1);
             return View(productFilteringModel);
 
         }
 
-        [Authorize]
+        [Authorize(Roles = "Administrator")]
         public async Task<IActionResult> Index(string sortOrder, string currentFilter, string searchString, int? pageNumber)
         {
             ViewData["CurrentSort"] = sortOrder;
@@ -100,8 +86,7 @@ namespace MusicalInstrumentsShop.Controllers
                     products = products.OrderBy(s => s.Name);
                     break;
             }
-            int pageSize = 4;
-            return View(PaginatedList<ProductDto>.Create(products, pageNumber ?? 1, pageSize));
+            return View(PaginatedList<ProductDto>.Create(products, pageNumber ?? 1, 5));
         }
 
         public async Task<IActionResult> Details(string id)
@@ -232,7 +217,7 @@ namespace MusicalInstrumentsShop.Controllers
         public JsonResult GetByCategory(string categoryId)
         {
             var products = productService.GetByCategoryAsync(new Guid(categoryId)).Result;
-            return new JsonResult(products);
+            return new JsonResult(products.OrderBy(x => x.Name));
         }
     }
 }

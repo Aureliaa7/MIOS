@@ -18,6 +18,8 @@ namespace MusicalInstrumentsShop.BusinessLogic.DTOs
         [Required]
         public Guid CategoryId { get; set; }
         [Required]
+        [Display(Name = "Number of products")]
+        [Range(0, int.MaxValue, ErrorMessage = "Please enter a value bigger than 0")]
         public int NumberOfProducts { get; set; }
         public Guid SupplierId { get; set; }
         [Required]

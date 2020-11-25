@@ -20,7 +20,7 @@
 
 <h3 class="text-center text-white">Products</h3>
 
-<div class="container text-center">
+<div class="container">
     <div class="row filter-products-row">
         <form asp-action="Browse" class="jumbotron filter-products-form">
             <div class="col-md-10">
@@ -42,15 +42,14 @@
                 <input asp-for="MaxPrice" class="form-control" />
             </div>
             <div class="col-md-12 add-margin-top-35">
-                <input type="submit" class="btn btn-primary" value="Filter" id="form-btn"/>
+                <input type="submit" class="btn btn-primary" value="Filter" id="form-btn" />
             </div>
         </form>
     </div>
     <div class="row products-row">
         @{ foreach (var item in Model.Products)
             {
-                <div class="col-md-3" style="margin:40px">
-
+                <div class="col-md-5" style="margin:40px">
                     <div class="card">
                         <div class="card-image">
                             <div class="carousel slide" data-ride="carousel" id="product-carousel">
@@ -81,23 +80,26 @@
                             <b> @Html.DisplayNameFor(modelItem => item.Name): </b>
                             @Html.DisplayFor(modelItem => item.Name)<br />
 
-                            <b> @Html.DisplayNameFor(modelItem => item.Price): </b>
-                            @Html.DisplayFor(modelItem => item.Price)<br />
+                            <b> @Html.DisplayNameFor(modelItem => item.NumberOfProducts): </b>
+                            @Html.DisplayFor(modelItem => item.NumberOfProducts)<br />
 
-                            <b> @Html.DisplayNameFor(modelItem => item.Description): </b>
-                            @Html.DisplayFor(modelItem => item.Description)<br />
+                            <b> @Html.DisplayNameFor(modelItem => item.Price): $</b>
+                            @Html.DisplayFor(modelItem => item.Price)<br />
 
                             <b>@Html.DisplayNameFor(modelItem => item.CategoryName): </b>
                             @Html.DisplayFor(modelItem => item.CategoryName)<br />
-
-                            <b>@Html.DisplayNameFor(modelItem => item.SupplierName): </b>
-                            @Html.DisplayFor(modelItem => item.SupplierName)<br />
                         </div>
 
                         <div class="card-footer">
-                            <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                            <a asp-controller="" asp-action="" asp-route-id="@item.Id">Add to cart</a> |
-                            <a asp-controller="" asp-action="" asp-route-id="@item.Id">Add to wishlist</a>
+                            <form style="display:inline-block;" asp-action="Details" asp-route-id="@item.Id" method="post">
+                                <input type="submit" value="Details" class="btn btn-dark" />
+                            </form>
+                            <form style="display:inline-block;" asp-action="Add" asp-controller="Cart" asp-route-id="@item.Id" method="post">
+                                <input type="submit" value="Add to cart" class="btn btn-dark" />
+                            </form>
+                            <form style="display:inline-block;" asp-action="Create" asp-controller="WishlistProducts" asp-route-id="@item.Id" method="post">
+                                <input type="submit" value="Add to wishlist" class="btn btn-dark" />
+                            </form>
                         </div>
                     </div>
                 </div>

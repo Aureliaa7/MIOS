@@ -177,6 +177,10 @@ body {
     text-align: center;
 }
 
-.fa-user {
+.user-admin {
     margin-left: -6px;
+}
+
+.user-customer {
+    margin-left: -7px;
 }

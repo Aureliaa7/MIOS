@@ -15,11 +15,13 @@ namespace MusicalInstrumentsShop.BusinessLogic.Services
     {
         private readonly IUnitOfWork unitOfWork;
         private readonly IMapper mapper;
+        private readonly IProductMappingService productMappingService;
 
-        public ProductService(IUnitOfWork unitOfWork, IMapper mapper)
+        public ProductService(IUnitOfWork unitOfWork, IMapper mapper, IProductMappingService productMappingService)
         {
             this.unitOfWork = unitOfWork;
             this.mapper = mapper;
+            this.productMappingService = productMappingService;
         }
 
         public async Task AddNewAsync(ProductCreationDto productModel, IEnumerable<Photo> photos)
@@ -80,7 +82,7 @@ namespace MusicalInstrumentsShop.BusinessLogic.Services
         public async Task<IEnumerable<ProductDto>> GetAllAsync()
         {
             var products = await unitOfWork.ProductRepository.GetAllWithRelatedData();
-            var mappedProducts = await MapProducts(products);
+            var mappedProducts = await productMappingService.MapProducts(products);
             return mappedProducts.OrderBy(x => x.CategoryName);
         }
 
@@ -92,7 +94,7 @@ namespace MusicalInstrumentsShop.BusinessLogic.Services
                 var allProducts = await unitOfWork.ProductRepository.GetAllWithRelatedData();
                 var searchedProducts = allProducts.Where(x => x.Category.Id == categoryId).ToList();
 
-                return await MapProducts(searchedProducts);
+                return await productMappingService.MapProducts(searchedProducts);
             }
             throw new ItemNotFoundException("The category was not found...");
         }
@@ -103,7 +105,7 @@ namespace MusicalInstrumentsShop.BusinessLogic.Services
             if (productExists)
             {
                 var product = await unitOfWork.ProductRepository.GetWithRelatedDataAsNoTracking(id);
-                return await MapProductToProductDto(product);
+                return await productMappingService.MapProductToProductDto(product);
             }
             throw new ItemNotFoundException("The product was not found...");
         }
@@ -149,44 +151,6 @@ namespace MusicalInstrumentsShop.BusinessLogic.Services
             }
             await unitOfWork.SaveChangesAsync();
             return fileNames;
-        }
-
-        private async Task<IEnumerable<ProductDto>> MapProducts(IEnumerable<Product> products)
-        {
-            var productDtos = new List<ProductDto>();
-            foreach (var product in products)
-            {
-                var productDto = await MapProductToProductDto(product);
-                productDtos.Add(productDto);
-            }
-            return productDtos;
-        }
-
-        private async Task<ProductDto> MapProductToProductDto(Product product)
-        {
-            Stock stock = await unitOfWork.StockRepository.GetByProductId(product.Id);
-            ProductDto productDto = null;
-            if (stock != null)
-            {
-                var specifications = await unitOfWork.SpecificationRepository.GetByProductId(product.Id);
-                var specificationDtos = new List<SpecificationDto>();
-                if(specifications != null)
-                {
-                    foreach(var specification in specifications)
-                    {
-                        var specificationDto = mapper.Map<Specification, SpecificationDto>(specification);
-                        specificationDtos.Add(specificationDto);
-                    }
-                }
-                var photos = await unitOfWork.PhotoProductRepository.GetByProductId(product.Id);
-                productDto = mapper.Map<Product, ProductDto>(product);
-                productDto.CategoryName = product.Category.Name;
-                productDto.SupplierName = stock.Supplier.Name;
-                productDto.Photos = photos;
-                productDto.NumberOfProducts = stock.NumberOfProducts;
-                productDto.Specifications = specificationDtos;
-            }
-            return productDto;
         }
     }
 }

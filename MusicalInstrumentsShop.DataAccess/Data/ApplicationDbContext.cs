@@ -14,9 +14,8 @@ namespace MusicalInstrumentsShop.DataAccess.Data
         public DbSet<Stock> Stocks { get; set; }
         public DbSet<Product> Products { get; set; }
         public DbSet<DeliveryMethod> DeliveryMethods { get; set; }
-        public DbSet<Payment> Payments { get; set; }
+        public DbSet<PaymentMethod> PaymentMethods { get; set; }
         public DbSet<Wishlist> Wishlists { get; set; }
-        public DbSet<CreditCard> CreditCards { get; set; }
         public DbSet<OrderProduct> OrderProducts { get; set; }
         public DbSet<OrderDetails> OrderDetails { get; set; }
         public DbSet<WishlistProduct> WishlistProducts { get; set; }

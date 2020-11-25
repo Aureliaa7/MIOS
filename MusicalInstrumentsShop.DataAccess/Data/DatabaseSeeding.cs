@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using MusicalInstrumentsShop.DataAccess.Entities;
+using System;
+using System.Linq;
 
 namespace MusicalInstrumentsShop.DataAccess.Data
 {
@@ -47,6 +49,16 @@ namespace MusicalInstrumentsShop.DataAccess.Data
                 {
                     userManager.AddToRoleAsync(administrator, "Administrator").Wait();
                 }
+            }
+        }
+
+        public static void AddPaymentMethod(ApplicationDbContext context)
+        {
+            if(!context.PaymentMethods.Where(x => x.Name == "Cash on delivery").Any())
+            {
+                var paymentMethod = new PaymentMethod { Id = Guid.NewGuid(), Name = "Cash on delivery" };
+                context.PaymentMethods.Add(paymentMethod);
+                context.SaveChanges();
             }
         }
     }

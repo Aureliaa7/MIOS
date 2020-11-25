@@ -1,0 +1,74 @@
+﻿@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_CustomerLayout.cshtml";
+}
+
+<div class="container wishlist" style="background-color: whitesmoke;">
+    <h2>My shopping cart</h2>
+    @if (ViewBag.cart != null)
+    {
+        <div class="row">
+            <div class="col-12">
+                <div class="table-content table-responsive">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Remove</th>
+                                <th>Images</th>
+                                <th>Product</th>
+                                <th>Price</th>
+                                <th>Quantity</th>
+                                <th>Sub Total</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in ViewBag.cart)
+                            {
+
+                                <tr>
+                                    <td>
+                                        <form asp-action="Remove" asp-controller="Cart" asp-route-id="@item.Product.Id" method="post">
+                                            <input type="submit" value="Remove" class="btn btn-dark" />
+                                        </form>
+                                    </td>
+                                    <td>
+                                        @{var firstPhoto = item.Product.Photos[0].Name;}
+                                        <img src="~/images/products/@firstPhoto" width="60" height="60" />
+                                    </td>
+                                    <td>
+                                        <a style="color: black;" asp-action="Details" asp-controller="Products" asp-route-id="@item.Product.Id">
+                                            @item.Product.Name
+                                        </a>
+                                    </td>
+                                    <td>
+                                        @item.Product.Price
+                                    </td>
+                                    <td>
+                                        @item.Quantity
+                                    </td>
+                                    <td>
+                                        @(item.Product.Price * item.Quantity)
+                                    </td>
+                                </tr>
+                            }
+                            <tr>
+                                <td align="right" colspan="6">Sum</td>
+                                <td>@ViewBag.total</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    }
+    else
+    {
+        <div class="row">
+            <div class="col-12">
+                <p>There is no product is the shopping cart</p>
+            </div>
+        </div>
+    }
+</div>
+<br />
+<a asp-controller="" asp-action="">Go To Checkout</a>

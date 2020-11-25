@@ -13,7 +13,7 @@ namespace MusicalInstrumentsShop.BusinessLogic.DTOs
         public string Description { get; set; }
         [Display(Name = "Category")]
         public string CategoryName { get; set; }
-        [Display(Name = "Number of products")]
+        [Display(Name = "Products in stock")]
         public int NumberOfProducts { get; set; }
         [Display(Name = "Supplier")]
         public string SupplierName { get; set; }

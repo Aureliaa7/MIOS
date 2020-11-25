@@ -14,6 +14,8 @@ namespace MusicalInstrumentsShop.DataAccess.UnitOfWork
         IRepository<Photo> PhotoRepository { get; }
         IRepository<Supplier> SupplierRepository { get; }
         IRepository<DeliveryMethod> DeliveryMethodRepository { get; }
+        IWishlistRepository WishlistRepository { get; }
+        IWishlistProductRepository WishlistProductRepository { get; }
 
         Task<int> SaveChangesAsync();
     }

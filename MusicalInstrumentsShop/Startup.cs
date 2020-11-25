@@ -7,17 +7,14 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using MusicalInstrumentsShop.BusinessLogic.Services.Interfaces;
 using MusicalInstrumentsShop.DataAccess.Data;
-using MusicalInstrumentsShop.DataAccess.Repositories.Interfaces;
 using MusicalInstrumentsShop.DataAccess.Entities;
 using System;
 using Microsoft.AspNetCore.Http;
 using MusicalInstrumentsShop.BusinessLogic.Mappings;
 using AutoMapper;
 using MusicalInstrumentsShop.BusinessLogic.Services;
-using MusicalInstrumentsShop.DataAccess.Repositories;
 using MusicalInstrumentsShop.DataAccess.UnitOfWork;
 using MusicalInstrumentsShop.BusinessLogic.Mappings.Products;
-using ReflectionIT.Mvc.Paging;
 using MusicalInstrumentsShop.BusinessLogic.ProductFiltering;
 
 namespace MusicalInstrumentsShop
@@ -33,6 +30,14 @@ namespace MusicalInstrumentsShop
 
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddDistributedMemoryCache();
+            services.AddSession(options =>
+            {
+                options.IdleTimeout = TimeSpan.FromMinutes(5);
+                options.Cookie.HttpOnly = true;
+                options.Cookie.IsEssential = true;
+            });
+
             services.AddControllersWithViews();
 
             services.AddDbContext<ApplicationDbContext>(options =>
@@ -75,6 +80,9 @@ namespace MusicalInstrumentsShop
             services.AddScoped<ISpecificationService, SpecificationService>();
             services.AddScoped<IDeliveryService, DeliveryService>();
             services.AddScoped<IProductFilterService, ProductFilterService>();
+            services.AddScoped<IWishlistService, WishlistService>();
+            services.AddScoped<IWishlistProductService, WishlistProductService>();
+            services.AddScoped<IProductMappingService, ProductMappingService>();
 
             services.AddAutoMapper(typeof(CategoryProfile));
             services.AddAutoMapper(typeof(SupplierProfile));
@@ -86,7 +94,7 @@ namespace MusicalInstrumentsShop
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env, UserManager<ApplicationUser> userManager,
-            RoleManager<ApplicationRole> roleManager)
+            RoleManager<ApplicationRole> roleManager, ApplicationDbContext context)
         {
             if (env.IsDevelopment())
             {
@@ -102,9 +110,11 @@ namespace MusicalInstrumentsShop
             app.UseStaticFiles();
 
             app.UseRouting();
+            app.UseSession();
 
             DatabaseSeeding.AddRoles(roleManager);
             DatabaseSeeding.AddAdministrator(userManager);
+            DatabaseSeeding.AddPaymentMethod(context);
 
             app.UseAuthentication();
             app.UseAuthorization();

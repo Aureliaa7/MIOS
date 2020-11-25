@@ -5,6 +5,7 @@ using MusicalInstrumentsShop.BusinessLogic.Exceptions;
 using MusicalInstrumentsShop.BusinessLogic.Services.Interfaces;
 using MusicalInstrumentsShop.BusinessLogic.DTOs;
 using Microsoft.AspNetCore.Authorization;
+using System.Linq;
 
 namespace MusicalInstrumentsShop.Controllers
 {
@@ -142,7 +143,7 @@ namespace MusicalInstrumentsShop.Controllers
         public JsonResult GetExistingCategories()
         {
             var categories = categoryService.GetAllAsync().Result;
-            return new JsonResult(categories);
+            return new JsonResult(categories.OrderBy(x => x.Name));
         }
     }
 }

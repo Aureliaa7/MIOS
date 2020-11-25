@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -142,7 +143,7 @@ namespace MusicalInstrumentsShop.Controllers
         public JsonResult GetExistingSuppliers()
         {
             var suppliers = supplierService.GetAllAsync().Result;
-            return new JsonResult(suppliers);
+            return new JsonResult(suppliers.OrderBy(x => x.Name));
         }
 
         public JsonResult GetSupplierByProduct(string productId)

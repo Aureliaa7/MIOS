@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using MusicalInstrumentsShop.BusinessLogic.DTOs;
 using MusicalInstrumentsShop.BusinessLogic.Exceptions;
@@ -56,13 +57,14 @@ namespace MusicalInstrumentsShop.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Register(RegistrationDto registrationInfo)
+        public async Task<IActionResult> Register([FromServices] IWishlistService wishlistService, RegistrationDto registrationInfo)
         {
             if (ModelState.IsValid)
             {
                 var registerResult = await accountService.RegisterAsync(registrationInfo);
-                if (registerResult == null)
+                if (registerResult.Capacity == 0)
                 {
+                    await wishlistService.CreateAsync(registrationInfo.Email);
                     return RedirectToAction("Login", "Account");
                 }
                 ViewBag.RegisterResult = registerResult;
@@ -76,6 +78,7 @@ namespace MusicalInstrumentsShop.Controllers
             return RedirectToAction("Login", "Account");
         }
 
+        [Authorize]
         public async Task<IActionResult> Profile()
         {
             try
@@ -89,6 +92,8 @@ namespace MusicalInstrumentsShop.Controllers
             }
         }
 
+
+        [Authorize]
         public async Task<IActionResult> Edit()
         {
             Guid currentUserId = new Guid(User.FindFirstValue(ClaimTypes.NameIdentifier));
@@ -118,6 +123,8 @@ namespace MusicalInstrumentsShop.Controllers
             }
         }
 
+
+        [Authorize]
         public IActionResult ChangePassword()
         {
             return View();
@@ -144,6 +151,8 @@ namespace MusicalInstrumentsShop.Controllers
             return View();
         }
 
+
+        [Authorize]
         public IActionResult ChangePasswordResult()
         {
             ViewBag.Result = TempData["Result"];
