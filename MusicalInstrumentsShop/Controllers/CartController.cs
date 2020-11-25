@@ -12,10 +12,10 @@ namespace MusicalInstrumentsShop.Controllers
         public IActionResult Index()
         {
             var cart = SessionHelper.GetObjectFromJson<List<Item>>(HttpContext.Session, "cart");
-            ViewBag.cart = cart;
+            ViewBag.Cart = cart;
             if (cart != null)
             {
-                ViewBag.total = cart.Sum(x => x.Product.Price * x.Quantity);
+                ViewBag.Total = cart.Sum(x => x.Product.Price * x.Quantity);
             }
             return View();
         }
@@ -65,6 +65,16 @@ namespace MusicalInstrumentsShop.Controllers
             List<Item> cart = SessionHelper.GetObjectFromJson<List<Item>>(HttpContext.Session, "cart");
             int index = GetProductIdFromCart(id);
             cart.RemoveAt(index);
+            SessionHelper.SetObjectAsJson(HttpContext.Session, "cart", cart);
+            return RedirectToAction("Index");
+        }
+
+        public IActionResult IncreaseQuantity(string id)
+        {
+            List<Item> cart = SessionHelper.GetObjectFromJson<List<Item>>(HttpContext.Session, "cart");
+            int index = GetProductIdFromCart(id);
+            cart.ElementAt(index).Quantity++;
+            ViewBag.QuantityUpdated = "Product quantity updated";
             SessionHelper.SetObjectAsJson(HttpContext.Session, "cart", cart);
             return RedirectToAction("Index");
         }
