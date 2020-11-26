@@ -251,3 +251,28 @@
     margin-left: -100px;
     margin-top: 110px;
 }
+
+.white-link {
+    color: white;
+}
+
+.wishlist-link {
+    color: red;
+}
+
+.wrapper .header .header-menu ul li a no-text-decoration:hover {
+    text-decoration: none;
+}
+
+.order-jumbotron {
+    width: 900px;
+    height: 590px;
+    margin-top: 85px;
+    margin-left: -105px;
+}
+
+.order-form {
+    width: 1010px;
+    height: 500px;
+    margin-left: -105px;
+}

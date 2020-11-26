@@ -23,6 +23,9 @@ namespace MusicalInstrumentsShop.DataAccess.UnitOfWork
             DeliveryMethodRepository = new Repository<DeliveryMethod>(context);
             WishlistRepository = new WishlistRepository(context);
             WishlistProductRepository = new WishlistProductRepository(context);
+            OrderDetailsRepository = new OrderDetailsRepository(context);
+            OrderProductRepository = new OrderProductRepository(context);
+            PaymentMethodRepository = new Repository<PaymentMethod>(context);
         }
 
         public IPhotoProductRepository PhotoProductRepository { get; private set; }
@@ -44,6 +47,12 @@ namespace MusicalInstrumentsShop.DataAccess.UnitOfWork
         public IWishlistRepository WishlistRepository { get; private set; }
 
         public IWishlistProductRepository WishlistProductRepository { get; private set; }
+
+        public IOrderDetailsRepository OrderDetailsRepository { get; private set; }
+
+        public IOrderProductRepository OrderProductRepository { get; private set; }
+
+        public IRepository<PaymentMethod> PaymentMethodRepository { get; private set; }
 
         public async Task<int> SaveChangesAsync()
         {

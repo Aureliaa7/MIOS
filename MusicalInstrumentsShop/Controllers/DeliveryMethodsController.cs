@@ -3,11 +3,9 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using MusicalInstrumentsShop.BusinessLogic.DTOs;
 using MusicalInstrumentsShop.BusinessLogic.Exceptions;
 using MusicalInstrumentsShop.BusinessLogic.Services.Interfaces;
-using MusicalInstrumentsShop.DataAccess.Entities;
 
 namespace MusicalInstrumentsShop.Controllers
 {
@@ -79,6 +77,12 @@ namespace MusicalInstrumentsShop.Controllers
             {
                 return RedirectToAction("NotFound", "Error");
             }
+        }
+
+        public JsonResult GetDeliveryMethods()
+        {
+            var deliveryMethods = deliveryService.GetAllAsync().Result;
+            return new JsonResult(deliveryMethods.OrderBy(x => x.Method));
         }
     }
 }

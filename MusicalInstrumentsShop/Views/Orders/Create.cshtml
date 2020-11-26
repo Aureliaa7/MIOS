@@ -1,0 +1,85 @@
+﻿@model MusicalInstrumentsShop.BusinessLogic.DTOs.OrderDetailsDto
+
+@{
+    ViewData["Title"] = "Create";
+    Layout = "~/Views/Shared/_CustomerLayout.cshtml";
+}
+
+<hr />
+<div class="jumbotron order-jumbotron justify-content-center">
+    <h4 style="text-align: center;">Order details</h4>
+    <div class="col-md-6">
+        <form asp-action="Create" class="order-form" method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            <div class="row my-row">
+                <div class="col-md-3">
+                    <label asp-for="FirstName" class="control-label"></label>
+                    <input asp-for="FirstName" class="form-control" />
+                    <span asp-validation-for="FirstName" class="text-danger"></span>
+                </div>
+                <div class="col-md-3 add-left-margins">
+                    <label asp-for="LastName" class="control-label"></label>
+                    <input asp-for="LastName" class="form-control" />
+                    <span asp-validation-for="LastName" class="text-danger"></span>
+                </div>
+                <div class="col-md-3">
+                    <label asp-for="Telephone" class="control-label"></label>
+                    <input asp-for="Telephone" class="form-control" />
+                    <span asp-validation-for="Telephone" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="row my-row">
+                <div class="col-md-3">
+                    <label asp-for="City" class="control-label"></label>
+                    <input asp-for="City" class="form-control" />
+                    <span asp-validation-for="City" class="text-danger"></span>
+                </div>
+                <div class="col-md-3">
+                    <label asp-for="Country" class="control-label"></label>
+                    <input asp-for="Country" class="form-control" />
+                    <span asp-validation-for="Country" class="text-danger"></span>
+                </div>
+                <div class="col-md-3">
+                    <label asp-for="Street" class="control-label"></label>
+                    <input asp-for="Street" class="form-control" />
+                    <span asp-validation-for="Street" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="row my-row">
+                <div class="col-md-3">
+                    <label asp-for="Postcode" class="control-label"></label>
+                    <input asp-for="Postcode" class="form-control" />
+                    <span asp-validation-for="Postcode" class="text-danger"></span>
+                </div>
+                <div class="col-md-3">
+                    <label asp-for="DeliveryMethodName" class="control-label"></label>
+                    <select id="delivery-field" asp-for="DeliveryMethodId" class="form-control set-width-dropdown">
+                        <option>Select</option>
+                    </select>
+                    <span asp-validation-for="DeliveryMethodId" class="text-danger"></span>
+                </div>
+                <div class="col-md-3">
+                    <label asp-for="PaymentMethodName" class="control-label"></label>
+                    <select id="payment-field" asp-for="PaymentMethodId" class="form-control set-width-dropdown">
+                        <option>Select</option>
+                    </select>
+                    <span asp-validation-for="PaymentMethodId" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="row my-row">
+                <div class="col-md-3">
+                    <input type="submit" value="Place order" class="btn btn-primary" id="form-btn" />
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script src="~/js/placeOrder.js"></script>
+}

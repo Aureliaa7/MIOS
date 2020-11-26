@@ -1,8 +1,8 @@
 ﻿using System;
 
-namespace MusicalInstrumentsShop.DataAccess.Entities
+namespace MusicalInstrumentsShop.BusinessLogic.DTOs
 {
-    public class PaymentMethod
+    public class PaymentMethodDto
     {
         public Guid Id { get; set; }
         public string Name { get; set; }

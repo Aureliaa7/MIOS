@@ -1,5 +1,5 @@
 ﻿@{
-    ViewData["Title"] = "Your MIOS cart";
+    ViewData["Title"] = "My cart";
     Layout = "~/Views/Shared/_CustomerLayout.cshtml";
 }
 
@@ -9,7 +9,6 @@
     {
         if (ViewBag.QuantityUpdated != null)
         {
-            <h1>HERE</h1>
             <div class="alert alert-info" style="margin-top: 100px;">
                 <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
                 @ViewBag.QuantityUpdated
@@ -86,4 +85,12 @@
     }
 </div>
 <br />
-<a asp-controller="" asp-action="">Go To Checkout</a>
+
+
+<form style="display:inline-block;" asp-action="Create" asp-controller="Orders" method="get">
+    <div class="form-group row">
+        <div class="col-xs-2">
+            <input type="submit" value="Proceed to checkout" class="btn btn-dark" />
+        </div>
+    </div>
+</form>

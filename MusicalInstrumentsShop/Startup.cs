@@ -83,6 +83,8 @@ namespace MusicalInstrumentsShop
             services.AddScoped<IWishlistService, WishlistService>();
             services.AddScoped<IWishlistProductService, WishlistProductService>();
             services.AddScoped<IProductMappingService, ProductMappingService>();
+            services.AddScoped<IOrderDetailsService, OrderDetailsService>();
+            services.AddScoped<IPaymentService, PaymentService>();
 
             services.AddAutoMapper(typeof(CategoryProfile));
             services.AddAutoMapper(typeof(SupplierProfile));
@@ -91,6 +93,8 @@ namespace MusicalInstrumentsShop
             services.AddAutoMapper(typeof(ProductProfile));
             services.AddAutoMapper(typeof(SpecificationProfile));
             services.AddAutoMapper(typeof(DeliveryMethodProfile));
+            services.AddAutoMapper(typeof(OrderDetailsProfile));
+            services.AddAutoMapper(typeof(PaymentProfile));
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env, UserManager<ApplicationUser> userManager,

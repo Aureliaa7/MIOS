@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using MusicalInstrumentsShop.BusinessLogic.DTOs;
 using MusicalInstrumentsShop.BusinessLogic.Services.Interfaces;
 using System.Collections.Generic;
@@ -7,8 +8,10 @@ using System.Threading.Tasks;
 
 namespace MusicalInstrumentsShop.Controllers
 {
+    [Authorize]
     public class CartController : Controller
     { 
+
         public IActionResult Index()
         {
             var cart = SessionHelper.GetObjectFromJson<List<Item>>(HttpContext.Session, "cart");
@@ -69,7 +72,7 @@ namespace MusicalInstrumentsShop.Controllers
             return RedirectToAction("Index");
         }
 
-        public IActionResult IncreaseQuantity(string id)
+        public IActionResult UpdateQuantity(string id)
         {
             List<Item> cart = SessionHelper.GetObjectFromJson<List<Item>>(HttpContext.Session, "cart");
             int index = GetProductIdFromCart(id);

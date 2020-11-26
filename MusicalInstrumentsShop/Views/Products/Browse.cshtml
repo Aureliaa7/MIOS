@@ -1,8 +1,12 @@
 ﻿@model MusicalInstrumentsShop.BusinessLogic.ProductFiltering.ProductsFilteringModel
 
 @{
-    ViewData["Title"] = "Browse";
-    if (User.IsInRole("Customer"))
+    ViewData["Title"] = "Products";
+    if (User.IsInRole("Administrator"))
+    {
+        Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    }
+    else if(User.IsInRole("Customer"))
     {
         Layout = "~/Views/Shared/_CustomerLayout.cshtml";
     }

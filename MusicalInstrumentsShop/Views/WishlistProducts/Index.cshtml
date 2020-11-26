@@ -1,7 +1,7 @@
 ﻿@model MusicalInstrumentsShop.BusinessLogic.ProductFiltering.PaginatedList<MusicalInstrumentsShop.BusinessLogic.DTOs.WishlistProductDto>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "My wishlist";
     Layout = "~/Views/Shared/_CustomerLayout.cshtml";
 }
 
@@ -10,51 +10,59 @@
     <div class="row">
         <div class="col-12">
             <div class="table-content table-responsive">
-                <table class="table">
-                    <thead>
-                        <tr>
-                            <th>Remove</th>
-                            <th>Images</th>
-                            <th>Product</th>
-                            <th>Unit Price</th>
-                            <th>In Stock</th>
-                            <th>Add to Cart</th>
-                        </tr>
-                    </thead>
-                    @foreach (var item in Model)
-                    {
-
-                        <tbody>
+                @if (Model.Capacity > 0)
+                {
+                    <table class="table">
+                        <thead>
                             <tr>
-                                <td>
-                                    <form asp-action="Delete" asp-controller="WishlistProducts" asp-route-id="@item.Id" method="post">
-                                        <input type="submit" value="Remove" class="btn btn-dark" />
-                                    </form>
-                                </td>
-                                <td>
-                                    @{var firstPhoto = item.Product.Photos.ElementAt(0).Name;}
-                                    <img src="~/images/products/@firstPhoto" width="60" height="60" />
-                                </td>
-                                <td>
-                                    <a style="color: black;" asp-action="Details" asp-controller="Products" asp-route-id="@item.Product.Id">
-                                        @Html.DisplayFor(modelItem => item.Product.Name)
-                                    </a>
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.Product.Price)
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.Product.NumberOfProducts)
-                                </td>
-                                <td>
-                                    <form asp-action="Add" asp-controller="Cart" asp-route-id="@item.Product.Id" method="post">
-                                        <input type="submit" value="Add To Cart" class="btn btn-dark" />
-                                    </form>
-                                </td>
+                                <th>Remove</th>
+                                <th>Images</th>
+                                <th>Product</th>
+                                <th>Unit Price</th>
+                                <th>In Stock</th>
+                                <th>Add to Cart</th>
                             </tr>
-                        </tbody>
-                    }
-                </table>
+                        </thead>
+                        @foreach (var item in Model)
+                        {
+
+                            <tbody>
+                                <tr>
+                                    <td>
+                                        <form asp-action="Delete" asp-controller="WishlistProducts" asp-route-id="@item.Id" method="post">
+                                            <input type="submit" value="Remove" class="btn btn-dark" />
+                                        </form>
+                                    </td>
+                                    <td>
+                                        @{var firstPhoto = item.Product.Photos.ElementAt(0).Name;}
+                                        <img src="~/images/products/@firstPhoto" width="60" height="60" />
+                                    </td>
+                                    <td>
+                                        <a style="color: black;" asp-action="Details" asp-controller="Products" asp-route-id="@item.Product.Id">
+                                            @Html.DisplayFor(modelItem => item.Product.Name)
+                                        </a>
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Product.Price)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Product.NumberOfProducts)
+                                    </td>
+                                    <td>
+                                        <form asp-action="Add" asp-controller="Cart" asp-route-id="@item.Product.Id" method="post">
+                                            <input type="submit" value="Add To Cart" class="btn btn-dark" />
+                                        </form>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        }
+                    </table>
+                }
+                else
+                {
+                    <br />
+                    <h5>You have no products in your wishlist</h5>
+                }
             </div>
         </div>
     </div>

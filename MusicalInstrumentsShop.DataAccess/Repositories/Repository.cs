@@ -9,7 +9,7 @@ using MusicalInstrumentsShop.DataAccess.Repositories.Interfaces;
 
 namespace MusicalInstrumentsShop.DataAccess.Repositories
 {
-    public class Repository<T> : IRepository<T> where T : class
+    public class Repository<T> : Interfaces.IRepository<T> where T : class
     {
         protected readonly ApplicationDbContext Context;
 

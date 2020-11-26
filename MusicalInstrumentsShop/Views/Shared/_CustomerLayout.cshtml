@@ -6,12 +6,12 @@
     <link rel="icon" type="image/jpg" href="~/images/mios-owl.png" />
     <title>@ViewData["Title"] - MIOS</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
-    <link href="~/css/adminLayout.css" rel="stylesheet" />
     <link href="~/css/styles.css" rel="stylesheet" />
+    <link href="~/css/adminLayout.css" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.0-2/css/all.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" charset="utf-8"></script>
-
 </head>
+
 <body class="bg">
     <div class="wrapper">
         <!--header menu start-->
@@ -22,9 +22,20 @@
                         <img src="~/images/mios-owl.png" />
                     </center>
                 </div>
+                <a class="navbar-brand add-margin-left" style="color:white;" asp-area="" asp-controller="" asp-action="">Musical Instruments Online Shop</a><br />
                 <ul>
                     <li>
-                        <a class="nav-link account-btn" asp-area="" asp-controller="" asp-action="" role="button"
+                        <a name="no-text-decoration" class="nav-link wishlist-link" asp-controller="WishlistProducts" asp-action="Index">
+                            <i class="fa fa-heart"></i>
+                        </a>
+                    </li>
+                    <li>
+                        <a name="no-text-decoration" class="nav-link white-link" asp-controller="Cart" asp-action="Index">
+                            <i class="fa fa-shopping-cart"></i>
+                        </a>
+                    </li>
+                    <li>
+                        <a name="no-text-decoration" class="nav-link account-btn" asp-area="" asp-controller="" asp-action="" role="button"
                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             <i class="fas fa-user user-customer"></i>
                         </a>
@@ -39,13 +50,13 @@
             </div>
         </div>
 
+
         <div class="container">
             <main role="main" class="pb-3">
                 @RenderBody()
             </main>
         </div>
     </div>
-
     <footer class="border-top footer fixed-bottom text-white-50">
         &copy; 2020 - Musical Instruments Online Shop
     </footer>

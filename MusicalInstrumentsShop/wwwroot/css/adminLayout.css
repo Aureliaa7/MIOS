@@ -68,6 +68,7 @@ body {
     transition: 0.3s;
     transition-property: width;
     overflow-y: auto;
+    margin-right: 50px;
 }
 
 .wrapper .sidebar .sidebar-menu {
@@ -183,4 +184,8 @@ body {
 
 .user-customer {
     margin-left: -7px;
+}
+
+.website-name {
+    margin-left: -390px;
 }
