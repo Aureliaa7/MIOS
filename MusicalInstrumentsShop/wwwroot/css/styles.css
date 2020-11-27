@@ -276,3 +276,17 @@
     height: 500px;
     margin-left: -105px;
 }
+
+.add-margin-left-50 {
+    margin-left: 50px;
+}
+
+.orders-container {
+    margin-left: -100px;
+    margin-top: 110px;
+    width: 140%;
+}
+
+.add-margin-left-100 {
+    margin-left: -88px;
+}

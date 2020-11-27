@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MusicalInstrumentsShop.BusinessLogic.DTOs;
+using MusicalInstrumentsShop.BusinessLogic.Exceptions;
 using MusicalInstrumentsShop.BusinessLogic.Services.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -47,6 +48,19 @@ namespace MusicalInstrumentsShop.Controllers
                 return RedirectToAction(nameof(Index));
             }
             return View();
+        }
+
+        public async Task<IActionResult> Details(long id)
+        {
+            try
+            {
+                var order = await orderService.GetByIdAsync(id);
+                return View(order);
+            }
+            catch(ItemNotFoundException)
+            {
+                return RedirectToAction("NotFound", "Error");
+            }
         }
 
         public JsonResult GetPaymentMethods()

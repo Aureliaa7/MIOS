@@ -5,15 +5,8 @@
 
 <div class="container wishlist-cart" style="background-color: whitesmoke;">
     <h2>My shopping cart</h2>
-    @if (ViewBag.Cart != null)
+    @if (ViewBag.Cart.Count > 0)
     {
-        if (ViewBag.QuantityUpdated != null)
-        {
-            <div class="alert alert-info" style="margin-top: 100px;">
-                <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
-                @ViewBag.QuantityUpdated
-            </div>
-        }
         <div class="row">
             <div class="col-12">
                 <div class="table-content table-responsive">
@@ -51,29 +44,37 @@
                                         @item.Product.Price
                                     </td>
                                     <td>
-                                        <form style="display:inline-block;" asp-action="IncreaseQuantity" asp-controller="Cart" asp-route-id="@item.Product.Id" method="post">
-                                            <div class="form-group row">
-                                                <div class="col-xs-2">
-                                                    <input value="@item.Quantity" class="form-control text-center" style="width: 80px;" />
-                                                    <input type="submit" value="Update" class="btn btn-dark" />
-                                                </div>
+
+                                        <div class="form-group row">
+                                            <div class="col-xs-2">
+                                                <input id="id-field" value="@item.Product.Id" class="form-control text-center" style="width: 80px;" hidden />
+                                                <input id="quantity-field" value="@item.Quantity" class="form-control text-center" style="width: 80px;" />
+                                                <input type="submit" value="Update" class="btn btn-dark" onclick="update_quantity()" />
                                             </div>
-                                        </form>
+                                        </div>
+
                                     </td>
                                     <td>
-                                        @(item.Product.Price * item.Quantity)
+                                        $ @(item.Product.Price * item.Quantity)
                                     </td>
                                 </tr>
                             }
                             <tr>
                                 <td align="right" colspan="6">Sum</td>
-                                <td>@ViewBag.Total</td>
+                                <td>$ <input style="border: 0;" readonly id="sum-id" value=@ViewBag.Total /></td>
                             </tr>
                         </tbody>
                     </table>
                 </div>
             </div>
         </div>
+        <form style="display:inline-block;" class="add-margin-left-50" asp-action="Create" asp-controller="Orders" method="get">
+            <div class="form-group row">
+                <div class="col-xs-2">
+                    <input type="submit" value="Proceed to checkout" class="btn btn-dark" />
+                </div>
+            </div>
+        </form>
     }
     else
     {
@@ -87,10 +88,6 @@
 <br />
 
 
-<form style="display:inline-block;" asp-action="Create" asp-controller="Orders" method="get">
-    <div class="form-group row">
-        <div class="col-xs-2">
-            <input type="submit" value="Proceed to checkout" class="btn btn-dark" />
-        </div>
-    </div>
-</form>
+@section Scripts {
+    <script src="~/js/placeOrder.js"></script>
+}

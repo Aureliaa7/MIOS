@@ -22,7 +22,8 @@
                         <img src="~/images/mios-owl.png" />
                     </center>
                 </div>
-                <a class="navbar-brand add-margin-left" style="color:white;" asp-area="" asp-controller="" asp-action="">Musical Instruments Online Shop</a><br />
+                <a class="navbar-brand add-margin-left" style="color:white;" asp-controller="Products" asp-action="Browse">Musical Instruments Online Shop</a><br />
+                <a class="navbar-brand add-margin-left" style="color:white;" asp-controller="Orders" asp-action="Index">My orders</a>
                 <ul>
                     <li>
                         <a name="no-text-decoration" class="nav-link wishlist-link" asp-controller="WishlistProducts" asp-action="Index">
@@ -35,21 +36,20 @@
                         </a>
                     </li>
                     <li>
-                        <a name="no-text-decoration" class="nav-link account-btn" asp-area="" asp-controller="" asp-action="" role="button"
+                        <a name="no-text-decoration" class="nav-link account-btn" asp-controller="" asp-action="" role="button"
                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             <i class="fas fa-user user-customer"></i>
                         </a>
                         <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-                            <a class="dropdown-item" asp-area="" asp-controller="Account" asp-action="Profile">Profile</a>
-                            <a class="dropdown-item" asp-area="" asp-controller="Account" asp-action="Edit">Edit account</a>
+                            <a class="dropdown-item" asp-controller="Account" asp-action="Profile">Profile</a>
+                            <a class="dropdown-item" asp-controller="Account" asp-action="Edit">Edit account</a>
                             <div class="dropdown-divider"></div>
-                            <a class="dropdown-item" asp-area="" asp-controller="Account" asp-action="Logout">Log out</a>
+                            <a class="dropdown-item" asp-controller="Account" asp-action="Logout">Log out</a>
                         </div>
                     </li>
                 </ul>
             </div>
         </div>
-
 
         <div class="container">
             <main role="main" class="pb-3">

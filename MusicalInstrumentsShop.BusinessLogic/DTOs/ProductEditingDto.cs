@@ -10,6 +10,7 @@ namespace MusicalInstrumentsShop.BusinessLogic.DTOs
         [Required]
         public string Name { get; set; }
         [Required]
+        [Range(0, int.MaxValue, ErrorMessage = "Please enter a value bigger than 0")]
         public double Price { get; set; }
         [Required]
         public string Description { get; set; }

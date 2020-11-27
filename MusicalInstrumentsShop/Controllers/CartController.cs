@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using MusicalInstrumentsShop.BusinessLogic.DTOs;
 using MusicalInstrumentsShop.BusinessLogic.Services.Interfaces;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -11,7 +12,6 @@ namespace MusicalInstrumentsShop.Controllers
     [Authorize]
     public class CartController : Controller
     { 
-
         public IActionResult Index()
         {
             var cart = SessionHelper.GetObjectFromJson<List<Item>>(HttpContext.Session, "cart");
@@ -23,7 +23,7 @@ namespace MusicalInstrumentsShop.Controllers
             return View();
         }
 
-        public int GetProductIdFromCart(string id)
+        public int GetProductIndexFromCart(string id)
         {
             List<Item> cartProducts = SessionHelper.GetObjectFromJson<List<Item>>(HttpContext.Session, "cart");
             for(int iterator = 0; iterator < cartProducts.Count; iterator++)
@@ -43,13 +43,16 @@ namespace MusicalInstrumentsShop.Controllers
             if(SessionHelper.GetObjectFromJson<List<Item>>(HttpContext.Session, "cart") == null)
             {
                 List<Item> cart = new List<Item>();
-                cart.Add(new Item { Product = product, Quantity = 1 });
-                SessionHelper.SetObjectAsJson(HttpContext.Session, "cart", cart);
+                if (product.NumberOfProducts > 0)
+                {
+                    cart.Add(new Item { Product = product, Quantity = 1 });
+                    SessionHelper.SetObjectAsJson(HttpContext.Session, "cart", cart);
+                }
             }
             else
             {
                 List<Item> cart = SessionHelper.GetObjectFromJson<List<Item>>(HttpContext.Session, "cart");
-                int index = GetProductIdFromCart(id);
+                int index = GetProductIndexFromCart(id);
                 if(index != -1)
                 {
                     cart[index].Quantity++;
@@ -66,20 +69,27 @@ namespace MusicalInstrumentsShop.Controllers
         public IActionResult Remove(string id)
         {
             List<Item> cart = SessionHelper.GetObjectFromJson<List<Item>>(HttpContext.Session, "cart");
-            int index = GetProductIdFromCart(id);
+            int index = GetProductIndexFromCart(id);
             cart.RemoveAt(index);
             SessionHelper.SetObjectAsJson(HttpContext.Session, "cart", cart);
             return RedirectToAction("Index");
         }
 
-        public IActionResult UpdateQuantity(string id)
+        public JsonResult UpdateQuantity(string quantity, string id)
         {
             List<Item> cart = SessionHelper.GetObjectFromJson<List<Item>>(HttpContext.Session, "cart");
-            int index = GetProductIdFromCart(id);
-            cart.ElementAt(index).Quantity++;
-            ViewBag.QuantityUpdated = "Product quantity updated";
+            int index = GetProductIndexFromCart(id);
+            cart.ElementAt(index).Quantity = Int16.Parse(quantity);
+            ViewBag.Total = cart.Sum(x => x.Product.Price * x.Quantity);
             SessionHelper.SetObjectAsJson(HttpContext.Session, "cart", cart);
-            return RedirectToAction("Index");
+            return new JsonResult("updated");
+        }
+
+        public JsonResult UpdateTotalSum()
+        {
+            List<Item> cart = SessionHelper.GetObjectFromJson<List<Item>>(HttpContext.Session, "cart");
+            ViewBag.Total = cart.Sum(x => x.Product.Price * x.Quantity);
+            return new JsonResult(ViewBag.Total);
         }
     }
 }

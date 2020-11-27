@@ -46,7 +46,7 @@ namespace MusicalInstrumentsShop.BusinessLogic.Services
 
                     foreach (var item in orderDetailsDto.Items)
                     {
-                        var product = mapper.Map<Product>(item.Product);
+                        var product = await unitOfWork.ProductRepository.GetWithRelatedDataAsTracking(item.Product.Id);
                         var orderProduct = new OrderProduct
                         {
                             Id = Guid.NewGuid(),
@@ -54,7 +54,7 @@ namespace MusicalInstrumentsShop.BusinessLogic.Services
                             OrderDetails = orderDetails,
                             Product = product
                         };
-                        await unitOfWork.OrderDetailsRepository.Add(orderDetails);
+                        await unitOfWork.OrderProductRepository.Add(orderProduct);
                     }
                     await unitOfWork.SaveChangesAsync();
                 }
@@ -146,7 +146,11 @@ namespace MusicalInstrumentsShop.BusinessLogic.Services
                     };
                     items.Add(item);
                 }
+                var delivery = await unitOfWork.DeliveryMethodRepository.Get(orderDetail.DeliveryMethod.Id);
+                var payment = await unitOfWork.PaymentMethodRepository.Get(orderDetail.PaymentMethod.Id);
                 orderDetailsDto.Items = items;
+                orderDetailsDto.DeliveryMethodName = delivery.Method;
+                orderDetailsDto.PaymentMethodName = payment.Name;
                 orderDetailsDtos.Add(orderDetailsDto);
             }
             return orderDetailsDtos;

@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
@@ -9,7 +8,6 @@ using MusicalInstrumentsShop.BusinessLogic.ProductFiltering;
 using MusicalInstrumentsShop.BusinessLogic.DTOs;
 using MusicalInstrumentsShop.BusinessLogic.Exceptions;
 using MusicalInstrumentsShop.BusinessLogic.Services.Interfaces;
-using MusicalInstrumentsShop.DataAccess.Entities;
 
 namespace MusicalInstrumentsShop.Controllers
 {
@@ -30,7 +28,6 @@ namespace MusicalInstrumentsShop.Controllers
         {
             var productFilteringModel = await productFilterService.Filter(filteringModel, 4, pageNumber ?? 1);
             return View(productFilteringModel);
-
         }
 
         [Authorize(Roles = "Administrator")]
@@ -118,13 +115,11 @@ namespace MusicalInstrumentsShop.Controllers
         {
             if (ModelState.IsValid)
             {  
-                IEnumerable<Photo> photos = new List<Photo>();
                 if (addProductModel.Photos != null && addProductModel.Photos.Count > 0)
                 {
                     try
                     {
-                        photos = imageService.SaveFiles(addProductModel.Photos);
-                        await productService.AddNewAsync(addProductModel, photos);
+                        await productService.AddNewAsync(addProductModel);
                     } 
                     catch(ProductAlreadyExistsException e)
                     {
@@ -165,17 +160,7 @@ namespace MusicalInstrumentsShop.Controllers
 
             if (ModelState.IsValid)
             {
-                IEnumerable<Photo> photos = new List<Photo>();
-                IEnumerable<string> fileNames = new List<string>();
-                if (product.Photos != null && product.PhotoOption != PhotoOption.KeepCurrentPhotos)
-                {
-                    photos = imageService.SaveFiles(product.Photos);
-                }
-                fileNames = await productService.UpdateAsync(product, photos);
-                if (fileNames.Count() > 0 && product.PhotoOption == PhotoOption.DeleteCurrentPhotos)
-                {
-                    imageService.DeleteFiles(fileNames);
-                }
+                await productService.UpdateAsync(product);
                 return RedirectToAction(nameof(Index));
             }
             return View(product);
@@ -203,9 +188,7 @@ namespace MusicalInstrumentsShop.Controllers
         {
             try
             {
-                var fileNames = await productService.DeleteAsync(id);
-                imageService.DeleteFiles(fileNames);
-
+                await productService.DeleteAsync(id);
                 return RedirectToAction(nameof(Index));
             }
             catch (ItemNotFoundException)

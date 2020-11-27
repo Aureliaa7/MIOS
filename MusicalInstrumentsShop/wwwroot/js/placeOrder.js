@@ -1,4 +1,6 @@
-﻿$(function () {
+﻿$.noConflict();
+
+$(function () {
     get_delivery_methods();
     get_payment_methods();
 });
@@ -37,6 +39,48 @@ function get_payment_methods() {
             $.each(result, function (index, item) {
                 $("#payment-field").append('<option value="' + item.id + '">' + item.name + '</option>');
             });
+        },
+        error: function () {
+            console.log("Something went wrong");
+        }
+    });
+}
+
+function update_quantity() {
+    var update_details = {
+        quantity: $("#quantity-field").val(),
+        id: $("#id-field").val()
+    };
+    console.log(update_details);
+
+    $.ajax({
+        type: "GET",
+        data: update_details,
+        dataType: 'json',
+        contextType: 'application/json',
+        url: "../Cart/UpdateQuantity",
+
+        success: function (result) {
+            if (result == 'updated') {
+                update_total_sum();
+            }
+        },
+        error: function () {
+            console.log("Something went wrong");
+        }
+    });
+}
+
+function update_total_sum() {
+    $.ajax({
+        type: "GET",
+        dataType: 'json',
+        contextType: 'application/json',
+        url: "../Cart/UpdateTotalSum",
+
+        success: function (result) {
+            var sum = document.getElementById('sum-id');
+            sum.value = result;
         },
         error: function () {
             console.log("Something went wrong");

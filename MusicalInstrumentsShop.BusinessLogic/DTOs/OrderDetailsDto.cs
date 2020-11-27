@@ -21,8 +21,10 @@ namespace MusicalInstrumentsShop.BusinessLogic.DTOs
         [Display(Name = "Last Name")]
         public string LastName { get; set; }
         [Required]
+        [DataType(DataType.PostalCode)]
         public string Postcode { get; set; }
         [Required]
+        [DataType(DataType.PhoneNumber)]
         public string Telephone { get; set; }
         [Display(Name = "Delivery")]
         public string DeliveryMethodName { get; set; }

@@ -1,11 +1,13 @@
 ﻿using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using MusicalInstrumentsShop.BusinessLogic.Services.Interfaces;
 using MusicalInstrumentsShop.DataAccess.Entities;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Threading.Tasks;
 
-namespace MusicalInstrumentsShop
+namespace MusicalInstrumentsShop.BusinessLogic.Services
 {
     public class ImageService : IImageService
     {
@@ -31,7 +33,7 @@ namespace MusicalInstrumentsShop
             return photos;
         }
 
-        public void DeleteFiles(IEnumerable<string> fileNames)
+        public async Task DeleteFiles(IEnumerable<string> fileNames)
         {
             if (fileNames != null)
             {
@@ -40,10 +42,42 @@ namespace MusicalInstrumentsShop
                     string imageToBeDeleted = Path.Combine(hostEnvironment.WebRootPath, "images\\products\\", fileName);
                     if (File.Exists(imageToBeDeleted))
                     {
-                        File.Delete(imageToBeDeleted);
+                        await FileIsReady(imageToBeDeleted).ContinueWith(t => File.Delete(imageToBeDeleted));
                     }
                 }
             }
+        }
+
+        public async Task FileIsReady(string fileName)
+        {
+            await Task.Run(() =>
+            {
+                string path = Path.Combine(hostEnvironment.WebRootPath, "images\\products\\", fileName);
+                if (!File.Exists(path))
+                {
+                    throw new IOException("File does not exist!");
+                }
+                bool isReady = false;
+                while (!isReady)
+                {
+                    try
+                    {
+                        using (FileStream inputStream = File.Open(fileName, FileMode.Open, FileAccess.Read, FileShare.None))
+                            isReady = inputStream.Length > 0;
+                    }
+                    catch (Exception e)
+                    {
+                        if (e.GetType() == typeof(IOException))
+                        {
+                            isReady = false;
+                        }
+                        else
+                        {
+                            throw;
+                        }
+                    }
+                }
+            });
         }
     }
 }

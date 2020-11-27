@@ -16,15 +16,17 @@ namespace MusicalInstrumentsShop.BusinessLogic.Services
         private readonly IUnitOfWork unitOfWork;
         private readonly IMapper mapper;
         private readonly IProductMappingService productMappingService;
+        private readonly IImageService imageService;
 
-        public ProductService(IUnitOfWork unitOfWork, IMapper mapper, IProductMappingService productMappingService)
+        public ProductService(IUnitOfWork unitOfWork, IMapper mapper, IProductMappingService productMappingService, IImageService imageService)
         {
             this.unitOfWork = unitOfWork;
             this.mapper = mapper;
+            this.imageService = imageService;
             this.productMappingService = productMappingService;
         }
 
-        public async Task AddNewAsync(ProductCreationDto productModel, IEnumerable<Photo> photos)
+        public async Task AddNewAsync(ProductCreationDto productModel)
         {
             bool categoryExists = await unitOfWork.CategoryRepository.Exists(x => x.Id == productModel.CategoryId);
             bool supplierExists = await unitOfWork.SupplierRepository.Exists(x => x.Id == productModel.SupplierId);
@@ -36,6 +38,7 @@ namespace MusicalInstrumentsShop.BusinessLogic.Services
             }
             if (categoryExists && supplierExists)
             {
+                IEnumerable<Photo> photos = new List<Photo>();
                 Category category = await unitOfWork.CategoryRepository.Get(productModel.CategoryId);
                 Supplier supplier = await unitOfWork.SupplierRepository.Get(productModel.SupplierId);
                 Product product = mapper.Map<ProductCreationDto, Product>(productModel);
@@ -49,7 +52,7 @@ namespace MusicalInstrumentsShop.BusinessLogic.Services
                     Supplier = supplier
                 };
                 await unitOfWork.StockRepository.Add(stock);
-
+                photos = imageService.SaveFiles(productModel.Photos);
                 foreach (var photo in photos)
                 {
                     PhotoProduct photoProduct = new PhotoProduct
@@ -67,14 +70,14 @@ namespace MusicalInstrumentsShop.BusinessLogic.Services
             }
         }
 
-        public async Task<IEnumerable<string>> DeleteAsync(string id)
+        public async Task DeleteAsync(string id)
         {
             bool productExists = await unitOfWork.ProductRepository.Exists(x => x.Id == id);
             if (productExists)
             {
                 var photoNames = await unitOfWork.ProductRepository.Delete(id);
+                await imageService.DeleteFiles(photoNames);
                 await unitOfWork.SaveChangesAsync();
-                return photoNames;
             }
             throw new ItemNotFoundException("The product was not found...");
         }
@@ -121,22 +124,26 @@ namespace MusicalInstrumentsShop.BusinessLogic.Services
             throw new ItemNotFoundException("The product was not found...");
         }
 
-        public async Task<IEnumerable<string>> UpdateAsync(ProductEditingDto productDto, IEnumerable<Photo> photos)
+        public async Task UpdateAsync(ProductEditingDto productDto)
         {
             IEnumerable<string> fileNames = new List<string>();
+            IEnumerable<Photo> photos = new List<Photo>();
             var searchedProduct = await unitOfWork.ProductRepository.GetWithRelatedDataAsNoTracking(productDto.Id);
             var product = mapper.Map<ProductEditingDto, Product>(productDto);
             product.Category = searchedProduct.Category;
 
             unitOfWork.ProductRepository.Update(product);
-            if (productDto.PhotoOption != PhotoOption.KeepCurrentPhotos)
+            if (productDto.PhotoOption != PhotoOption.KeepCurrentPhotos && productDto.Photos != null)
             {
+                photos = imageService.SaveFiles(productDto.Photos);
+
                 if (photos.Count() > 0)
                 {
                     if (productDto.PhotoOption == PhotoOption.DeleteCurrentPhotos)
                     {
                         fileNames = await unitOfWork.ProductRepository.GetPhotoNames(productDto.Id);
                         await unitOfWork.PhotoProductRepository.DeleteByProductId(productDto.Id);
+                        await imageService.DeleteFiles(fileNames);
                     }
                     foreach (var photo in photos)
                     {
@@ -150,7 +157,6 @@ namespace MusicalInstrumentsShop.BusinessLogic.Services
                 }
             }
             await unitOfWork.SaveChangesAsync();
-            return fileNames;
         }
     }
 }
