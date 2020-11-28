@@ -20,7 +20,7 @@ namespace MusicalInstrumentsShop.BusinessLogic.Services
             bool categoryExists = await unitOfWork.CategoryRepository.Exists(x => x.Id == stockDto.CategoryId);
             bool supplierExists = await unitOfWork.SupplierRepository.Exists(x => x.Id == stockDto.SupplierId);
             bool productExists = await unitOfWork.ProductRepository.Exists(x => x.Id == stockDto.ProductId);
-            if(categoryExists && supplierExists && productExists)
+            if (categoryExists && supplierExists && productExists)
             {
                 var searchedStock = await unitOfWork.StockRepository.GetByProductId(stockDto.ProductId);
                 searchedStock.NumberOfProducts += stockDto.NumberOfProducts;
@@ -31,6 +31,39 @@ namespace MusicalInstrumentsShop.BusinessLogic.Services
             {
                 throw new ItemNotFoundException("The searched entities were not found...");
             }
+        }
+
+        public async Task<bool> CanTakeAsync(int noProducts, string productCode)
+        {
+            bool productExists = await unitOfWork.ProductRepository.Exists(x => x.Id == productCode);
+            if (productExists)
+            {
+                var stock = await unitOfWork.StockRepository.GetByProductId(productCode);
+                if (stock != null && (stock.NumberOfProducts - noProducts >= 0))
+                {
+                    return true;
+                }
+                return false;
+            }
+            throw new ItemNotFoundException("The product was not found...");
+        }
+
+        public async Task<bool> DecreaseNumberOfProductsAsync(int decreaseBy, string productCode)
+        {
+            bool productExists = await unitOfWork.ProductRepository.Exists(x => x.Id == productCode);
+            if (productExists)
+            {
+                var stock = await unitOfWork.StockRepository.GetByProductId(productCode);
+                if (stock != null && decreaseBy <= stock.NumberOfProducts)
+                {
+                    stock.NumberOfProducts -= decreaseBy;
+                    unitOfWork.StockRepository.Update(stock);
+                    await unitOfWork.SaveChangesAsync();
+                    return true;
+                }
+                return false;
+            }
+            throw new ItemNotFoundException("The product was not found...");
         }
     }
 }

@@ -6,7 +6,7 @@
     {
         Layout = "~/Views/Shared/_AdminLayout.cshtml";
     }
-    else if(User.IsInRole("Customer"))
+    else if (User.IsInRole("Customer"))
     {
         Layout = "~/Views/Shared/_CustomerLayout.cshtml";
     }
@@ -84,8 +84,14 @@
                             <b> @Html.DisplayNameFor(modelItem => item.Name): </b>
                             @Html.DisplayFor(modelItem => item.Name)<br />
 
-                            <b> @Html.DisplayNameFor(modelItem => item.NumberOfProducts): </b>
-                            @Html.DisplayFor(modelItem => item.NumberOfProducts)<br />
+                            @if(item.NumberOfProducts > 0)
+                            {
+                                <b> In Stock</b><br />
+                            }
+                            else
+                            {
+                                <b> Sold Out</b><br />
+                            }
 
                             <b> @Html.DisplayNameFor(modelItem => item.Price): $</b>
                             @Html.DisplayFor(modelItem => item.Price)<br />
@@ -98,9 +104,12 @@
                             <form style="display:inline-block;" asp-action="Details" asp-route-id="@item.Id" method="post">
                                 <input type="submit" value="Details" class="btn btn-dark" />
                             </form>
-                            <form style="display:inline-block;" asp-action="Add" asp-controller="Cart" asp-route-id="@item.Id" method="post">
-                                <input type="submit" value="Add to cart" class="btn btn-dark" />
-                            </form>
+                            @if (item.NumberOfProducts > 0)
+                            {
+                                <form style="display:inline-block;" asp-action="Add" asp-controller="Cart" asp-route-id="@item.Id" method="post">
+                                    <input type="submit" value="Add to cart" class="btn btn-dark" />
+                                </form>
+                            }
                             <form style="display:inline-block;" asp-action="Create" asp-controller="WishlistProducts" asp-route-id="@item.Id" method="post">
                                 <input type="submit" value="Add to wishlist" class="btn btn-dark" />
                             </form>

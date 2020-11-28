@@ -26,17 +26,21 @@ namespace MusicalInstrumentsShop.BusinessLogic.DTOs
         [Required]
         [DataType(DataType.PhoneNumber)]
         public string Telephone { get; set; }
-        [Display(Name = "Delivery")]
+        [Display(Name = "Delivery Method")]
         public string DeliveryMethodName { get; set; }
         [Required]
         public Guid DeliveryMethodId { get; set; }
         public DateTime OrderPlacementDate { get; set; }
         public Guid CustomerId { get; set; }
-        [Display(Name = "Payment")]
+        [Display(Name = "Payment Method")]
         public string PaymentMethodName { get; set; }
         [Required]
         public Guid PaymentMethodId { get; set; }
         public OrderStatus Status { get; set; }
         public List<Item> Items { get; set; }
+        [Display(Name = "Delivery Price")]
+        public double DeliveryPrice { get; set; }
+        [Display(Name = "Total Amount")]
+        public double Amount { get; set; }
     }
 }

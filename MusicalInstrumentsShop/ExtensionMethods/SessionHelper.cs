@@ -14,6 +14,6 @@ namespace MusicalInstrumentsShop
         {
             var value = session.GetString(key);
             return value == null ? default : JsonConvert.DeserializeObject<T>(value);
-       }
+        }
     }
 }

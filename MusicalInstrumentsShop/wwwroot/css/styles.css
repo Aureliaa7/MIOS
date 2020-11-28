@@ -241,10 +241,10 @@
     margin-left: 160px;
 }
 
-.nextPrevBtnsWishlist {
+.nextPrevBtnsWishlistOrders {
     margin-bottom: 20px;
-    margin-top: 50px;
-    margin-left: 30px;
+    margin-top: 0px;
+    margin-left: -100px;
 }
 
 .wishlist-cart {
@@ -289,4 +289,11 @@
 
 .add-margin-left-100 {
     margin-left: -88px;
+}
+
+.order-details-jumbotron {
+    width: 900px;
+    height: 650px;
+    margin-top: 85px;
+    margin-left: -105px;
 }

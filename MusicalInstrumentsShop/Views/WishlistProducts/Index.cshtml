@@ -49,9 +49,12 @@
                                         @Html.DisplayFor(modelItem => item.Product.NumberOfProducts)
                                     </td>
                                     <td>
-                                        <form asp-action="Add" asp-controller="Cart" asp-route-id="@item.Product.Id" method="post">
-                                            <input type="submit" value="Add To Cart" class="btn btn-dark" />
-                                        </form>
+                                        @if (item.Product.NumberOfProducts > 0)
+                                        {
+                                            <form asp-action="Add" asp-controller="Cart" asp-route-id="@item.Product.Id" method="post">
+                                                <input type="submit" value="Add To Cart" class="btn btn-dark" />
+                                            </form>
+                                        }
                                     </td>
                                 </tr>
                             </tbody>
@@ -68,7 +71,7 @@
     </div>
 </div>
 
-<div class="nextPrevBtnsWishlist">
+<div class="nextPrevBtnsWishlistOrders">
     @{
         var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
         var nextDisabled = !Model.HasNextPage ? "disabled" : "";

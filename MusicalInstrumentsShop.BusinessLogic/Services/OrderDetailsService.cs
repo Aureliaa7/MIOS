@@ -17,12 +17,15 @@ namespace MusicalInstrumentsShop.BusinessLogic.Services
         private readonly IUnitOfWork unitOfWork;
         private readonly IMapper mapper;
         private readonly UserManager<ApplicationUser> userManager;
+        private readonly IStockService stockService;
 
-        public OrderDetailsService(IUnitOfWork unitOfWork, IMapper mapper, UserManager<ApplicationUser> userManager)
+        public OrderDetailsService(IUnitOfWork unitOfWork, IMapper mapper, 
+            UserManager<ApplicationUser> userManager, IStockService stockService)
         {
             this.unitOfWork = unitOfWork;
             this.mapper = mapper;
             this.userManager = userManager;
+            this.stockService = stockService;
         }
 
         public async Task AddAsync(OrderDetailsDto orderDetailsDto)
@@ -42,6 +45,7 @@ namespace MusicalInstrumentsShop.BusinessLogic.Services
                     orderDetails.PaymentMethod = paymentMethod;
                     orderDetails.Status = OrderStatus.InProgress;
                     orderDetails.OrderPlacementDate = DateTime.Now;
+                    orderDetails.Amount = orderDetailsDto.Items.Sum(x => x.Product.Price * x.Quantity) + deliveryMethod.Price;
                     await unitOfWork.OrderDetailsRepository.Add(orderDetails);
 
                     foreach (var item in orderDetailsDto.Items)
@@ -54,6 +58,7 @@ namespace MusicalInstrumentsShop.BusinessLogic.Services
                             OrderDetails = orderDetails,
                             Product = product
                         };
+                        await stockService.DecreaseNumberOfProductsAsync(item.Quantity, item.Product.Id);
                         await unitOfWork.OrderProductRepository.Add(orderProduct);
                     }
                     await unitOfWork.SaveChangesAsync();
@@ -94,6 +99,8 @@ namespace MusicalInstrumentsShop.BusinessLogic.Services
                         Quantity = orderProduct.NumberOfProducts
                     });
                 }
+                orderDetailsDto.PaymentMethodName = orderDetails.PaymentMethod.Name;
+                orderDetailsDto.DeliveryMethodName = orderDetails.DeliveryMethod.Method;
                 orderDetailsDto.Items = items;
                 return orderDetailsDto;
             }
@@ -151,6 +158,8 @@ namespace MusicalInstrumentsShop.BusinessLogic.Services
                 orderDetailsDto.Items = items;
                 orderDetailsDto.DeliveryMethodName = delivery.Method;
                 orderDetailsDto.PaymentMethodName = payment.Name;
+                orderDetailsDto.DeliveryPrice = delivery.Price;
+                orderDetailsDto.Amount = orderDetail.Amount;
                 orderDetailsDtos.Add(orderDetailsDto);
             }
             return orderDetailsDtos;

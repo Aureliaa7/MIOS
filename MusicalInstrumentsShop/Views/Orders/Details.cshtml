@@ -1,50 +1,76 @@
 ﻿@model MusicalInstrumentsShop.BusinessLogic.DTOs.OrderDetailsDto
 
 @{
-    ViewData["Title"] = "Order details";
+    ViewData["Title"] = "Details";
     Layout = "~/Views/Shared/_CustomerLayout.cshtml";
 }
 
 <hr />
-<div class="container orders-container add-margin-left" style="background-color: whitesmoke;">
-    <h2>Ordered Products</h2>
-    <div class="table-content table-responsive">
-        <table class="table">
-            <thead>
-                <tr>
-                    <th>Product Name</th>
-                    <th>Price</th>
-                    <th>Category</th>
-                    <th>Number of Items</th>
-                </tr>
-            </thead>
-            @foreach (var item in Model.Items)
-            {
-                <tbody>
-                    <tr>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Product.Name)
-                        </td>
-                        <td>
-                            $ @Html.DisplayFor(modelItem => item.Product.Price)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Product.CategoryName)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Quantity)
-                        </td>
-                    </tr>
-                </tbody>
-            }
-        </table>
-    </div>
-</div>
-
-<form asp-action="Index" class="add-margin-left-100" asp-controller="Orders" method="get">
-    <div class="form-group row">
-        <div class="col-xs-2">
-            <input type="submit" value="Back to Orders" class="btn btn-dark" />
+<div class="jumbotron order-details-jumbotron justify-content-center">
+    <h4 style="text-align: center;">Order details</h4>
+    <div class="row my-row">
+        <div class="col-md-3">
+            <label asp-for="FirstName" class="control-label"></label>
+            <input asp-for="FirstName" class="form-control" readonly />
+        </div>
+        <div class="col-md-3 add-left-margins">
+            <label asp-for="LastName" class="control-label"></label>
+            <input asp-for="LastName" class="form-control" readonly />
+        </div>
+        <div class="col-md-3">
+            <label asp-for="Telephone" class="control-label"></label>
+            <input asp-for="Telephone" class="form-control" readonly />
         </div>
     </div>
-</form>
+
+    <div class="row my-row">
+        <div class="col-md-3">
+            <label asp-for="City" class="control-label"></label>
+            <input asp-for="City" class="form-control" readonly />
+            <span asp-validation-for="City" class="text-danger"></span>
+        </div>
+        <div class="col-md-3">
+            <label asp-for="Country" class="control-label"></label>
+            <input asp-for="Country" class="form-control" readonly />
+        </div>
+        <div class="col-md-3">
+            <label asp-for="Street" class="control-label"></label>
+            <input asp-for="Street" class="form-control" readonly />
+        </div>
+    </div>
+
+    <div class="row my-row">
+        <div class="col-md-3">
+            <label asp-for="Postcode" class="control-label"></label>
+            <input asp-for="Postcode" class="form-control" readonly />
+        </div>
+        <div class="col-md-3">
+            <label asp-for="DeliveryMethodName" class="control-label"></label>
+            <input asp-for="DeliveryMethodName" class="form-control" readonly />
+        </div>
+        <div class="col-md-3">
+            <label asp-for="PaymentMethodName" class="control-label"></label>
+            <input asp-for="PaymentMethodName" class="form-control" readonly />
+        </div>
+    </div>
+
+    <div class="row my-row">
+        <div class="col-md-3">
+            <label asp-for="Amount" class="control-label"></label>
+            <input asp-for="Amount" class="form-control" readonly />
+        </div>
+        <div class="col-md-3">
+            <label asp-for="DeliveryPrice" class="control-label"></label>
+            <input asp-for="DeliveryPrice" class="form-control" readonly />
+        </div>
+    </div>
+
+    <div class="row my-row">
+        <div class="col-md-3">
+            <a asp-action="Index" asp-controller="Orders">Back to orders</a>
+        </div>
+        <div class="col-md-3">
+            <a asp-action="OrderedProducts" asp-controller="Orders" asp-route-id="@Model.Id">View ordered products</a>
+        </div>
+    </div>
+</div>

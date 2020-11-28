@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using MusicalInstrumentsShop.BusinessLogic.DTOs;
 using MusicalInstrumentsShop.BusinessLogic.Exceptions;
+using MusicalInstrumentsShop.BusinessLogic.ProductFiltering;
 using MusicalInstrumentsShop.BusinessLogic.Services.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -23,11 +24,11 @@ namespace MusicalInstrumentsShop.Controllers
         }
 
         [Authorize(Roles = "Customer")]
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(int? pageNumber)
         {
             Guid currentUserId = new Guid(User.FindFirstValue(ClaimTypes.NameIdentifier));
             var orders = await orderService.GetAllAsync(currentUserId);
-            return View(orders);
+            return View(PaginatedList<OrderDetailsDto>.Create(orders, pageNumber ?? 1, 5));
         }
 
         [Authorize(Roles = "Customer")]
@@ -45,7 +46,7 @@ namespace MusicalInstrumentsShop.Controllers
                 orderDetails.Items = SessionHelper.GetObjectFromJson<List<Item>>(HttpContext.Session, "cart");
                 orderDetails.CustomerId = new Guid(User.FindFirstValue(ClaimTypes.NameIdentifier));
                 await orderService.AddAsync(orderDetails);
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("Index", "Orders");
             }
             return View();
         }
@@ -58,6 +59,20 @@ namespace MusicalInstrumentsShop.Controllers
                 return View(order);
             }
             catch(ItemNotFoundException)
+            {
+                return RedirectToAction("NotFound", "Error");
+            }
+        }
+
+
+        public async Task<IActionResult> OrderedProducts(long id)
+        {
+            try
+            {
+                var order = await orderService.GetByIdAsync(id);
+                return View(order);
+            }
+            catch (ItemNotFoundException)
             {
                 return RedirectToAction("NotFound", "Error");
             }

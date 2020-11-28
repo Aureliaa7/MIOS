@@ -17,5 +17,6 @@ namespace MusicalInstrumentsShop.DataAccess.Entities
         public ApplicationUser Customer { get; set; }
         public PaymentMethod PaymentMethod { get; set; }
         public OrderStatus Status { get; set; }
+        public double Amount { get; set; }
     }
 }

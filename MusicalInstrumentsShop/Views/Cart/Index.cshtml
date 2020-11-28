@@ -5,7 +5,7 @@
 
 <div class="container wishlist-cart" style="background-color: whitesmoke;">
     <h2>My shopping cart</h2>
-    @if (ViewBag.Cart.Count > 0)
+    @if (ViewBag.Cart != null && ViewBag.Cart.Count > 0)
     {
         <div class="row">
             <div class="col-12">
