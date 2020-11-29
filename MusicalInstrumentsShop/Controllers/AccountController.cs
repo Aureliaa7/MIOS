@@ -42,7 +42,7 @@ namespace MusicalInstrumentsShop.Controllers
                     }
                     else if (loginResult.UserRole.Equals("Customer"))
                     {
-                        return RedirectToAction("Customer", "Dashboards");
+                        return RedirectToAction("Browse", "Products");
                     }
                 }
                 ViewBag.ErrorMessages = loginResult.ErrorMessages;
@@ -92,7 +92,6 @@ namespace MusicalInstrumentsShop.Controllers
             }
         }
 
-
         [Authorize]
         public async Task<IActionResult> Edit()
         {
@@ -123,7 +122,6 @@ namespace MusicalInstrumentsShop.Controllers
             }
         }
 
-
         [Authorize]
         public IActionResult ChangePassword()
         {
@@ -150,7 +148,6 @@ namespace MusicalInstrumentsShop.Controllers
             }
             return View();
         }
-
 
         [Authorize]
         public IActionResult ChangePasswordResult()

@@ -23,7 +23,15 @@
                     </center>
                 </div>
                 <a class="navbar-brand add-margin-left" style="color:white;" asp-controller="Products" asp-action="Browse">Musical Instruments Online Shop</a><br />
-                <a class="navbar-brand add-margin-left" style="color:white;" asp-controller="Orders" asp-action="Index">My orders</a>
+                <a class="navbar-brand" style="color:white;" asp-area="" asp-controller="Products" asp-action="Browse">Browse products</a>
+                <a class="navbar-brand add-margin-left" style="color:white;" asp-controller="" asp-action="" role="button"
+                   data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> My orders</a>
+                <div class="dropdown-menu dropdown-menu" aria-labelledby="navbarDropdown">
+                    <a class="dropdown-item" asp-controller="Orders" asp-action="Index">All</a>
+                    <a class="dropdown-item" asp-controller="Orders" asp-action="Canceled">Canceled</a>
+                    <a class="dropdown-item" asp-controller="Orders" asp-action="InProgress">In progress</a>
+                    <a class="dropdown-item" asp-controller="Orders" asp-action="Completed">Completed</a>
+                </div>
                 <ul>
                     <li>
                         <a name="no-text-decoration" class="nav-link wishlist-link" asp-controller="WishlistProducts" asp-action="Index">

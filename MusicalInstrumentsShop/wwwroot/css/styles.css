@@ -285,6 +285,7 @@
     margin-left: -100px;
     margin-top: 110px;
     width: 140%;
+    background-color: whitesmoke;
 }
 
 .add-margin-left-100 {
@@ -296,4 +297,45 @@
     height: 650px;
     margin-top: 85px;
     margin-left: -105px;
+}
+
+.add-margin-top-100 {
+    margin-top: 100px;
+}
+
+.add-delivery-jumbotron {
+    width: 360px;
+    height: 390px;
+    margin-top: 100px;
+    margin-left: 20px;
+}
+
+.jumbotron-admin {
+    width: 600px;
+    height: 400px;
+    margin-top: 50px;
+}
+
+.quantity-field {
+    width: 80px;
+}
+
+.delete-delivery-jumbotron {
+    width: 600px;
+    margin-top: 90px;
+}
+
+.product-img {
+    width: 150px;
+    height: 150px;
+}
+
+.product-img-details {
+    width: 400px;
+    height: 400px;
+}
+
+.delete-specification-jumbotron {
+    width: 600px;
+    margin-top: 90px;
 }

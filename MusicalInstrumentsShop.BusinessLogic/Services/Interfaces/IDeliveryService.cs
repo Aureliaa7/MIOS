@@ -11,5 +11,6 @@ namespace MusicalInstrumentsShop.BusinessLogic.Services.Interfaces
         Task<IEnumerable<DeliveryMethodDto>> GetAllAsync();
         Task<DeliveryMethodDto> GetByIdAsync(Guid id);
         Task DeleteAsync(Guid id);
+        Task<int> GetNoDeliveriesAsync();
     }
 }

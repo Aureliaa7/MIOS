@@ -7,6 +7,7 @@ using MusicalInstrumentsShop.BusinessLogic.DTOs;
 using AutoMapper;
 using MusicalInstrumentsShop.BusinessLogic.Services.Interfaces;
 using MusicalInstrumentsShop.DataAccess.UnitOfWork;
+using System.Linq;
 
 namespace MusicalInstrumentsShop.BusinessLogic.Services
 {
@@ -83,6 +84,12 @@ namespace MusicalInstrumentsShop.BusinessLogic.Services
                 }
             }
             throw new ItemNotFoundException("The product was not found");
+        }
+
+        public async Task<int> GetNoSuppliersAsync()
+        {
+            var suppliers = await unitOfWork.SupplierRepository.GetAll();
+            return suppliers.Count();
         }
 
         public async Task UpdateAsync(SupplierDto supplierDto)

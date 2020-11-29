@@ -1,13 +1,13 @@
 ﻿@model MusicalInstrumentsShop.BusinessLogic.ProductFiltering.PaginatedList<MusicalInstrumentsShop.BusinessLogic.DTOs.OrderDetailsDto>
 
 @{
-    ViewData["Title"] = "My orders";
+    ViewData["Title"] = "In progress orders";
     Layout = "~/Views/Shared/_CustomerLayout.cshtml";
 }
 
 <hr />
 <div class="container orders-container">
-    <h2>My orders</h2>
+    <h2>In progress orders</h2>
     <partial name="_OrdersPartial" model="Model" />
 </div>
 
@@ -17,14 +17,15 @@
         var nextDisabled = !Model.HasNextPage ? "disabled" : "";
     }
 
-    <a asp-action="Index"
+    <a asp-action="InProgress"
        asp-route-pageNumber="@(Model.PageIndex - 1)"
        class="btn btn-primary @prevDisabled">
         Previous
     </a>
-    <a asp-action="Index"
+    <a asp-action="InProgress"
        asp-route-pageNumber="@(Model.PageIndex + 1)"
        class="btn btn-primary @nextDisabled">
         Next
     </a>
 </div>
+

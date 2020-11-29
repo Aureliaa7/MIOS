@@ -6,6 +6,7 @@ using MusicalInstrumentsShop.DataAccess.Entities;
 using MusicalInstrumentsShop.DataAccess.UnitOfWork;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace MusicalInstrumentsShop.BusinessLogic.Services
@@ -62,6 +63,12 @@ namespace MusicalInstrumentsShop.BusinessLogic.Services
                 return mapper.Map<DeliveryMethodDto>(deliveryMethod);
             }
             throw new ItemNotFoundException("The delivery method was not found...");
+        }
+
+        public async Task<int> GetNoDeliveriesAsync()
+        {
+            var deliveries = await unitOfWork.DeliveryMethodRepository.GetAll();
+            return deliveries.Count();
         }
     }
 }

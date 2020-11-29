@@ -1,0 +1,65 @@
+﻿@model MusicalInstrumentsShop.BusinessLogic.ProductFiltering.PaginatedList<MusicalInstrumentsShop.BusinessLogic.DTOs.OrderDetailsDto>
+
+<div class="table-content table-responsive">
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Order Number</th>
+                <th>First Name</th>
+                <th>Last Name</th>
+                <th>Telephone</th>
+                <th>City</th>
+                <th>Country</th>
+                <th>Street</th>
+                <th>Postcode</th>
+                <th>Delivery</th>
+                <th>Payment</th>
+                <th>Status</th>
+                <th>Order Placement Date</th>
+            </tr>
+        </thead>
+        @foreach (var item in Model)
+        {
+            <tbody>
+                <tr>
+                    <td>
+                        <a asp-action="Details" asp-route-id="@item.Id">@Html.DisplayFor(modelItem => item.Id)</a>
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.FirstName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.LastName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Telephone)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.City)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Country)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Street)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Postcode)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.DeliveryMethodName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.PaymentMethodName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Status)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.OrderPlacementDate)
+                    </td>
+                </tr>
+            </tbody>
+        }
+    </table>
+</div>

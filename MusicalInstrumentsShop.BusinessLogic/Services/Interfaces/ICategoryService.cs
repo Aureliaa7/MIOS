@@ -12,5 +12,6 @@ namespace MusicalInstrumentsShop.BusinessLogic.Services.Interfaces
         Task<CategoryDto> GetByIdAsync(Guid id);
         Task DeleteAsync(Guid id);
         Task UpdateAsync(CategoryDto category);
+        Task<int> GetNoCategoriesAsync();
     }
 }

@@ -4,6 +4,7 @@ using MusicalInstrumentsShop.BusinessLogic.DTOs;
 using MusicalInstrumentsShop.BusinessLogic.Exceptions;
 using MusicalInstrumentsShop.BusinessLogic.ProductFiltering;
 using MusicalInstrumentsShop.BusinessLogic.Services.Interfaces;
+using MusicalInstrumentsShop.DataAccess.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -32,6 +33,30 @@ namespace MusicalInstrumentsShop.Controllers
         }
 
         [Authorize(Roles = "Customer")]
+        public async Task<IActionResult> Canceled(int? pageNumber)
+        {
+            Guid currentUserId = new Guid(User.FindFirstValue(ClaimTypes.NameIdentifier));
+            var orders = await orderService.GetByStatusAsync(currentUserId, OrderStatus.Canceled);
+            return View(PaginatedList<OrderDetailsDto>.Create(orders, pageNumber ?? 1, 5));
+        }
+
+        [Authorize(Roles = "Customer")]
+        public async Task<IActionResult> InProgress(int? pageNumber)
+        {
+            Guid currentUserId = new Guid(User.FindFirstValue(ClaimTypes.NameIdentifier));
+            var orders = await orderService.GetByStatusAsync(currentUserId, OrderStatus.InProgress);
+            return View(PaginatedList<OrderDetailsDto>.Create(orders, pageNumber ?? 1, 5));
+        }
+
+        [Authorize(Roles = "Customer")]
+        public async Task<IActionResult> Completed(int? pageNumber)
+        {
+            Guid currentUserId = new Guid(User.FindFirstValue(ClaimTypes.NameIdentifier));
+            var orders = await orderService.GetByStatusAsync(currentUserId, OrderStatus.Completed);
+            return View(PaginatedList<OrderDetailsDto>.Create(orders, pageNumber ?? 1, 5));
+        }
+
+        [Authorize(Roles = "Customer")]
         public IActionResult Create()
         {
             return View();
@@ -51,6 +76,7 @@ namespace MusicalInstrumentsShop.Controllers
             return View();
         }
 
+        [Authorize(Roles = "Customer")]
         public async Task<IActionResult> Details(long id)
         {
             try
@@ -64,7 +90,7 @@ namespace MusicalInstrumentsShop.Controllers
             }
         }
 
-
+        [Authorize(Roles = "Customer")]
         public async Task<IActionResult> OrderedProducts(long id)
         {
             try

@@ -25,12 +25,12 @@
         <div class="carousel slide" data-ride="carousel" id="product-carousel">
             <div class="carousel-inner">
                 <div class="carousel-item active">
-                    <img src="~/images/products/@Model.Photos.ElementAt(0).Name" class="d-block w-100" alt="..." style="width:400px; height:400px;">
+                    <img src="~/images/products/@Model.Photos.ElementAt(0).Name" class="d-block w-100 product-img-details" alt="...">
                 </div>
                 @{ for (int contor = 1; contor < Model.Photos.Count(); contor++)
                     {
                         <div class="carousel-item">
-                            <img src="~/images/products/@Model.Photos.ElementAt(contor).Name" class="d-block w-100" alt="..." style="width:400px; height:400px;">
+                            <img src="~/images/products/@Model.Photos.ElementAt(contor).Name" class="d-block w-100 product-img-details" alt="...">
                         </div>
                     }
                 }
@@ -80,7 +80,14 @@
         </div>
     </div>
     <div>
-        <a asp-controller="Products" asp-action="Browse">Back</a>
+        @if (User.IsInRole("Administrator"))
+        {
+            <a asp-controller="Products" asp-action="Index">Back to products</a>
+        }
+        else
+        {
+            <a asp-controller="Products" asp-action="Browse">Back to products</a>
+        }
     </div>
 </div>
 

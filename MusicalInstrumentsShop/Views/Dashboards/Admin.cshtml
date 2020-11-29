@@ -3,7 +3,24 @@
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
 
+<div class="jumbotron jumbotron-admin">
+    <h5>
+        Number of categories:
+        <a asp-action="Index" asp-controller="Categories">@ViewBag.Categories</a>
+    </h5><br />
 
-<div class="jumbotron">
-    <h3> Admin's Dashboard</h3>
+    <h5>
+        Number of suppliers:
+        <a asp-action="Index" asp-controller="Suppliers">@ViewBag.Suppliers</a>
+    </h5><br />
+
+    <h5>
+        Number of delivery methods:
+        <a asp-action="Index" asp-controller="Categories">@ViewBag.Deliveries</a>
+    </h5><br />
+
+    <h5>
+        Number of products:
+        <a asp-action="Index" asp-controller="Products">@ViewBag.Products</a>
+    </h5>
 </div>

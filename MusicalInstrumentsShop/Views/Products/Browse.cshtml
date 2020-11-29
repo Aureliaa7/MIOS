@@ -59,12 +59,12 @@
                             <div class="carousel slide" data-ride="carousel" id="product-carousel">
                                 <div class="carousel-inner">
                                     <div class="carousel-item active">
-                                        <img src="~/images/products/@item.Photos.ElementAt(0).Name" class="d-block w-100" alt="..." style="width: 150px; height: 150px;">
+                                        <img src="~/images/products/@item.Photos.ElementAt(0).Name" class="d-block w-100 product-img" alt="...">
                                     </div>
                                     @{ for (int contor = 1; contor < item.Photos.Count(); contor++)
                                         {
                                             <div class="carousel-item">
-                                                <img src="~/images/products/@item.Photos.ElementAt(contor).Name" class="d-block w-100" alt="..." style="width: 150px; height: 150px;">
+                                                <img src="~/images/products/@item.Photos.ElementAt(contor).Name" class="d-block w-100 product-img" alt="...">
                                             </div>
                                         }
                                     }

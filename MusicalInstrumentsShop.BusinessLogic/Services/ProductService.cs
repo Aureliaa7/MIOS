@@ -124,6 +124,12 @@ namespace MusicalInstrumentsShop.BusinessLogic.Services
             throw new ItemNotFoundException("The product was not found...");
         }
 
+        public async Task<int> GetNoProductsAsync()
+        {
+            var products = await unitOfWork.ProductRepository.GetAll();
+            return products.Count();
+        }
+
         public async Task UpdateAsync(ProductEditingDto productDto)
         {
             IEnumerable<string> fileNames = new List<string>();

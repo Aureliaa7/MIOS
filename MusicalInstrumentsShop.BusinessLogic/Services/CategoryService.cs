@@ -7,6 +7,7 @@ using MusicalInstrumentsShop.BusinessLogic.DTOs;
 using AutoMapper;
 using MusicalInstrumentsShop.BusinessLogic.Services.Interfaces;
 using MusicalInstrumentsShop.DataAccess.UnitOfWork;
+using System.Linq;
 
 namespace MusicalInstrumentsShop.BusinessLogic.Services
 {
@@ -62,6 +63,12 @@ namespace MusicalInstrumentsShop.BusinessLogic.Services
                 return mapper.Map<CategoryDto>(category);
             }
             throw new ItemNotFoundException("The category was not found...");
+        }
+
+        public async Task<int> GetNoCategoriesAsync()
+        {
+            var categories = await unitOfWork.CategoryRepository.GetAll();
+            return categories.Count();
         }
 
         public async Task UpdateAsync(CategoryDto categoryDto)
