@@ -79,7 +79,10 @@ namespace MusicalInstrumentsShop.BusinessLogic.Services
                 await imageService.DeleteFiles(photoNames);
                 await unitOfWork.SaveChangesAsync();
             }
-            throw new ItemNotFoundException("The product was not found...");
+            else
+            {
+                throw new ItemNotFoundException("The product was not found...");
+            }
         }
 
         public async Task<IEnumerable<ProductDto>> GetAllAsync()

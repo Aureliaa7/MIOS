@@ -1,7 +1,7 @@
 ﻿@model IEnumerable<MusicalInstrumentsShop.BusinessLogic.DTOs.DeliveryMethodDto>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Delivery Methods";
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
 
@@ -26,7 +26,7 @@
                 @Html.DisplayFor(modelItem => item.Method)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Price)
+                $ @Html.DisplayFor(modelItem => item.Price)
             </td>
             <td>
                 <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>

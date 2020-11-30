@@ -48,7 +48,7 @@ namespace MusicalInstrumentsShop.BusinessLogic.Services
             }
         }
 
-        public async Task FileIsReady(string fileName)
+        private async Task FileIsReady(string fileName)
         {
             await Task.Run(() =>
             {

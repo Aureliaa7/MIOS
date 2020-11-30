@@ -13,12 +13,10 @@ namespace MusicalInstrumentsShop.Controllers
     public class SuppliersController : Controller
     {
         private readonly ISupplierService supplierService;
-        private readonly IImageService imageService;
 
-        public SuppliersController(ISupplierService supplierService, IImageService imageService)
+        public SuppliersController(ISupplierService supplierService)
         {
             this.supplierService = supplierService;
-            this.imageService = imageService;
         }
 
         public async Task<IActionResult> Index()
@@ -130,8 +128,7 @@ namespace MusicalInstrumentsShop.Controllers
 
             try
             {
-                var photoNames = await supplierService.DeleteAsync(id);
-                imageService.DeleteFiles(photoNames);
+                await supplierService.DeleteAsync(id);
                 return RedirectToAction(nameof(Index));
             }
             catch (ItemNotFoundException)

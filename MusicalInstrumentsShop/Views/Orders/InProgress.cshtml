@@ -1,7 +1,7 @@
 ﻿@model MusicalInstrumentsShop.BusinessLogic.ProductFiltering.PaginatedList<MusicalInstrumentsShop.BusinessLogic.DTOs.OrderDetailsDto>
 
 @{
-    ViewData["Title"] = "In progress orders";
+    ViewData["Title"] = "In Progress Orders";
     Layout = "~/Views/Shared/_CustomerLayout.cshtml";
 }
 
@@ -19,12 +19,12 @@
 
     <a asp-action="InProgress"
        asp-route-pageNumber="@(Model.PageIndex - 1)"
-       class="btn btn-primary @prevDisabled">
+       class="btn btn-dark @prevDisabled">
         Previous
     </a>
     <a asp-action="InProgress"
        asp-route-pageNumber="@(Model.PageIndex + 1)"
-       class="btn btn-primary @nextDisabled">
+       class="btn btn-dark @nextDisabled">
         Next
     </a>
 </div>

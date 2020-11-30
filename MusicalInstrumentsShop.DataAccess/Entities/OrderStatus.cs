@@ -1,10 +1,10 @@
-﻿using System.ComponentModel;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace MusicalInstrumentsShop.DataAccess.Entities
 {
     public enum OrderStatus
     {
-        [Description("In Progress")]
+        [Display(Name = "In Progress")]
         InProgress,
         Completed,
         Canceled

@@ -1,7 +1,7 @@
 ﻿@model MusicalInstrumentsShop.BusinessLogic.ProductFiltering.PaginatedList<MusicalInstrumentsShop.BusinessLogic.DTOs.WishlistProductDto>
 
 @{
-    ViewData["Title"] = "My wishlist";
+    ViewData["Title"] = "My Wishlist";
     Layout = "~/Views/Shared/_CustomerLayout.cshtml";
 }
 
@@ -43,7 +43,7 @@
                                         </a>
                                     </td>
                                     <td>
-                                        @Html.DisplayFor(modelItem => item.Product.Price)
+                                        $ @Html.DisplayFor(modelItem => item.Product.Price)
                                     </td>
                                     <td>
                                         @Html.DisplayFor(modelItem => item.Product.NumberOfProducts)
@@ -79,12 +79,12 @@
 
     <a asp-action="Index"
        asp-route-pageNumber="@(Model.PageIndex - 1)"
-       class="btn btn-primary @prevDisabled">
+       class="btn btn-dark @prevDisabled">
         Previous
     </a>
     <a asp-action="Index"
        asp-route-pageNumber="@(Model.PageIndex + 1)"
-       class="btn btn-primary @nextDisabled">
+       class="btn btn-dark @nextDisabled">
         Next
     </a>
 </div>

@@ -1,5 +1,5 @@
 ﻿@{
-    ViewData["Title"] = "My cart";
+    ViewData["Title"] = "My Cart";
     Layout = "~/Views/Shared/_CustomerLayout.cshtml";
 }
 
@@ -24,7 +24,6 @@
                         <tbody>
                             @foreach (var item in ViewBag.Cart)
                             {
-
                                 <tr>
                                     <td>
                                         <form asp-action="Remove" asp-controller="Cart" asp-route-id="@item.Product.Id" method="post">
@@ -44,7 +43,6 @@
                                         @item.Product.Price
                                     </td>
                                     <td>
-
                                         <div class="form-group row">
                                             <div class="col-xs-2">
                                                 <input id="id-field" value="@item.Product.Id" class="form-control text-center quantity-field"  hidden />
@@ -52,7 +50,6 @@
                                                 <input type="submit" value="Update" class="btn btn-dark" onclick="update_quantity()" />
                                             </div>
                                         </div>
-
                                     </td>
                                     <td>
                                         $ @(item.Product.Price * item.Quantity)
@@ -60,7 +57,7 @@
                                 </tr>
                             }
                             <tr>
-                                <td align="right" colspan="6">Sum</td>
+                                <td align="right" colspan="6">Total</td>
                                 <td>$ <input style="border: 0;" readonly id="sum-id" value=@ViewBag.Total /></td>
                             </tr>
                         </tbody>

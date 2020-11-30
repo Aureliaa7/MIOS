@@ -15,11 +15,13 @@ namespace MusicalInstrumentsShop.BusinessLogic.Services
     {
         private readonly IUnitOfWork unitOfWork;
         private readonly IMapper mapper;
+        private readonly IImageService imageService;
 
-        public SupplierService(IUnitOfWork unitOfWork, IMapper mapper)
+        public SupplierService(IUnitOfWork unitOfWork, IMapper mapper, IImageService imageService)
         {
             this.unitOfWork = unitOfWork;
             this.mapper = mapper;
+            this.imageService = imageService;
         }
 
         public async Task AddAsync(SupplierDto supplierDto)
@@ -29,14 +31,14 @@ namespace MusicalInstrumentsShop.BusinessLogic.Services
             await unitOfWork.SaveChangesAsync();
         }
 
-        public async Task<IEnumerable<string>> DeleteAsync(Guid id)
+        public async Task DeleteAsync(Guid id)
         {
             bool supplierExists = await unitOfWork.SupplierRepository.Exists(x => x.Id == id);
             if (supplierExists)
             {
                 var photoNamesToBeDeleted = new List<string>();
                 var stocks = await unitOfWork.StockRepository.GetBySupplierId(id);
-                foreach(var stock in stocks)
+                foreach (var stock in stocks)
                 {
                     await unitOfWork.StockRepository.Remove(stock.Id);
                     var photoNames = await unitOfWork.ProductRepository.Delete(stock.Product.Id);
@@ -44,9 +46,12 @@ namespace MusicalInstrumentsShop.BusinessLogic.Services
                 }
                 await unitOfWork.SupplierRepository.Remove(id);
                 await unitOfWork.SaveChangesAsync();
-                return photoNamesToBeDeleted;
+                await imageService.DeleteFiles(photoNamesToBeDeleted);
             }
-            throw new ItemNotFoundException("The supplier was not found...");
+            else
+            {
+                throw new ItemNotFoundException("The supplier was not found...");
+            }
         }
 
         public async Task<IEnumerable<SupplierDto>> GetAllAsync()

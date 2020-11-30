@@ -1,7 +1,7 @@
 ﻿@model MusicalInstrumentsShop.BusinessLogic.DTOs.AccountInfoDto
 
 @{
-    ViewData["Title"] = "Edit";
+    ViewData["Title"] = "Edit Account";
     if (User.IsInRole("Administrator"))
     {
         Layout = "~/Views/Shared/_AdminLayout.cshtml";
@@ -38,7 +38,7 @@
                         <input asp-for="Role" class="form-control" readonly />
                     </div>
                     <div class="form-group">
-                        <input type="submit" value="Save" class="btn btn-primary" id="form-btn" />
+                        <input type="submit" value="Save" class="btn btn-dark" id="form-btn" />
                     </div>
                 </form>
                <a asp-action="ChangePassword" asp-controller="Account">Change password</a>

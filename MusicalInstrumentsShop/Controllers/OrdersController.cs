@@ -68,8 +68,9 @@ namespace MusicalInstrumentsShop.Controllers
         {
             if (ModelState.IsValid)
             {
-                orderDetails.Items = SessionHelper.GetObjectFromJson<List<Item>>(HttpContext.Session, "cart");
+                orderDetails.Items = SessionHelper.GetObjectFromJson<List<Item>>(HttpContext.Session, "Cart");
                 orderDetails.CustomerId = new Guid(User.FindFirstValue(ClaimTypes.NameIdentifier));
+                SessionHelper.SetObjectAsJson(HttpContext.Session, "Cart", null);
                 await orderService.AddAsync(orderDetails);
                 return RedirectToAction("Index", "Orders");
             }

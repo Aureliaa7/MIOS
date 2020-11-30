@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using MusicalInstrumentsShop.DataAccess.Data;
+using MusicalInstrumentsShop.DataAccess.Repositories.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace MusicalInstrumentsShop.DataAccess.Repositories
 {
-    public class Repository<T> : Interfaces.IRepository<T> where T : class
+    public class Repository<T> : IRepository<T> where T : class
     {
         protected readonly ApplicationDbContext Context;
 

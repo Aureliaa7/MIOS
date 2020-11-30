@@ -10,7 +10,7 @@ namespace MusicalInstrumentsShop.BusinessLogic.Services.Interfaces
         Task AddAsync(SupplierDto supplier);
         Task<IEnumerable<SupplierDto>> GetAllAsync();
         Task<SupplierDto> GetByIdAsync(Guid id);
-        Task<IEnumerable<string>> DeleteAsync(Guid id);
+        Task DeleteAsync(Guid id);
         Task UpdateAsync(SupplierDto supplier);
         Task<SupplierDto> GetByProductAsync(string productId);
         Task<int> GetNoSuppliersAsync();
