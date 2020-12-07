@@ -5,8 +5,17 @@ $(function () {
     get_payment_methods();
 });
 
-var quantity_field = document.getElementById('quantity-field');
-var quantity_value = quantity_field.value;
+var product_id;
+var quantity;
+var quantity_product_id;
+
+$(".quantity").change(function (event) {
+    quantity_product_id = $(this).attr("id");
+    console.log(quantity_product_id);
+    var data = quantity_product_id.split("-");
+    quantity = data[0];
+    product_id = data[1];
+});
 
 function get_delivery_methods() {
     $.ajax({
@@ -49,10 +58,11 @@ function get_payment_methods() {
     });
 }
 
-function update_quantity() {
+function update_quantity_and_sub_total() {
+    var quantity_id = "#" + quantity_product_id;
     var update_details = {
-        quantity: $("#quantity-field").val(),
-        id: $("#id-field").val()
+        quantity: $(quantity_id).val(),
+        id: product_id
     };
     console.log(update_details);
 
@@ -66,10 +76,11 @@ function update_quantity() {
         success: function (result) {
             if (result == 'updated') {
                 update_total_sum();
+                update_sub_total(update_details);
             }
             else {
-                quantity_field.value = quantity_value;
-                console.log(quantity_field.value);
+                var quantity_field = document.getElementById(quantity_product_id);
+                quantity_field.value = quantity;
             }
         },
         error: function () {
@@ -88,6 +99,28 @@ function update_total_sum() {
         success: function (result) {
             var sum = document.getElementById('sum-id');
             sum.value = result;
+        },
+        error: function () {
+            console.log("Something went wrong");
+        }
+    });
+}
+
+function update_sub_total(update_details) {
+
+    $.ajax({
+        type: "GET",
+        data: update_details,
+        dataType: 'json',
+        contextType: 'application/json',
+        url: "../Cart/UpdateSubTotal",
+
+        success: function (result) {
+            if (result != -1) {
+                var sub_total_id = "sub-total-" + update_details.id;
+                var sub_total = document.getElementById(sub_total_id);
+                sub_total.value = result;
+            }
         },
         error: function () {
             console.log("Something went wrong");

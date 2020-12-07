@@ -107,5 +107,19 @@ namespace MusicalInstrumentsShop.Controllers
             ViewBag.Total = cart.Sum(x => x.Product.Price * x.Quantity);
             return new JsonResult(ViewBag.Total);
         }
+
+        public JsonResult UpdateSubTotal(string quantity, string id)
+        {
+            List<Item> cart = SessionHelper.GetObjectFromJson<List<Item>>(HttpContext.Session, "Cart");
+            int index = GetProductIndexFromCart(id);
+            int intQuantity = Int16.Parse(quantity);
+            var item = cart.ElementAt(index);
+            double sub_total = -1;
+            if (item != null)
+            {
+                sub_total = intQuantity * item.Product.Price;
+            }
+            return new JsonResult(sub_total);
+        }
     }
 }
