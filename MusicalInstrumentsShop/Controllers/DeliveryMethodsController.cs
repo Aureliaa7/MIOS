@@ -84,5 +84,11 @@ namespace MusicalInstrumentsShop.Controllers
             var deliveryMethods = deliveryService.GetAllAsync().Result;
             return new JsonResult(deliveryMethods.OrderBy(x => x.Method));
         }
+
+        public JsonResult GetDeliveryById(string id)
+        {
+            var deliveryMethod = deliveryService.GetByIdAsync(new Guid(id)).Result;
+            return new JsonResult(deliveryMethod);
+        }
     }
 }

@@ -15,5 +15,6 @@ namespace MusicalInstrumentsShop.BusinessLogic.Services.Interfaces
         Task<ProductEditingDto> GetForUpdateAsync(string id);
         Task<IEnumerable<ProductDto>> GetByCategoryAsync(Guid categoryId);
         Task<int> GetNoProductsAsync();
+        Task<IEnumerable<ProductDto>> Order(string searchString, string orderCriteria);
     }
 }

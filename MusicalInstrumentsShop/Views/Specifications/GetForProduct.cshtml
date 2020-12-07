@@ -5,7 +5,7 @@
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
 
-<div class="row">
+<div class="row add-margin-top-100">
     <div class="col-sm-6">
         <div class="card">
             <div class="card-body">
@@ -16,6 +16,9 @@
                     @Html.DisplayFor(model => item.Value)
                     <a style="margin-left: 60px;" asp-action="Delete" asp-route-id="@item.Id">Delete</a><br />
                 }
+            </div>
+            <div>
+                <a asp-action="Index" asp-controller="Products">Go back to products</a>
             </div>
         </div>
     </div>

@@ -87,9 +87,8 @@ namespace MusicalInstrumentsShop.Controllers
             List<Item> cart = SessionHelper.GetObjectFromJson<List<Item>>(HttpContext.Session, "Cart");
             int index = GetProductIndexFromCart(id);
             int intQuantity = Int16.Parse(quantity);
-            int quantityDifference = intQuantity - cart.ElementAt(index).Quantity;
-            if (intQuantity > 0 && (quantityDifference > 0)
-                && stockService.CanTakeAsync(quantityDifference, id).Result)
+            int quantityDifference = Math.Abs(cart.ElementAt(index).Quantity - intQuantity);
+            if (intQuantity > 0 && stockService.CanTakeAsync(quantityDifference, id).Result)
             {
                 cart.ElementAt(index).Quantity = intQuantity;
                 ViewBag.Total = cart.Sum(x => x.Product.Price * x.Quantity);

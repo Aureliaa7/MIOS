@@ -56,7 +56,7 @@
                 </div>
                 <div class="col-md-3">
                     <label asp-for="DeliveryMethodName" class="control-label"></label>
-                    <select id="delivery-field" asp-for="DeliveryMethodId" class="form-control set-width-dropdown">
+                    <select id="delivery-field" asp-for="DeliveryMethodId" class="form-control set-width-dropdown" onchange="update_delivery_price()">
                         <option>Select</option>
                     </select>
                     <span asp-validation-for="DeliveryMethodId" class="text-danger"></span>
@@ -72,6 +72,12 @@
 
             <div class="row my-row">
                 <div class="col-md-3">
+                    <label asp-for="DeliveryPrice" class="control-label"></label>
+                    <input id="delivery-price-field" asp-for="DeliveryPrice" class="form-control" readonly/>
+                    <span asp-validation-for="DeliveryPrice" class="text-danger"></span>
+                </div>
+                <div class="col-md-3">
+                    <br/>
                     <input type="submit" value="Place order" class="btn btn-dark" id="form-btn" />
                 </div>
             </div>

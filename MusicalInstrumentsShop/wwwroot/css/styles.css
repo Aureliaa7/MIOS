@@ -172,11 +172,17 @@
 }
 
 .categories-table {
-    margin-left: -20px;
+    margin-left: 5%;
+    width: 70%;
+    text-align: center;
 }
 
 .add-margin-left {
     margin-left: -130px;
+}
+
+.add-margin-left-35p {
+    margin-left: 35%;
 }
 
 .specification-jumbotron {
@@ -202,8 +208,8 @@
 #details-div {
     background-color: whitesmoke;
     width: 700px;
-    height: 900px;
-    margin-top: 90px;
+    height: 800px;
+    margin-top: 50px;
 }
 
 .products-container {
@@ -338,4 +344,10 @@
 .delete-specification-jumbotron {
     width: 600px;
     margin-top: 90px;
+}
+
+.suppliers-table {
+    margin-left: 5%;
+    width: 70%;
+    text-align: center;
 }

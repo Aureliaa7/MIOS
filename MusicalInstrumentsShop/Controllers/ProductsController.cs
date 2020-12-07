@@ -46,43 +46,9 @@ namespace MusicalInstrumentsShop.Controllers
             {
                 searchString = currentFilter;
             }
-
             ViewData["CurrentFilter"] = searchString;
-
-            var products = await productService.GetAllAsync();
-
-            if (!String.IsNullOrEmpty(searchString))
-            {
-                products = products.Where(x => x.CategoryName.Contains(searchString));
-            }
-
-            switch (sortOrder)
-            {
-                case "name_desc":
-                    products = products.OrderByDescending(x => x.Name);
-                    break;
-                case "CategoryName":
-                    products = products.OrderBy(x => x.CategoryName);
-                    break;
-                case "category_desc":
-                    products = products.OrderByDescending(s => s.CategoryName);
-                    break;
-                case "SupplierName":
-                    products = products.OrderBy(x => x.SupplierName);
-                    break;
-                case "supplier_desc":
-                    products = products.OrderByDescending(s => s.SupplierName);
-                    break;
-                case "Id":
-                    products = products.OrderBy(x => x.Id);
-                    break;
-                case "id_desc":
-                    products = products.OrderByDescending(s => s.Id);
-                    break;
-                default:
-                    products = products.OrderBy(s => s.Name);
-                    break;
-            }
+            var products = await productService.Order(searchString, sortOrder);
+            
             return View(PaginatedList<ProductDto>.Create(products, pageNumber ?? 1, 5));
         }
 
