@@ -1,6 +1,4 @@
 ﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Http.Features;
 using Microsoft.AspNetCore.Mvc;
 using MusicalInstrumentsShop.BusinessLogic.DTOs;
 using MusicalInstrumentsShop.BusinessLogic.Exceptions;
@@ -8,24 +6,21 @@ using MusicalInstrumentsShop.BusinessLogic.ProductFiltering;
 using MusicalInstrumentsShop.BusinessLogic.Services.Interfaces;
 using MusicalInstrumentsShop.DataAccess.Entities;
 using System;
-using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace MusicalInstrumentsShop.Controllers
 {
+    [Authorize(Roles = "Customer")]
     public class OrdersController : Controller
     {
         private readonly IOrderDetailsService orderService;
-        private readonly IPaymentService paymentService;
 
-        public OrdersController(IOrderDetailsService orderService, IPaymentService paymentService)
+        public OrdersController(IOrderDetailsService orderService)
         {
             this.orderService = orderService;
-            this.paymentService = paymentService;
         }
 
-        [Authorize(Roles = "Customer")]
         public async Task<IActionResult> Index(int? pageNumber)
         {
             Guid currentUserId = new Guid(User.FindFirstValue(ClaimTypes.NameIdentifier));
@@ -33,7 +28,6 @@ namespace MusicalInstrumentsShop.Controllers
             return View(PaginatedList<OrderDetailsDto>.Create(orders, pageNumber ?? 1, 5));
         }
 
-        [Authorize(Roles = "Customer")]
         public async Task<IActionResult> Canceled(int? pageNumber)
         {
             Guid currentUserId = new Guid(User.FindFirstValue(ClaimTypes.NameIdentifier));
@@ -41,7 +35,6 @@ namespace MusicalInstrumentsShop.Controllers
             return View(PaginatedList<OrderDetailsDto>.Create(orders, pageNumber ?? 1, 5));
         }
 
-        [Authorize(Roles = "Customer")]
         public async Task<IActionResult> InProgress(int? pageNumber)
         {
             Guid currentUserId = new Guid(User.FindFirstValue(ClaimTypes.NameIdentifier));
@@ -49,7 +42,6 @@ namespace MusicalInstrumentsShop.Controllers
             return View(PaginatedList<OrderDetailsDto>.Create(orders, pageNumber ?? 1, 5));
         }
 
-        [Authorize(Roles = "Customer")]
         public async Task<IActionResult> Completed(int? pageNumber)
         {
             Guid currentUserId = new Guid(User.FindFirstValue(ClaimTypes.NameIdentifier));
@@ -57,7 +49,6 @@ namespace MusicalInstrumentsShop.Controllers
             return View(PaginatedList<OrderDetailsDto>.Create(orders, pageNumber ?? 1, 5));
         }
 
-        [Authorize(Roles = "Customer")]
         public IActionResult Create()
         {
             return View();
@@ -76,7 +67,6 @@ namespace MusicalInstrumentsShop.Controllers
             return View();
         }
 
-        [Authorize(Roles = "Customer")]
         public async Task<IActionResult> Details(long id)
         {
             try
@@ -90,7 +80,6 @@ namespace MusicalInstrumentsShop.Controllers
             }
         }
 
-        [Authorize(Roles = "Customer")]
         public async Task<IActionResult> OrderedProducts(long id)
         {
             try
@@ -105,7 +94,6 @@ namespace MusicalInstrumentsShop.Controllers
         }
 
         [HttpPost]
-        [Authorize(Roles = "Customer")]
         public async Task<IActionResult> Cancel(long id)
         {
             try
@@ -120,7 +108,6 @@ namespace MusicalInstrumentsShop.Controllers
         }
 
         [HttpPost]
-        [Authorize(Roles = "Customer")]
         public async Task<IActionResult> MarkAsCompleted(long id)
         {
             try
@@ -132,13 +119,6 @@ namespace MusicalInstrumentsShop.Controllers
             {
                 return RedirectToAction("NotFound", "Error");
             }
-        }
-
-        //TODO move this method in PaymentMethodsController
-        public JsonResult GetPaymentMethods()
-        {
-            var paymentMethods = paymentService.GetAllAsync().Result;
-            return new JsonResult(paymentMethods.OrderBy(x => x.Name));
         }
     }
 }

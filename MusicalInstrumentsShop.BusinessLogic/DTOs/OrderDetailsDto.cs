@@ -37,7 +37,7 @@ namespace MusicalInstrumentsShop.BusinessLogic.DTOs
         [Required]
         public Guid PaymentMethodId { get; set; }
         public OrderStatus Status { get; set; }
-        public List<Item> Items { get; set; }
+        public List<CartProductDto> CartProducts { get; set; }
         [Display(Name = "Delivery Price")]
         public double DeliveryPrice { get; set; }
         [Display(Name = "Total Amount")]

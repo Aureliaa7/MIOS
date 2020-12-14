@@ -43,7 +43,7 @@ function get_payment_methods() {
         type: "GET",
         dataType: 'json',
         contextType: 'application/json',
-        url: "../Orders/GetPaymentMethods",
+        url: "../PaymentMethods/GetPaymentMethods",
 
         success: function (result) {
             $("#payment-field option").remove();

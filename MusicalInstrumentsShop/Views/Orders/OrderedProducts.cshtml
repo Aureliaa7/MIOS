@@ -18,7 +18,7 @@
                     <th>Number of Items</th>
                 </tr>
             </thead>
-            @foreach (var item in Model.Items)
+            @foreach (var item in Model.CartProducts)
             {
                 <tbody>
                     <tr>
@@ -32,7 +32,7 @@
                             @Html.DisplayFor(modelItem => item.Product.CategoryName)
                         </td>
                         <td>
-                            @Html.DisplayFor(modelItem => item.Quantity)
+                            @Html.DisplayFor(modelItem => item.NumberOfProducts)
                         </td>
                     </tr>
                 </tbody>

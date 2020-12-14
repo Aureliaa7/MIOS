@@ -94,18 +94,20 @@ namespace MusicalInstrumentsShop.BusinessLogic.Services
                 var orderDetails = await unitOfWork.OrderDetailsRepository.GetByIdWithRelatedData(id);
                 var orderDetailsDto = mapper.Map<OrderDetailsDto>(orderDetails);
                 var orderProducts = await unitOfWork.OrderProductRepository.GetByOrderDetailsId(id);
-                var items = new List<Item>();
+                var items = new List<CartProductDto>();
                 foreach (var orderProduct in orderProducts)
                 {
-                    items.Add(new Item
+                    items.Add(new CartProductDto
                     {
                         Product = mapper.Map<ProductDto>(orderProduct.Product),
-                        Quantity = orderProduct.NumberOfProducts
+                        NumberOfProducts = orderProduct.NumberOfProducts
                     });
                 }
+                var deliveryMethod = await unitOfWork.DeliveryMethodRepository.Get(orderDetails.DeliveryMethod.Id);
                 orderDetailsDto.PaymentMethodName = orderDetails.PaymentMethod.Name;
                 orderDetailsDto.DeliveryMethodName = orderDetails.DeliveryMethod.Method;
-                orderDetailsDto.Items = items;
+                orderDetailsDto.CartProducts = items;
+                orderDetailsDto.DeliveryPrice = deliveryMethod.Price;
                 return orderDetailsDto;
             }
             throw new ItemNotFoundException("The order was not found...");
@@ -147,19 +149,19 @@ namespace MusicalInstrumentsShop.BusinessLogic.Services
             {
                 var orderDetailsDto = mapper.Map<OrderDetailsDto>(orderDetail);
                 var orderProducts = await unitOfWork.OrderProductRepository.GetByOrderDetailsId(orderDetail.Id);
-                var items = new List<Item>();
+                var items = new List<CartProductDto>();
                 foreach (var orderProduct in orderProducts)
                 {
-                    var item = new Item
+                    var item = new CartProductDto
                     {
                         Product = mapper.Map<ProductDto>(orderProduct.Product),
-                        Quantity = orderProduct.NumberOfProducts
+                        NumberOfProducts = orderProduct.NumberOfProducts
                     };
                     items.Add(item);
                 }
                 var delivery = await unitOfWork.DeliveryMethodRepository.Get(orderDetail.DeliveryMethod.Id);
                 var payment = await unitOfWork.PaymentMethodRepository.Get(orderDetail.PaymentMethod.Id);
-                orderDetailsDto.Items = items;
+                orderDetailsDto.CartProducts = items;
                 orderDetailsDto.DeliveryMethodName = delivery.Method;
                 orderDetailsDto.PaymentMethodName = payment.Name;
                 orderDetailsDto.DeliveryPrice = delivery.Price;
