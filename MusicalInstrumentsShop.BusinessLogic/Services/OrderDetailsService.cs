@@ -18,55 +18,59 @@ namespace MusicalInstrumentsShop.BusinessLogic.Services
         private readonly IMapper mapper;
         private readonly UserManager<ApplicationUser> userManager;
         private readonly IStockService stockService;
+        private readonly ICartProductService cartProductService;
 
-        public OrderDetailsService(IUnitOfWork unitOfWork, IMapper mapper, 
-            UserManager<ApplicationUser> userManager, IStockService stockService)
+        public OrderDetailsService(IUnitOfWork unitOfWork, IMapper mapper, UserManager<ApplicationUser> userManager,
+            ICartProductService cartProductService, IStockService stockService)
         {
             this.unitOfWork = unitOfWork;
             this.mapper = mapper;
             this.userManager = userManager;
             this.stockService = stockService;
+            this.cartProductService = cartProductService;
         }
 
         public async Task AddAsync(OrderDetailsDto orderDetailsDto)
         {
-            if (orderDetailsDto.Items.Count > 0)
+            bool deliveryMethodExists = await unitOfWork.DeliveryMethodRepository.Exists(x => x.Id == orderDetailsDto.DeliveryMethodId);
+            bool paymentMethodExits = await unitOfWork.PaymentMethodRepository.Exists(x => x.Id == orderDetailsDto.PaymentMethodId);
+            var customer = await userManager.FindByIdAsync(orderDetailsDto.CustomerId.ToString());
+            if (deliveryMethodExists && paymentMethodExits && customer != null)
             {
-                bool deliveryMethodExists = await unitOfWork.DeliveryMethodRepository.Exists(x => x.Id == orderDetailsDto.DeliveryMethodId);
-                bool paymentMethodExits = await unitOfWork.PaymentMethodRepository.Exists(x => x.Id == orderDetailsDto.PaymentMethodId);
-                var customer = await userManager.FindByIdAsync(orderDetailsDto.CustomerId.ToString());
-                if (deliveryMethodExists && paymentMethodExits && customer != null)
+                var orderDetails = mapper.Map<OrderDetails>(orderDetailsDto);
+                var deliveryMethod = await unitOfWork.DeliveryMethodRepository.Get(orderDetailsDto.DeliveryMethodId);
+                var paymentMethod = await unitOfWork.PaymentMethodRepository.Get(orderDetailsDto.PaymentMethodId);
+                orderDetails.Customer = customer;
+                orderDetails.DeliveryMethod = deliveryMethod;
+                orderDetails.PaymentMethod = paymentMethod;
+                orderDetails.Status = OrderStatus.InProgress;
+                orderDetails.OrderPlacementDate = DateTime.Now;
+                var cartProducts = await cartProductService.GetAllAsync(orderDetailsDto.CustomerId);
+                orderDetails.Amount = cartProducts.Sum(x => x.Product.Price * x.NumberOfProducts) + deliveryMethod.Price;
+                await unitOfWork.OrderDetailsRepository.Add(orderDetails);
+                if (cartProducts != null)
                 {
-                    var orderDetails = mapper.Map<OrderDetails>(orderDetailsDto);
-                    var deliveryMethod = await unitOfWork.DeliveryMethodRepository.Get(orderDetailsDto.DeliveryMethodId);
-                    var paymentMethod = await unitOfWork.PaymentMethodRepository.Get(orderDetailsDto.PaymentMethodId);
-                    orderDetails.Customer = customer;
-                    orderDetails.DeliveryMethod = deliveryMethod;
-                    orderDetails.PaymentMethod = paymentMethod;
-                    orderDetails.Status = OrderStatus.InProgress;
-                    orderDetails.OrderPlacementDate = DateTime.Now;
-                    orderDetails.Amount = orderDetailsDto.Items.Sum(x => x.Product.Price * x.Quantity) + deliveryMethod.Price;
-                    await unitOfWork.OrderDetailsRepository.Add(orderDetails);
-
-                    foreach (var item in orderDetailsDto.Items)
+                    var cartId = cartProducts.ElementAt(0).CartId;
+                    foreach (var item in cartProducts)
                     {
                         var product = await unitOfWork.ProductRepository.GetWithRelatedDataAsTracking(item.Product.Id);
                         var orderProduct = new OrderProduct
                         {
                             Id = Guid.NewGuid(),
-                            NumberOfProducts = item.Quantity,
+                            NumberOfProducts = item.NumberOfProducts,
                             OrderDetails = orderDetails,
                             Product = product
                         };
-                        await stockService.DecreaseNumberOfProductsAsync(item.Quantity, item.Product.Id);
+                        await stockService.DecreaseNumberOfProductsAsync(item.NumberOfProducts, item.Product.Id);
                         await unitOfWork.OrderProductRepository.Add(orderProduct);
                     }
+                    await cartProductService.EmptyCart(cartId);
                     await unitOfWork.SaveChangesAsync();
                 }
-                else
-                {
-                    throw new ItemNotFoundException("Item not found...");
-                }
+            }
+            else
+            {
+                throw new ItemNotFoundException("Item not found...");
             }
         }
 

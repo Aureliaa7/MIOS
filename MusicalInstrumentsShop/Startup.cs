@@ -83,6 +83,8 @@ namespace MusicalInstrumentsShop
             services.AddScoped<IProductMappingService, ProductMappingService>();
             services.AddScoped<IOrderDetailsService, OrderDetailsService>();
             services.AddScoped<IPaymentService, PaymentService>();
+            services.AddScoped<ICartService, CartService>();
+            services.AddScoped<ICartProductService, CartProductService>();
 
             services.AddAutoMapper(typeof(CategoryProfile));
             services.AddAutoMapper(typeof(SupplierProfile));

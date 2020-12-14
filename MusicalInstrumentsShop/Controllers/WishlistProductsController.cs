@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace MusicalInstrumentsShop.Controllers
 {
-    [Authorize]
+    [Authorize(Roles = "Customer")]
     public class WishlistProductsController : Controller
     {
         private readonly IWishlistProductService wishlistService;

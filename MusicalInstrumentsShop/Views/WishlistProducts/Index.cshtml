@@ -51,7 +51,7 @@
                                     <td>
                                         @if (item.Product.NumberOfProducts > 0)
                                         {
-                                            <form asp-action="Add" asp-controller="Cart" asp-route-id="@item.Product.Id" method="post">
+                                            <form asp-action="Create" asp-controller="CartProducts" asp-route-id="@item.Product.Id" method="post">
                                                 <input type="submit" value="Add To Cart" class="btn btn-dark" />
                                             </form>
                                         }

@@ -106,7 +106,7 @@
                             </form>
                             @if (item.NumberOfProducts > 0)
                             {
-                                <form style="display:inline-block;" asp-action="Add" asp-controller="Cart" asp-route-id="@item.Id" method="post">
+                                <form style="display:inline-block;" asp-action="Create" asp-controller="CartProducts" asp-route-id="@item.Id" method="post">
                                     <input type="submit" value="Add to cart" class="btn btn-dark" />
                                 </form>
                             }

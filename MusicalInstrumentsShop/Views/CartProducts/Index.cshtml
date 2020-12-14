@@ -5,7 +5,7 @@
 
 <div class="container wishlist-cart" style="background-color: whitesmoke;">
     <h2>My shopping cart</h2>
-    @if (ViewBag.Cart != null && ViewBag.Cart.Count > 0)
+    @if (Model.Count > 0)
     {
         <div class="row">
             <div class="col-12">
@@ -22,11 +22,11 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach (var item in ViewBag.Cart)
+                            @foreach (var item in Model)
                             {
                                 <tr>
                                     <td>
-                                        <form asp-action="Remove" asp-controller="Cart" asp-route-id="@item.Product.Id" method="post">
+                                        <form asp-action="Delete" asp-controller="CartProducts" asp-route-id="@item.Id" method="post">
                                             <input type="submit" value="Remove" class="btn btn-dark" />
                                         </form>
                                     </td>
@@ -45,17 +45,17 @@
                                     <td>
                                         <div class="form-group row">
                                             <div class="col-xs-2">
-                                                @{ var quantity_product_id = item.Quantity + "-" + item.Product.Id;
+                                                @{ var quantity_product_id = item.NumberOfProducts + "-" + item.Product.Id;
                                                 }
                                                 <input id="@item.Product.Id" value="@item.Product.Id" class="form-control text-center quantity-field" hidden />
-                                                <input id="@quantity_product_id" value="@item.Quantity" class="form-control text-center quantity-field quantity" />
+                                                <input id="@quantity_product_id" value="@item.NumberOfProducts" class="form-control text-center quantity-field quantity" />
                                                 <input type="submit" value="Update" class="btn btn-dark" onclick="update_quantity_and_sub_total()" />
                                             </div>
                                         </div>
                                     </td>
                                     <td>
                                         @{ var sub_total_id = "sub-total-" + item.Product.Id;
-                                           var sub_total = item.Quantity * item.Product.Price;
+                                           var sub_total = item.NumberOfProducts * item.Product.Price;
                                         }
                                         <input id=@sub_total_id value="@sub_total" class="form-control text-center quantity-field" readonly/>
                                     </td>

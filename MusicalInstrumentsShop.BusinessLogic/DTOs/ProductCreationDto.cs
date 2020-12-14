@@ -12,7 +12,7 @@ namespace MusicalInstrumentsShop.BusinessLogic.DTOs
         [Required]
         public string Name { get; set; }
         [Required]
-        [Range(0, int.MaxValue, ErrorMessage = "Please enter a value bigger than 0")]
+        [Range(1, int.MaxValue, ErrorMessage = "Please enter a value bigger than 0")]
         public double Price { get; set; }
         [Required]
         public string Description { get; set; }
@@ -20,7 +20,7 @@ namespace MusicalInstrumentsShop.BusinessLogic.DTOs
         public Guid CategoryId { get; set; }
         [Required]
         [Display(Name = "Number of products")]
-        [Range(0, int.MaxValue, ErrorMessage = "Please enter a value bigger than 0")]
+        [Range(1, int.MaxValue, ErrorMessage = "Please enter a value bigger than 0")]
         public int NumberOfProducts { get; set; }
         public Guid SupplierId { get; set; }
         [Required]

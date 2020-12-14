@@ -71,7 +71,7 @@ function update_quantity_and_sub_total() {
         data: update_details,
         dataType: 'json',
         contextType: 'application/json',
-        url: "../Cart/UpdateQuantity",
+        url: "../CartProducts/UpdateQuantity",
 
         success: function (result) {
             if (result == 'updated') {
@@ -94,7 +94,7 @@ function update_total_sum() {
         type: "GET",
         dataType: 'json',
         contextType: 'application/json',
-        url: "../Cart/UpdateTotalSum",
+        url: "../CartProducts/UpdateTotalSum",
 
         success: function (result) {
             var sum = document.getElementById('sum-id');
@@ -113,7 +113,7 @@ function update_sub_total(update_details) {
         data: update_details,
         dataType: 'json',
         contextType: 'application/json',
-        url: "../Cart/UpdateSubTotal",
+        url: "../CartProducts/UpdateSubTotal",
 
         success: function (result) {
             if (result != -1) {

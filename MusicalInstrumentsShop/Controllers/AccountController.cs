@@ -57,7 +57,8 @@ namespace MusicalInstrumentsShop.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Register([FromServices] IWishlistService wishlistService, RegistrationDto registrationInfo)
+        public async Task<IActionResult> Register([FromServices] IWishlistService wishlistService,
+            [FromServices]ICartService cartService, RegistrationDto registrationInfo)
         {
             if (ModelState.IsValid)
             {
@@ -65,6 +66,7 @@ namespace MusicalInstrumentsShop.Controllers
                 if (registerResult.Capacity == 0)
                 {
                     await wishlistService.CreateAsync(registrationInfo.Email);
+                    await cartService.CreateAsync(registrationInfo.Email);
                     return RedirectToAction("Login", "Account");
                 }
                 ViewBag.RegisterResult = registerResult;

@@ -19,6 +19,8 @@ namespace MusicalInstrumentsShop.DataAccess.UnitOfWork
         IOrderDetailsRepository OrderDetailsRepository { get; }
         IOrderProductRepository OrderProductRepository { get; }
         IRepository<PaymentMethod> PaymentMethodRepository { get; }
+        ICartRepository CartRepository { get; }
+        ICartProductRepository CartProductRepository { get; }
 
         Task<int> SaveChangesAsync();
     }
