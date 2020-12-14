@@ -9,6 +9,8 @@
                 <th>Payment</th>
                 <th>Status</th>
                 <th>Order Placement Date</th>
+                <th></th>
+                <th></th>
             </tr>
         </thead>
         @foreach (var item in Model)
@@ -30,6 +32,19 @@
                     <td>
                         @Html.DisplayFor(modelItem => item.OrderPlacementDate)
                     </td>
+                    @if (item.Status == MusicalInstrumentsShop.DataAccess.Entities.OrderStatus.InProgress)
+                    {
+                        <td>
+                            <form asp-action="Cancel" asp-controller="Orders" asp-route-id="@item.Id" method="post">
+                                <input type="submit" value="Cancel" class="btn btn-dark" />
+                            </form>
+                        </td>
+                        <td>
+                            <form asp-action="MarkAsCompleted" asp-controller="Orders" asp-route-id="@item.Id" method="post">
+                                <input type="submit" value="Mark as completed" class="btn btn-dark" />
+                            </form>
+                        </td>
+                    }
                 </tr>
             </tbody>
         }

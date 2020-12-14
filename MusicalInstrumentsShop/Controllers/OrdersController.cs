@@ -1,4 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http.Features;
 using Microsoft.AspNetCore.Mvc;
 using MusicalInstrumentsShop.BusinessLogic.DTOs;
 using MusicalInstrumentsShop.BusinessLogic.Exceptions;
@@ -6,7 +8,6 @@ using MusicalInstrumentsShop.BusinessLogic.ProductFiltering;
 using MusicalInstrumentsShop.BusinessLogic.Services.Interfaces;
 using MusicalInstrumentsShop.DataAccess.Entities;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
@@ -103,6 +104,37 @@ namespace MusicalInstrumentsShop.Controllers
             }
         }
 
+        [HttpPost]
+        [Authorize(Roles = "Customer")]
+        public async Task<IActionResult> Cancel(long id)
+        {
+            try
+            {
+                await orderService.UpdateStatusAsync(id, OrderStatus.Canceled);
+                return RedirectToAction("Details", new { id = id });
+            }
+            catch (ItemNotFoundException)
+            {
+                return RedirectToAction("NotFound", "Error");
+            }
+        }
+
+        [HttpPost]
+        [Authorize(Roles = "Customer")]
+        public async Task<IActionResult> MarkAsCompleted(long id)
+        {
+            try
+            {
+                await orderService.UpdateStatusAsync(id, OrderStatus.Completed);
+                return RedirectToAction("Details", new { id = id });
+            }
+            catch (ItemNotFoundException)
+            {
+                return RedirectToAction("NotFound", "Error");
+            }
+        }
+
+        //TODO move this method in PaymentMethodsController
         public JsonResult GetPaymentMethods()
         {
             var paymentMethods = paymentService.GetAllAsync().Result;
