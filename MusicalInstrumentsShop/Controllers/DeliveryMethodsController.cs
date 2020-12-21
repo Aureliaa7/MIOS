@@ -62,7 +62,7 @@ namespace MusicalInstrumentsShop.Controllers
 
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(Guid id)
+        public async Task<IActionResult> DeleteConfirmed(Guid? id)
         {
             if (id == null)
             {
@@ -70,7 +70,7 @@ namespace MusicalInstrumentsShop.Controllers
             }
             try
             {
-                await deliveryService.DeleteAsync(id);
+                await deliveryService.DeleteAsync((Guid)id);
                 return RedirectToAction(nameof(Index));
             }
             catch (ItemNotFoundException)

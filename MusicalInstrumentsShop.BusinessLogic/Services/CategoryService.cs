@@ -73,9 +73,17 @@ namespace MusicalInstrumentsShop.BusinessLogic.Services
 
         public async Task UpdateAsync(CategoryDto categoryDto)
         {
-            var category = mapper.Map<Category>(categoryDto);
-            unitOfWork.CategoryRepository.Update(category);
-            await unitOfWork.SaveChangesAsync();
+            bool categoryExists = await unitOfWork.CategoryRepository.Exists(x => x.Id == categoryDto.Id);
+            if (categoryExists)
+            {
+                var category = mapper.Map<Category>(categoryDto);
+                unitOfWork.CategoryRepository.Update(category);
+                await unitOfWork.SaveChangesAsync();
+            }
+            else
+            {
+                throw new ItemNotFoundException("The category was not found...");
+            }
         }
     }
 }

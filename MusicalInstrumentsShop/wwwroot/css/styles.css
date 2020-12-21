@@ -230,7 +230,7 @@
 .filter-products-form {
     margin-left: -100px;
     width: 300px;
-    height: 950px;
+    height: 600px;
 }
 
 .products-row {
@@ -272,7 +272,7 @@
 
 .order-jumbotron {
     width: 900px;
-    height: 590px;
+    height: 650px;
     margin-top: 85px;
     margin-left: -105px;
 }
@@ -350,4 +350,8 @@
     margin-left: 5%;
     width: 70%;
     text-align: center;
+}
+
+.add-margin-left-30p {
+    margin-left: 30%;
 }

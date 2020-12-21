@@ -99,9 +99,17 @@ namespace MusicalInstrumentsShop.BusinessLogic.Services
 
         public async Task UpdateAsync(SupplierDto supplierDto)
         {
-            var supplier = mapper.Map<Supplier>(supplierDto);
-            unitOfWork.SupplierRepository.Update(supplier);
-            await unitOfWork.SaveChangesAsync();
+            bool supplierExists = await unitOfWork.SupplierRepository.Exists(x => x.Id == supplierDto.Id);
+            if (supplierExists)
+            {
+                var supplier = mapper.Map<Supplier>(supplierDto);
+                unitOfWork.SupplierRepository.Update(supplier);
+                await unitOfWork.SaveChangesAsync();
+            }
+            else
+            {
+                throw new ItemNotFoundException("The supplier was not found...");
+            }
         }
     }
 }

@@ -17,7 +17,7 @@
                                 <th>Images</th>
                                 <th>Product</th>
                                 <th>Price</th>
-                                <th>Quantity</th>
+                                <th>No.items</th>
                                 <th>Sub total</th>
                             </tr>
                         </thead>
@@ -45,8 +45,7 @@
                                     <td>
                                         <div class="form-group row">
                                             <div class="col-xs-2">
-                                                @{ var quantity_product_id = item.NumberOfProducts + "-" + item.Product.Id;
-                                                }
+                                                @{ var quantity_product_id = item.NumberOfProducts + "-" + item.Product.Id; }
                                                 <input id="@item.Product.Id" value="@item.Product.Id" class="form-control text-center quantity-field" hidden />
                                                 <input id="@quantity_product_id" value="@item.NumberOfProducts" class="form-control text-center quantity-field quantity" />
                                                 <input type="submit" value="Update" class="btn btn-dark" onclick="update_quantity_and_sub_total()" />
@@ -55,9 +54,9 @@
                                     </td>
                                     <td>
                                         @{ var sub_total_id = "sub-total-" + item.Product.Id;
-                                           var sub_total = item.NumberOfProducts * item.Product.Price;
+                                            var sub_total = item.NumberOfProducts * item.Product.Price;
                                         }
-                                        <input id=@sub_total_id value="@sub_total" class="form-control text-center quantity-field" readonly/>
+                                        <input id=@sub_total_id value="@sub_total" class="form-control text-center quantity-field" readonly />
                                     </td>
                                 </tr>
                             }
@@ -87,8 +86,24 @@
         </div>
     }
 </div>
-<br />
 
+<div class="nextPrevBtnsWishlistOrders">
+    @{
+        var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
+        var nextDisabled = !Model.HasNextPage ? "disabled" : "";
+    }
+
+    <a asp-action="Index"
+       asp-route-pageNumber="@(Model.PageIndex - 1)"
+       class="btn btn-dark @prevDisabled">
+        Previous
+    </a>
+    <a asp-action="Index"
+       asp-route-pageNumber="@(Model.PageIndex + 1)"
+       class="btn btn-dark @nextDisabled">
+        Next
+    </a>
+</div>
 
 @section Scripts {
     <script src="~/js/placeOrder.js"></script>

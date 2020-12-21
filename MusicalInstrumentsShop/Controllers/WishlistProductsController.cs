@@ -33,8 +33,15 @@ namespace MusicalInstrumentsShop.Controllers
         {
             Guid currentUserId = new Guid(User.FindFirstValue(ClaimTypes.NameIdentifier));
             var wishlistProductCreation = new WishlistProductCreationDto { UserId = currentUserId, ProductId = id };
-            await wishlistService.AddAsync(wishlistProductCreation);
-            return RedirectToAction("Index", "WishlistProducts");
+            try
+            {
+                await wishlistService.AddAsync(wishlistProductCreation);
+                return RedirectToAction("Index", "WishlistProducts");
+            }
+            catch (ItemNotFoundException)
+            {
+                return RedirectToAction("NotFound", "Error");
+            }
         }
 
         [HttpPost]
