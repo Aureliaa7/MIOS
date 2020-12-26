@@ -9,13 +9,18 @@ var product_id;
 var quantity;
 var quantity_product_id;
 
-$(".quantity").change(function (event) {
-    quantity_product_id = $(this).attr("id");
-    console.log(quantity_product_id);
-    var data = quantity_product_id.split("-");
-    quantity = data[0];
-    product_id = data[1];
-});
+prepare_quantity_and_product_id();
+
+
+function prepare_quantity_and_product_id() {
+    $(".quantity").change(function (event) {
+        quantity_product_id = $(this).attr("id");
+        console.log(quantity_product_id);
+        var data = quantity_product_id.split("-");
+        quantity = data[0];
+        product_id = data[1];
+    });
+}
 
 function get_delivery_methods() {
     $.ajax({
@@ -75,6 +80,7 @@ function update_quantity_and_sub_total() {
 
         success: function (result) {
             if (result == 'updated') {
+                location.reload();
                 update_total_sum();
                 update_sub_total(update_details);
             }

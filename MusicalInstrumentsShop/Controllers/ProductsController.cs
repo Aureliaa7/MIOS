@@ -14,14 +14,10 @@ namespace MusicalInstrumentsShop.Controllers
     public class ProductsController : Controller
     {
         private readonly IProductService productService;
-        private readonly IWebHostEnvironment hostEnvironment;
-        private readonly IImageService imageService;
 
-        public ProductsController(IProductService productService, IWebHostEnvironment hostEnvironment, IImageService imageService)
+        public ProductsController(IProductService productService)
         {
             this.productService = productService;
-            this.hostEnvironment = hostEnvironment;
-            this.imageService = imageService;
         }
 
         public async Task<IActionResult> Browse([FromServices] IProductFilterService productFilterService, ProductsFilteringModel filteringModel, int? pageNumber = 1)
