@@ -15,7 +15,7 @@ using AutoMapper;
 using MusicalInstrumentsShop.BusinessLogic.Services;
 using MusicalInstrumentsShop.DataAccess.UnitOfWork;
 using MusicalInstrumentsShop.BusinessLogic.Mappings.Products;
-using MusicalInstrumentsShop.BusinessLogic.ProductFiltering;
+using MusicalInstrumentsShop.Caching;
 
 namespace MusicalInstrumentsShop
 {
@@ -29,16 +29,9 @@ namespace MusicalInstrumentsShop
         public IConfiguration Configuration { get; }
 
         public void ConfigureServices(IServiceCollection services)
-        {
-            services.AddDistributedMemoryCache();
-            services.AddSession(options =>
-            {
-                options.IdleTimeout = TimeSpan.FromHours(2);
-                options.Cookie.HttpOnly = true;
-                options.Cookie.IsEssential = true;
-            });
-
+        { 
             services.AddControllersWithViews();
+            services.AddMemoryCache();
 
             services.AddDbContext<ApplicationDbContext>(options =>
                options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"),
@@ -77,7 +70,7 @@ namespace MusicalInstrumentsShop
             services.AddScoped<IStockService, StockService>();
             services.AddScoped<ISpecificationService, SpecificationService>();
             services.AddScoped<IDeliveryService, DeliveryService>();
-            services.AddScoped<IProductFilterService, ProductFilterService>();
+            services.AddScoped<IProductBrowsingService, ProductBrowsingService>();
             services.AddScoped<IWishlistService, WishlistService>();
             services.AddScoped<IWishlistProductService, WishlistProductService>();
             services.AddScoped<IProductMappingService, ProductMappingService>();
@@ -85,6 +78,7 @@ namespace MusicalInstrumentsShop
             services.AddScoped<IPaymentService, PaymentService>();
             services.AddScoped<ICartService, CartService>();
             services.AddScoped<ICartProductService, CartProductService>();
+            services.AddScoped<IProductIndexService, ProductIndexService>();
 
             services.AddAutoMapper(typeof(CategoryProfile));
             services.AddAutoMapper(typeof(SupplierProfile));
@@ -95,6 +89,7 @@ namespace MusicalInstrumentsShop
             services.AddAutoMapper(typeof(DeliveryMethodProfile));
             services.AddAutoMapper(typeof(OrderDetailsProfile));
             services.AddAutoMapper(typeof(PaymentProfile));
+            services.AddAutoMapper(typeof(StockProfile));
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env, UserManager<ApplicationUser> userManager,
@@ -114,7 +109,6 @@ namespace MusicalInstrumentsShop
             app.UseStaticFiles();
 
             app.UseRouting();
-            app.UseSession();
 
             DatabaseSeeding.AddRoles(roleManager);
             DatabaseSeeding.AddAdministrator(userManager);

@@ -2,32 +2,35 @@
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using MusicalInstrumentsShop.BusinessLogic.ProductFiltering;
 using MusicalInstrumentsShop.BusinessLogic.DTOs;
 using MusicalInstrumentsShop.BusinessLogic.Exceptions;
 using MusicalInstrumentsShop.BusinessLogic.Services.Interfaces;
+using MusicalInstrumentsShop.Caching;
+using Microsoft.Extensions.Caching.Memory;
 
 namespace MusicalInstrumentsShop.Controllers
 {
     public class ProductsController : Controller
     {
         private readonly IProductService productService;
+        private readonly IMemoryCache memoryCache;
 
-        public ProductsController(IProductService productService)
+        public ProductsController(IProductService productService, IMemoryCache memoryCache)
         {
             this.productService = productService;
+            this.memoryCache = memoryCache;
         }
 
-        public async Task<IActionResult> Browse([FromServices] IProductFilterService productFilterService, ProductsFilteringModel filteringModel, int? pageNumber = 1)
+        public async Task<IActionResult> Browse([FromServices] IProductBrowsingService productFilterService, ProductsFilteringModel filteringModel, int? pageNumber = 1)
         {
-            var productFilteringModel = await productFilterService.Filter(filteringModel, 4, pageNumber ?? 1);
+            var productFilteringModel = await productFilterService.Filter(filteringModel, memoryCache, 4, pageNumber ?? 1);
             return View(productFilteringModel);
         }
 
         [Authorize(Roles = "Administrator")]
-        public async Task<IActionResult> Index(string sortOrder, string currentFilter, string searchString, int? pageNumber)
+        public async Task<IActionResult> Index([FromServices] IProductIndexService productIndexService, string sortOrder, string currentFilter, string searchString, int? pageNumber)
         {
             ViewData["CurrentSort"] = sortOrder;
             ViewData["NameSortParm"] = String.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
@@ -43,7 +46,7 @@ namespace MusicalInstrumentsShop.Controllers
                 searchString = currentFilter;
             }
             ViewData["CurrentFilter"] = searchString;
-            var products = await productService.Order(searchString, sortOrder);
+            var products = await productIndexService.OrderByCriteria(searchString, sortOrder, memoryCache);
             
             return View(PaginatedList<ProductDto>.Create(products, pageNumber ?? 1, 5));
         }

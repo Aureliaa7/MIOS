@@ -3,16 +3,19 @@ using MusicalInstrumentsShop.BusinessLogic.Exceptions;
 using System.Threading.Tasks;
 using MusicalInstrumentsShop.BusinessLogic.Services.Interfaces;
 using MusicalInstrumentsShop.DataAccess.UnitOfWork;
+using AutoMapper;
 
 namespace MusicalInstrumentsShop.BusinessLogic.Services
 {
     public class StockService : IStockService
     {
         private readonly IUnitOfWork unitOfWork;
+        private readonly IMapper mapper;
 
-        public StockService(IUnitOfWork unitOfWork)
+        public StockService(IUnitOfWork unitOfWork, IMapper mapper)
         {
             this.unitOfWork = unitOfWork;
+            this.mapper = mapper;
         }
 
         public async Task AddProductsInStockAsync(StockDto stockDto)
@@ -62,6 +65,17 @@ namespace MusicalInstrumentsShop.BusinessLogic.Services
                     return true;
                 }
                 return false;
+            }
+            throw new ItemNotFoundException("The product was not found...");
+        }
+
+        public async Task<StockDto> GetByProductAsync(string productId)
+        {
+            bool productExists = await unitOfWork.ProductRepository.Exists(x => x.Id == productId);
+            if(productExists)
+            {
+                var stock = await unitOfWork.StockRepository.GetByProductId(productId);
+                return mapper.Map<StockDto>(stock);
             }
             throw new ItemNotFoundException("The product was not found...");
         }
