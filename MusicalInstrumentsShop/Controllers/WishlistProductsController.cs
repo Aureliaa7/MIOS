@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using MusicalInstrumentsShop.BusinessLogic.DTOs;
 using MusicalInstrumentsShop.BusinessLogic.Exceptions;
-using MusicalInstrumentsShop.BusinessLogic.ProductFiltering;
+using MusicalInstrumentsShop.BusinessLogic.ProductFilteringEntities;
 using MusicalInstrumentsShop.BusinessLogic.Services.Interfaces;
 using System;
 using System.Security.Claims;

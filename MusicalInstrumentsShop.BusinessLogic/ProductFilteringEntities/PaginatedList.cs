@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace MusicalInstrumentsShop.BusinessLogic.ProductFiltering
+namespace MusicalInstrumentsShop.BusinessLogic.ProductFilteringEntities
 {
     public class PaginatedList<T> : List<T>
     {

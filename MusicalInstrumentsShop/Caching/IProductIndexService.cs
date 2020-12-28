@@ -7,6 +7,6 @@ namespace MusicalInstrumentsShop.Caching
 {
     public interface IProductIndexService
     {
-        public Task<IEnumerable<ProductDto>> OrderByCriteria(string searchString, string orderCriteria, IMemoryCache memoryCache);
+        Task<IEnumerable<ProductDto>> OrderByCriteria(string searchString, string orderCriteria, IMemoryCache memoryCache);
     }
 }

@@ -167,5 +167,42 @@ namespace MusicalInstrumentsShop.BusinessLogic.Services
             }
             await unitOfWork.SaveChangesAsync();
         }
+
+        public async Task<IEnumerable<ProductDto>> Order(IEnumerable<ProductDto> productsDto, string searchString, string orderCriteria)
+        {
+            if (!string.IsNullOrEmpty(searchString))
+            {
+                productsDto = productsDto.Where(x => x.CategoryName.Contains(searchString));
+            }
+            IEnumerable<ProductDto> orderedProducts = new List<ProductDto>();
+            switch (orderCriteria)
+            {
+                case "name_desc":
+                    orderedProducts = productsDto.OrderByDescending(x => x.Name);
+                    break;
+                case "CategoryName":
+                    orderedProducts = productsDto.OrderBy(x => x.CategoryName);
+                    break;
+                case "category_desc":
+                    orderedProducts = productsDto.OrderByDescending(s => s.CategoryName);
+                    break;
+                case "SupplierName":
+                    orderedProducts = productsDto.OrderBy(x => x.SupplierName);
+                    break;
+                case "supplier_desc":
+                    orderedProducts = productsDto.OrderByDescending(s => s.SupplierName);
+                    break;
+                case "Id":
+                    orderedProducts = productsDto.OrderBy(x => x.Id);
+                    break;
+                case "id_desc":
+                    orderedProducts = productsDto.OrderByDescending(s => s.Id);
+                    break;
+                default:
+                    orderedProducts = productsDto.OrderBy(s => s.Name);
+                    break;
+            }
+            return orderedProducts;
+        }
     }
 }

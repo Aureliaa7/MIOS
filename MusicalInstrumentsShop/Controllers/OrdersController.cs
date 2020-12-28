@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using MusicalInstrumentsShop.BusinessLogic.DTOs;
 using MusicalInstrumentsShop.BusinessLogic.Exceptions;
-using MusicalInstrumentsShop.BusinessLogic.ProductFiltering;
+using MusicalInstrumentsShop.BusinessLogic.ProductFilteringEntities;
 using MusicalInstrumentsShop.BusinessLogic.Services.Interfaces;
 using MusicalInstrumentsShop.DataAccess.Entities;
 using System;
@@ -39,13 +39,6 @@ namespace MusicalInstrumentsShop.Controllers
         {
             Guid currentUserId = new Guid(User.FindFirstValue(ClaimTypes.NameIdentifier));
             var orders = await orderService.GetByStatusAsync(currentUserId, OrderStatus.InProgress);
-            return View(PaginatedList<OrderDetailsDto>.Create(orders, pageNumber ?? 1, 5));
-        }
-
-        public async Task<IActionResult> Completed(int? pageNumber)
-        {
-            Guid currentUserId = new Guid(User.FindFirstValue(ClaimTypes.NameIdentifier));
-            var orders = await orderService.GetByStatusAsync(currentUserId, OrderStatus.Completed);
             return View(PaginatedList<OrderDetailsDto>.Create(orders, pageNumber ?? 1, 5));
         }
 
@@ -99,20 +92,6 @@ namespace MusicalInstrumentsShop.Controllers
             try
             {
                 await orderService.UpdateStatusAsync(id, OrderStatus.Canceled);
-                return RedirectToAction("Details", new { id = id });
-            }
-            catch (ItemNotFoundException)
-            {
-                return RedirectToAction("NotFound", "Error");
-            }
-        }
-
-        [HttpPost]
-        public async Task<IActionResult> MarkAsCompleted(long id)
-        {
-            try
-            {
-                await orderService.UpdateStatusAsync(id, OrderStatus.Completed);
                 return RedirectToAction("Details", new { id = id });
             }
             catch (ItemNotFoundException)

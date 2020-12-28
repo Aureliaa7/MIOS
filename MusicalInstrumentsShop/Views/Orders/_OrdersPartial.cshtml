@@ -1,4 +1,4 @@
-﻿@model MusicalInstrumentsShop.BusinessLogic.ProductFiltering.PaginatedList<MusicalInstrumentsShop.BusinessLogic.DTOs.OrderDetailsDto>
+﻿@model MusicalInstrumentsShop.BusinessLogic.ProductFilteringEntities.PaginatedList<MusicalInstrumentsShop.BusinessLogic.DTOs.OrderDetailsDto>
 
 <div class="table-content table-responsive">
     <table class="table">
@@ -37,11 +37,6 @@
                         <td>
                             <form asp-action="Cancel" asp-controller="Orders" asp-route-id="@item.Id" method="post">
                                 <input type="submit" value="Cancel" class="btn btn-dark" />
-                            </form>
-                        </td>
-                        <td>
-                            <form asp-action="MarkAsCompleted" asp-controller="Orders" asp-route-id="@item.Id" method="post">
-                                <input type="submit" value="Mark as completed" class="btn btn-dark" />
                             </form>
                         </td>
                     }

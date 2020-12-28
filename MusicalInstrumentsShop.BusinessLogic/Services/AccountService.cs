@@ -15,12 +15,17 @@ namespace MusicalInstrumentsShop.BusinessLogic.Services
         private readonly UserManager<ApplicationUser> userManager;
         private readonly SignInManager<ApplicationUser> signInManager;
         private readonly LoginResult loginResult;
+        private readonly IWishlistService wishlistService;
+        private readonly ICartService cartService;
 
-        public AccountService(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager)
+        public AccountService(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager,
+            IWishlistService wishlistService, ICartService cartService)
         {
             this.userManager = userManager;
             this.signInManager = signInManager;
             loginResult = new LoginResult();
+            this.wishlistService = wishlistService;
+            this.cartService = cartService;
         }
 
         public async Task<string> ChangePasswordAsync(PasswordChangeDto passwordDto)
@@ -109,6 +114,8 @@ namespace MusicalInstrumentsShop.BusinessLogic.Services
             if (result.Succeeded)
             {
                 await userManager.AddToRoleAsync(newApplicationUser, "Customer");
+                await wishlistService.CreateAsync(registrationInfo.Email);
+                await cartService.CreateAsync(registrationInfo.Email);
             }
             else
             {
