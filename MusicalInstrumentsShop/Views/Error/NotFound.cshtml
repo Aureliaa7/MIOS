@@ -9,6 +9,14 @@
         <div class="error-code"></div>
         <h1>404</h1>
         <h2>Oops! Sorry, the resource you requested could not be found...</h2>
+        @if (User.IsInRole("Customer"))
+        {
+            <h2><a asp-action="Browse" asp-controller="Products"> Go home</a></h2>
+        }
+        else if (User.IsInRole("Administrator"))
+        {
+            <h2><a asp-action="Admin" asp-controller="Dashboards"> Go home</a></h2>
+        }
     </div>
 </div>
 

@@ -9,6 +9,14 @@
         <h1>403</h1>
         <h2>Oops!</h2>
         <h2>The request has not completed successfully because you do not have permission to this resource.</h2>
+        @if (User.IsInRole("Customer"))
+        {
+            <h2><a asp-action="Browse" asp-controller="Products"> Go home</a></h2>
+        }
+        else if (User.IsInRole("Administrator"))
+        {
+            <h2><a asp-action="Admin" asp-controller="Dashboards"> Go home</a></h2>
+        }
     </div>
 </div>
 
