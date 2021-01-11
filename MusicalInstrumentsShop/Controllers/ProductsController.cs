@@ -25,8 +25,12 @@ namespace MusicalInstrumentsShop.Controllers
 
         public async Task<IActionResult> Browse([FromServices] IProductBrowsingService productFilterService, ProductsFilteringModel filteringModel, int? pageNumber = 1)
         {
-            var productFilteringModel = await productFilterService.Filter(filteringModel, memoryCache, 4, pageNumber ?? 1);
-            return View(productFilteringModel);
+            if (!User.IsInRole("Administrator"))
+            {
+                var productFilteringModel = await productFilterService.Filter(filteringModel, memoryCache, 4, pageNumber ?? 1);
+                return View(productFilteringModel);
+            }
+            return RedirectToAction("AccessDenied", "Error");
         }
 
         [Authorize(Roles = "Administrator")]

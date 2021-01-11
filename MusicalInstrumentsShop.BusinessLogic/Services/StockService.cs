@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using MusicalInstrumentsShop.BusinessLogic.Services.Interfaces;
 using MusicalInstrumentsShop.DataAccess.UnitOfWork;
 using AutoMapper;
+using System;
 
 namespace MusicalInstrumentsShop.BusinessLogic.Services
 {
@@ -78,6 +79,22 @@ namespace MusicalInstrumentsShop.BusinessLogic.Services
                 return mapper.Map<StockDto>(stock);
             }
             throw new ItemNotFoundException("The product was not found...");
+        }
+
+        public async Task IncreaseNumberOfProducts(string productId, int noProducts)
+        {
+            bool productExists = await unitOfWork.ProductRepository.Exists(x => x.Id == productId);
+            if (productExists)
+            {
+                var searchedStock = await unitOfWork.StockRepository.GetByProductId(productId);
+                searchedStock.NumberOfProducts += noProducts;
+                unitOfWork.StockRepository.Update(searchedStock);
+                await unitOfWork.SaveChangesAsync();
+            }
+            else
+            {
+                throw new ItemNotFoundException("The product was not found...");
+            }
         }
     }
 }

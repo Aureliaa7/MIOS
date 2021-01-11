@@ -9,5 +9,6 @@ namespace MusicalInstrumentsShop.BusinessLogic.Services.Interfaces
         Task<bool> DecreaseNumberOfProductsAsync(int decreaseBy, string productCode);
         Task<bool> CanTakeAsync(int noProducts, string productCode);
         Task<StockDto> GetByProductAsync(string productId);
+        Task IncreaseNumberOfProducts(string productId, int noProducts);
     }
 }
