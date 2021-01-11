@@ -5,27 +5,37 @@
     Layout = "~/Views/Shared/_CustomerLayout.cshtml";
 }
 
-<hr />
-<div class="container orders-container">
-    <h2>In progress orders</h2>
-    <partial name="_OrdersPartial" model="Model" />
-</div>
+@if (Model.Count > 0)
+{
+    <div class="container orders-container">
+        <h2>In progress orders</h2>
+        <partial name="_OrdersPartial" model="Model" />
+    </div>
 
-<div class="nextPrevBtnsWishlistOrders">
-    @{
-        var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
-        var nextDisabled = !Model.HasNextPage ? "disabled" : "";
-    }
+    <div class="nextPrevBtnsWishlistOrders">
+        @{
+            var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
+            var nextDisabled = !Model.HasNextPage ? "disabled" : "";
+        }
 
-    <a asp-action="InProgress"
-       asp-route-pageNumber="@(Model.PageIndex - 1)"
-       class="btn btn-dark @prevDisabled">
-        Previous
-    </a>
-    <a asp-action="InProgress"
-       asp-route-pageNumber="@(Model.PageIndex + 1)"
-       class="btn btn-dark @nextDisabled">
-        Next
-    </a>
-</div>
+        <a asp-action="InProgress"
+           asp-route-pageNumber="@(Model.PageIndex - 1)"
+           class="btn btn-dark @prevDisabled">
+            Previous
+        </a>
+        <a asp-action="InProgress"
+           asp-route-pageNumber="@(Model.PageIndex + 1)"
+           class="btn btn-dark @nextDisabled">
+            Next
+        </a>
+    </div>
+}
+else
+{
+    <div class="container orders-container">
+        <h2>In progress orders</h2>
+        <br/>
+        <h4>There are no orders in progress</h4>
+    </div>
+}
 

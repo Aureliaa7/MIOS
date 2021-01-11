@@ -91,7 +91,7 @@ namespace MusicalInstrumentsShop.Controllers
         {
             try
             {
-                await orderService.UpdateStatusAsync(id, OrderStatus.Canceled);
+                await orderService.CancelAsync(id);
                 return RedirectToAction("Details", new { id = id });
             }
             catch (ItemNotFoundException)

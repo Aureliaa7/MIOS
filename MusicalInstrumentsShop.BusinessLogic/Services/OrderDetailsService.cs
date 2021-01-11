@@ -126,14 +126,25 @@ namespace MusicalInstrumentsShop.BusinessLogic.Services
             throw new ItemNotFoundException("The user was not found...");
         }
 
-        public async Task UpdateStatusAsync(long orderDetailsId, OrderStatus status)
+        public async Task CancelAsync(long orderDetailsId)
         {
             bool orderDetailsExists = await unitOfWork.OrderDetailsRepository.Exists(x => x.Id == orderDetailsId);
             if (orderDetailsExists)
             {
                 var orderDetails = await unitOfWork.OrderDetailsRepository.GetByIdWithRelatedData(orderDetailsId);
-                orderDetails.Status = status;
+                orderDetails.Status = OrderStatus.Canceled;
                 unitOfWork.OrderDetailsRepository.Update(orderDetails);
+
+                var orderProducts = await unitOfWork.OrderProductRepository.GetByOrderDetailsId(orderDetailsId);
+                if(orderProducts != null)
+                {
+                    foreach(var item in orderProducts)
+                    {
+                        var stock = await unitOfWork.StockRepository.GetByProductId(item.Product.Id);
+                        stock.NumberOfProducts += item.NumberOfProducts;
+                        unitOfWork.StockRepository.Update(stock);
+                    }
+                }
                 await unitOfWork.SaveChangesAsync();
             }
             else
